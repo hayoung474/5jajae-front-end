@@ -1,4 +1,5 @@
 import Text from './components/common/Text';
+import { Search } from './components/common/icons';
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       >
         hello world! hello world! hello world! hello world! hello world!
       </Text>
+      <Search size='50px' color='violet_600' />
     </div>
   );
 }

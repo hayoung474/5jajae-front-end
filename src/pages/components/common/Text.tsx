@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { truncate } from '~/style/mixins';
 import { ColorsType, FontStyleType, FontWeightType } from '~/style/theme';
 
-type Props = {
+type TextProps = {
   variant: keyof FontStyleType;
   weight: keyof FontWeightType;
   color?: keyof ColorsType;
@@ -17,7 +17,7 @@ const Text = ({
   truncateLines,
   children,
   ...rest
-}: PropsWithChildren<Props>) => {
+}: PropsWithChildren<TextProps>) => {
   return (
     <Wrapper
       $variant={variant}
