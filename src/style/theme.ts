@@ -1,16 +1,22 @@
 import type { DefaultTheme } from 'styled-components';
 
 export const fontStyle = {
-  title_1: 'font-size: 36px;\nfont-weight: 700;\nline-height: 48px;',
-  title_2: 'font-size: 28px;\nfont-weight: 700;\nline-height: 38px;',
-  title_3: 'font-size: 24px;\nfont-weight: 700;\nline-height: 32px;',
-  heading_1: 'font-size: 20px;\nfont-weight: 700;\nline-height: 28px;',
-  heading_2: 'font-size: 18px;\nfont-weight: 700;\nline-height: 26px;',
-  body_1: 'font-size: 16px;\nfont-weight: 700;\nline-height: 24px;',
-  label_1: 'font-size: 14px;\nfont-weight: 700;\nline-height: 20px;',
-  label_2: 'font-size: 13px;\nfont-weight: 700;\nline-height: 18px;',
-  caption_1: 'font-size: 12px;\nfont-weight: 500;\nline-height: 16px;',
-  caption_2: 'font-size: 11px;\nfont-weight: 500;\nline-height: 14px;',
+  title_1: 'font-size: 36px;\nline-height: 48px;',
+  title_2: 'font-size: 28px;\nline-height: 38px;',
+  title_3: 'font-size: 24px;\nline-height: 32px;',
+  heading_1: 'font-size: 20px;\nline-height: 28px;',
+  heading_2: 'font-size: 18px;\nline-height: 26px;',
+  body_1: 'font-size: 16px;\nline-height: 24px;',
+  label_1: 'font-size: 14px;\nline-height: 20px;',
+  label_2: 'font-size: 13px;\nline-height: 18px;',
+  caption_1: 'font-size: 12px;\nline-height: 16px;',
+  caption_2: 'font-size: 11px;\nline-height: 14px;',
+};
+
+export const fontWeight = {
+  bold: 'font-weight:700',
+  medium: 'font-weight:500',
+  regular: 'font-weight:400',
 };
 
 export const colors = {
@@ -66,10 +72,12 @@ export const colors = {
 
 export type ColorsType = typeof colors;
 export type FontStyleType = typeof fontStyle;
+export type FontWeightType = typeof fontWeight;
 
 export interface ThemeType {
   colors: ColorsType;
   fontStyle: FontStyleType;
+  fontWeight: FontWeightType;
 }
 
 /* 타입스크립트에서 DefaultTheme를 사용하려면 interface를 선언해주어야 한다. 아니면 theme가 any타입으로 나오게 된다. */
@@ -80,4 +88,5 @@ declare module 'styled-components' {
 export const theme: DefaultTheme = {
   fontStyle,
   colors,
+  fontWeight,
 };

@@ -1,9 +1,17 @@
-import { styled } from 'styled-components';
+import Text from './components/common/Text';
 
 export default function Home() {
-  return <Title>hello world!</Title>;
+  return (
+    <div>
+      <Text
+        variant='body_1'
+        weight='bold'
+        color='violet_700'
+        truncateLines={1}
+        style={{ width: '300px' }}
+      >
+        hello world! hello world! hello world! hello world! hello world!
+      </Text>
+    </div>
+  );
 }
-
-const Title = styled.div`
-  ${({ theme }) => theme.fontStyle.title_1}
-`;
