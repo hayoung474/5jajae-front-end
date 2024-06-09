@@ -24,9 +24,7 @@ const Chevron = ({ direction, size, color }: IconProps) => {
   if (direction === 'right') {
     return <ChevronRightSVGIcon width={width} height={height} fill={fill} />;
   }
-  if (direction === 'left') {
-    return <ChevronLeftSVGIcon width={width} height={height} fill={fill} />;
-  }
+  return <ChevronLeftSVGIcon width={width} height={height} fill={fill} />;
 };
 
 export default Chevron;

@@ -40,7 +40,7 @@ interface StyleProps {
 const Wrapper = styled.div<StyleProps>`
   ${({ theme, $variant }) => theme.fontStyle[$variant]};
   ${({ theme, $weight }) => theme.fontWeight[$weight]};
-  ${({ theme, $color }) => theme.colors[$color ?? 'black']};
+  color: ${({ theme, $color }) => theme.colors[$color ?? 'black']};
 
   ${({ $truncateLines }) => $truncateLines && truncate($truncateLines ?? 1)}
 

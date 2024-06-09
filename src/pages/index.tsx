@@ -1,5 +1,6 @@
 import Text from './components/common/Text';
-import { Search } from './components/common/icons';
+import SolidButton from './components/common/buttons/SolidButton';
+import { Pin, Search } from './components/common/icons';
 
 export default function Home() {
   return (
@@ -14,6 +15,22 @@ export default function Home() {
         hello world! hello world! hello world! hello world! hello world!
       </Text>
       <Search size='50px' color='violet_600' />
+
+      <SolidButton size='large'>지도 검색</SolidButton>
+      <SolidButton size='large' disabled>
+        지도 검색
+      </SolidButton>
+      <SolidButton size='medium'>지도 검색</SolidButton>
+      <SolidButton size='medium' backgroundColor='violet_950'>
+        지도 검색
+      </SolidButton>
+      <SolidButton size='medium' disabled>
+        지도 검색
+      </SolidButton>
+      <SolidButton size='medium' disabled>
+        <Pin size='16px' />
+        지도 검색
+      </SolidButton>
     </div>
   );
 }
