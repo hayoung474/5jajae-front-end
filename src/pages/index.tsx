@@ -1,3 +1,4 @@
+import Badge from './components/common/Badge';
 import Text from './components/common/Text';
 import SolidButton from './components/common/buttons/SolidButton';
 import { Pin, Search } from './components/common/icons';
@@ -31,6 +32,8 @@ export default function Home() {
         <Pin size='16px' />
         지도 검색
       </SolidButton>
+      <Badge>각재</Badge>
+      <Badge>스터드런너</Badge>
     </div>
   );
 }
