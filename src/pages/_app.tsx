@@ -1,6 +1,7 @@
 import { HydrationBoundary, MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
+import Script from 'next/script';
 import { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyles from '~/style/GlobalStyles';
@@ -41,6 +42,11 @@ export default function App({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </ThemeProvider>
       </HydrationBoundary>
+      <Script
+        type="text/javascript"
+        strategy="beforeInteractive"
+        src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NCP_CLIENT_ID}&submodules=geocoder`}
+      />
     </QueryClientProvider>
   );
 }
