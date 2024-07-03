@@ -8,30 +8,16 @@ type Props = {
   backgroundColor?: keyof ColorsType;
   textColor?: keyof ColorsType;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
-const SolidButton = ({
-  size,
-  backgroundColor,
-  textColor,
-  children,
-  ...rest
-}: PropsWithChildren<Props>) => {
+const SolidButton = ({ size, backgroundColor, textColor, children, ...rest }: PropsWithChildren<Props>) => {
   if (size === 'medium') {
     return (
-      <MediumButton
-        $backgroundColor={backgroundColor}
-        $textColor={textColor}
-        {...rest}
-      >
+      <MediumButton $backgroundColor={backgroundColor} $textColor={textColor} {...rest}>
         {children}
       </MediumButton>
     );
   }
   return (
-    <LargeButton
-      $backgroundColor={backgroundColor}
-      $textColor={textColor}
-      {...rest}
-    >
+    <LargeButton $backgroundColor={backgroundColor} $textColor={textColor} {...rest}>
       {children}
     </LargeButton>
   );
@@ -49,8 +35,7 @@ const LargeButton = styled.button<StyleProps>`
   padding: 16px;
 
   color: ${({ $textColor, theme }) => theme.colors[$textColor ?? 'white']};
-  background-color: ${({ $backgroundColor, theme }) =>
-    theme.colors[$backgroundColor ?? 'violet_600']};
+  background-color: ${({ $backgroundColor, theme }) => theme.colors[$backgroundColor ?? 'violet_600']};
 
   ${({ theme }) => theme.fontStyle.label_1};
   ${({ theme }) => theme.fontWeight.medium};

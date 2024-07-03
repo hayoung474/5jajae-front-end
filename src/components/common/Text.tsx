@@ -1,4 +1,4 @@
-import { HTMLAttributes, PropsWithChildren } from 'react';
+import { HTMLAttributes, PropsWithChildren, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { truncate } from '~/style/mixins';
 import { ColorsType, FontStyleType, FontWeightType } from '~/style/theme';
@@ -10,22 +10,9 @@ type TextProps = {
   /** 말줄임표를 표시할 lines수 */
   truncateLines?: number;
 } & HTMLAttributes<HTMLDivElement>;
-const Text = ({
-  variant,
-  weight,
-  color,
-  truncateLines,
-  children,
-  ...rest
-}: PropsWithChildren<TextProps>) => {
+const Text = ({ variant, weight, color, truncateLines, children, ...rest }: PropsWithChildren<TextProps>) => {
   return (
-    <Wrapper
-      $variant={variant}
-      $weight={weight}
-      $color={color}
-      $truncateLines={truncateLines}
-      {...rest}
-    >
+    <Wrapper $variant={variant} $weight={weight} $color={color} $truncateLines={truncateLines} {...rest}>
       {children}
     </Wrapper>
   );

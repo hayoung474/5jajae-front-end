@@ -1,3 +1,107 @@
+/** .eslintrc 는 2015년 이후 deprecate 되었으며, .eslintrc.json 또는 .eslintrc.js 파일을 생성하여 세팅한다. */
 {
-  "extends": "next/core-web-vitals"
+  // "root": true /** root가 true로 설정되어 있으면 하위 프로젝트에 대해 해당 설정 적용*/,
+  "env": {
+    "browser": true,
+    "es6": true,
+    "es2021": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "react", "prettier"],
+  "extends": [
+    "next/core-web-vitals",
+    "airbnb" /** airbnb는 airbnb-base에 리액트전용규칙 추가 */,
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended" /** linter인 것 처럼 prettier를 실행하는 플러그인*/,
+    "plugin:@next/next/recommended",
+    "plugin:prettier/recommended"
+  ] /** 적용되는 순서가 있으므로, prettier를 맨 마지막에 작성해줌*/,
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": { "directory": "/src" },
+      "node": { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
+    }
+  },
+  /** build, dist, public 폴더는 eslint 검사하지 않는다 */
+  "ignorePatterns": ["build", "dist", "public"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "project": "./tsconfig.json",
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "warning",
+    /** import 순서 설정 */
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", ["parent", "sibling"], "object", "type", "index"],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react", "next"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "sort-imports": [
+      "error",
+      {
+        "ignoreCase": true,
+        "ignoreDeclarationSort": true,
+        "ignoreMemberSort": false,
+        "allowSeparatedGroups": true
+      }
+    ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "no-use-before-define": "off",
+    "react/react-in-jsx-scope": "off" /** Next.js 에서는 React 자동 import 되기 때문에 에러 꺼주기*/,
+    "react/jsx-no-useless-fragment": 1 /** <></> 사용시 경고 메세지로 출력*/,
+    "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/no-empty-interface": "off" /** styled-components empty interface 선언을 위해 */,
+    "no-var": "error",
+    "curly": ["error", "multi-line", "consistent"],
+    "nonblock-statement-body-position": ["error", "beside"],
+    "react/jsx-filename-extension": 0, // ts,tsx파일에서도 jsx 문법을 사용할 수 있도,
+    "@typescript-eslint/no-shadow": "off", // 파일 내 같은 "이름" 사용 가능 (타입사용에 문제가 생김)
+    "no-shadow": "off"
+  },
+  /** Next.js 에서는 React 자동 import 되기 때문에 에러 꺼주기*/
+  "globals": {
+    "React": "writable"
+  }
 }
