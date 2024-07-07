@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import Logo from './Logo';
-import Text from '../common/Text';
+
 import { flexBetweenCenter } from '~/style/mixins';
+import Text from '~/components/common/Text';
 
 const GNB = () => {
   const handleInquiryClick = () => {

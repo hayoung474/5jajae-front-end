@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import ChipToggleFilter from '../common/filter/ChipToggleFilter';
+import ChipToggleFilter from '../../common/filter/ChipToggleFilter';
 
 const Filter = () => {
   return (
