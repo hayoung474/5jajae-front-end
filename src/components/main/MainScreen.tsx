@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 import useNaverMap from './hooks/useNaverMap';
 import { useEffect } from 'react';
+import GNB from './GNB';
+import Filter from './Filter';
+import Side from './side/Side';
 
 const MainScreen = () => {
   const {
@@ -24,11 +27,34 @@ const MainScreen = () => {
   }, []);
   return (
     <Wrapper>
-      메인 화면 입니다. <div id="map" style={{ width: '100vw', height: '100vh' }}></div>
+      <GNB />
+      <Filter />
+      <RowWrapper>
+        <Side />
+        <MapWrapper>
+          <div id="map" style={{ width: '100%', height: '100%' }}></div>
+        </MapWrapper>
+      </RowWrapper>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+`;
+
+const RowWrapper = styled.div`
+  flex: 1;
+  height: 100%;
+`;
+
+const MapWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 export default MainScreen;
