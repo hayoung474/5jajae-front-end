@@ -48,18 +48,18 @@ export const colors = {
   cool_gray_950: '#030712',
   /** #F4F3FF */
   violet_50: '#F4F3FF',
-  /** #EBE9EF */
-  violet_100: '#EBE9EF',
   /** #EBE9FE */
-  violet_200: '#EBE9FE',
+  violet_100: '#EBE9FE',
   /** #D8D6FE */
-  violet_300: '#D8D6FE',
+  violet_200: '#D8D6FE',
   /** #BEB5FD */
-  violet_400: '#BEB5FD',
+  violet_300: '#BEB5FD',
   /** #9B8AFB */
-  violet_500: '#9B8AFB',
+  violet_400: '#9B8AFB',
   /** #7D5EF7 */
-  violet_600: '#7D5EF7',
+  violet_500: '#7D5EF7',
+  /** #6839EE */
+  violet_600: '#6839EE',
   /** #5A27DA */
   violet_700: '#5A27DA',
   /** #4C20B7 */
