@@ -47,8 +47,12 @@ const LargeButton = styled.button<StyleProps>`
 `;
 
 const MediumButton = styled(LargeButton)`
-  padding: 11px 12px;
+  ${flexCenter}
+  padding:0 12px;
+  height: 40px;
+
   ${({ theme }) => theme.fontStyle.label_2};
+  ${({ theme }) => theme.fontWeight.medium};
 `;
 
 export default SolidButton;

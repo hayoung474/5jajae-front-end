@@ -32,6 +32,7 @@ const Wrapper = styled.div<StyleProps>`
   ${({ $truncateLines }) => $truncateLines && truncate($truncateLines ?? 1)}
 
   white-space: pre-wrap;
+  vertical-align: middle;
 `;
 
 export default Text;

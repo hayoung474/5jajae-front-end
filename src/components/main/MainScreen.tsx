@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import useNaverMap from './hooks/useNaverMap';
 import { useEffect } from 'react';
+import Side from './Side';
+import Header from './header/Header';
 
 const MainScreen = () => {
   const {
@@ -24,11 +26,29 @@ const MainScreen = () => {
   }, []);
   return (
     <Wrapper>
-      메인 화면 입니다. <div id="map" style={{ width: '100vw', height: '100vh' }}></div>
+      <Header />
+      <ContentWrapper>
+        <Side />
+        <MapWrapper>
+          <div id="map" style={{ width: '100%', height: '100%' }}></div>
+        </MapWrapper>
+      </ContentWrapper>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  display: grid;
+  grid-template-rows: 144px 1fr;
+  height: 100vh;
+`;
+
+const ContentWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 426px 1fr;
+  height: calc(100vh - 144px);
+`;
+
+const MapWrapper = styled.div``;
 
 export default MainScreen;
