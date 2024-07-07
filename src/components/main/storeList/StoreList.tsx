@@ -14,8 +14,6 @@ const StoreList = () => {
   );
 };
 
-const Wrapper = styled.div`
-  margin-bottom: 120px;
-`;
+const Wrapper = styled.div``;
 
 export default StoreList;

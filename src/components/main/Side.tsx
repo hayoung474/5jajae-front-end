@@ -1,10 +1,13 @@
 import styled from 'styled-components';
-import StoreList from './storeList/StoreList';
+
+import SearchSection from './search/SearchSection';
+import StoreListSection from './storeList/StoreListSection';
 
 const Side = () => {
   return (
     <Wrapper>
-      <StoreList />
+      <SearchSection />
+      <StoreListSection />
     </Wrapper>
   );
 };
