@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { CSSProperties } from 'styled-components';
 import Image from 'next/image';
 
 interface Props {
@@ -6,14 +6,16 @@ interface Props {
   width: string;
   height: string;
   alt?: string;
+  style?:CSSProperties
 }
-const CustomImage = ({ src, alt, width, height }: Props) => {
+const CustomImage = ({ src, alt, width, height ,style}: Props) => {
   return (
     <Wrapper $width={width} $height={height}>
       <StyledImage
         fill
         alt={alt ?? 'image'}
         src={src}
+        style={style}
         placeholder="blur"
         blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
       />
@@ -30,7 +32,6 @@ const Wrapper = styled.div<{ $width: string; $height: string }>`
 
 const StyledImage = styled(Image)`
   overflow: hidden;
-  border-radius: 4px;
   object-fit: cover;
 `;
 

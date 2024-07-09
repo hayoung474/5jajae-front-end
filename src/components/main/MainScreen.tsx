@@ -3,8 +3,12 @@ import useNaverMap from './hooks/useNaverMap';
 import { useEffect } from 'react';
 import Side from './Side';
 import Header from './header/Header';
+import StoreDetailSide from './storeDetail/StoreDetailSide';
+import { useRouter } from 'next/router';
 
 const MainScreen = () => {
+  const router = useRouter();
+  const { storeId } = router.query;
   const {
     map,
     markers,
@@ -29,6 +33,7 @@ const MainScreen = () => {
       <Header />
       <ContentWrapper>
         <Side />
+        {storeId && <StoreDetailSide />}
         <MapWrapper>
           <div id="map" style={{ width: '100%', height: '100%' }}></div>
         </MapWrapper>
@@ -44,11 +49,15 @@ const Wrapper = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 426px 1fr;
+  display: flex;
+  width: 100vw;
   height: calc(100vh - 144px);
 `;
 
-const MapWrapper = styled.div``;
+const MapWrapper = styled.div`
+  flex: 1;
+  width: 100%;
+  height: 100%;
+`;
 
 export default MainScreen;
