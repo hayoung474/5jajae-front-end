@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import Badge from '~/components/common/Badge';
 import CustomImage from '~/components/common/CustomImage';
@@ -5,9 +6,19 @@ import Text from '~/components/common/Text';
 import { Pin } from '~/components/common/icons';
 
 const StoreListItem = () => {
+  const router = useRouter();
+  const handleClick = () => {
+    router.push({ pathname: router.pathname, query: { ...router.query, storeId: 1 } });
+  };
   return (
-    <Wrapper>
-      <CustomImage width="136px" height="136px" src="/image/default.png" alt="store-image" />
+    <Wrapper onClick={handleClick}>
+      <CustomImage
+        width="136px"
+        height="136px"
+        src="/image/default.png"
+        alt="store-image"
+        style={{ borderRadius: '4px' }}
+      />
       <ContentWrapper>
         <BadgeList>
           <Badge>목자재</Badge>
@@ -16,7 +27,7 @@ const StoreListItem = () => {
         <Text variant="body_1" weight="bold" color="cool_gray_900">
           우리우드
         </Text>
-        <Text variant="label_2" weight="regular" color="cool_gray_500">
+        <Text variant="label_2" weight="regular" color="cool_gray_500" truncateLines={2}>
           인테리어자재, 특수목, 핸드레일, 손스침, 계단판, 회전계단판, 라왕 등
         </Text>
         <Address>
@@ -39,10 +50,15 @@ const StoreListItem = () => {
 };
 
 const Wrapper = styled.div`
-  padding: 8px 0;
+  padding: 8px 20px;
 
   display: flex;
   gap: 16px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: ${({ theme }) => theme.colors.cool_gray_50};
+  }
 `;
 
 const ContentWrapper = styled.div`

@@ -29,7 +29,7 @@ const StoreListTitle = () => {
 
 const Wrapper = styled.div`
   ${flexBetweenCenter}
-  padding:8px 0;
+  padding:8px 20px;
 `;
 
 const Title = styled.div`

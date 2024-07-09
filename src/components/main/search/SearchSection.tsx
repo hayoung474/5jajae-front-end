@@ -42,6 +42,7 @@ const SearchSection = () => {
 
 const Wrapper = styled.div`
   margin-top: 24px;
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
   gap: 8px;
