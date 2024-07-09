@@ -26,4 +26,9 @@ export default class CommonService {
     );
     return data;
   }
+
+  async readCommonItemTags() {
+    const { data } = await this.apiClient.get<types.ReadCommonItemTagsResponse>(URLS.READ_ITEM_TAGS);
+    return data;
+  }
 }

@@ -18,11 +18,11 @@ const StoreListTitle = ({ storesCount }: Props) => {
         </Text>
       </Title>
       <Sort>
-        <Text variant="label_2" color="cool_gray_500" weight="medium">
+        <Text variant="label_2" color="cool_gray_500" weight="medium" style={{ cursor: 'pointer' }}>
           최근 등록순
         </Text>
         <TextDivider />
-        <Text variant="label_2" color="violet_600" weight="medium">
+        <Text variant="label_2" color="violet_600" weight="medium" style={{ cursor: 'pointer' }}>
           가까운 거리순
         </Text>
       </Sort>

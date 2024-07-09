@@ -12,7 +12,7 @@ interface Props {
 const StoreListItem = ({ store }: Props) => {
   const router = useRouter();
   const handleClick = () => {
-    router.push({ pathname: router.pathname, query: { ...router.query, storeId: 1 } });
+    router.push({ pathname: router.pathname, query: { ...router.query, storeId: store.id } });
   };
   return (
     <Wrapper onClick={handleClick}>

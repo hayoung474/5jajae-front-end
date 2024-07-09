@@ -8,7 +8,7 @@ export interface ReadCommonStoreListParams {
 }
 
 export interface ReadCommonStoreDetailParams {
-  storeId: number;
+  storeId: string;
 }
 
 export interface CreateCommonDashboardPayload {}
@@ -18,6 +18,7 @@ export interface CreateCommonDashboardPayload {}
 /** response */
 export type ReadCommonStoreListResponse = ResponseDTO<{ stores: StoreListItemDTO[] }>;
 export type ReadCommonStoreDetailResponse = ResponseDTO<StoreDetailItemDTO>;
+export type ReadCommonItemTagsResponse = ResponseDTO<{ itemTags: ItemTag[] }>;
 
 /** DTO */
 
@@ -36,7 +37,7 @@ export interface StoreDetailItemDTO {
   /** 업체 고유 id */
   id: number;
   name: string;
-  description?: string;
+  descriptions?: string;
   lat: number;
   lng: number;
   hits: number;
@@ -45,7 +46,7 @@ export interface StoreDetailItemDTO {
   representativeName?: string;
   identificationNumber?: string;
   address?: string;
-  items?: ItemTag[];
+  itemTags?: ItemTag[];
   openingHours?: string;
   imageUrls: StoreImage[];
   storeReadCount: number;
@@ -53,7 +54,7 @@ export interface StoreDetailItemDTO {
 
 export interface ItemTag {
   id: number;
-  name: number;
+  name: string;
   imageUrl: string;
 }
 
