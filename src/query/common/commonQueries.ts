@@ -18,11 +18,12 @@ export const useStoreListQuery = (params: serviceTypes.ReadCommonStoreListParams
   });
 
 export const useStoreDetailQuery = (params: serviceTypes.ReadCommonStoreDetailParams) =>
-  useSuspenseQuery({
+  useQuery({
     queryKey: [COMMON_QUERY_KEYS.COMMON_STORE_DETAIL, params.storeId],
     queryFn: () => commonService.readCommonStoreDetail(params),
-    // enabled: !!params.storeId,
+    enabled: !!params.storeId,
     select: (res) => res.data,
+    placeholderData: (prev) => prev,
   });
 
 export const useItemTagsQuery = () =>

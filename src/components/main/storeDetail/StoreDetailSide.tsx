@@ -8,20 +8,34 @@ import Badge from '../../common/Badge';
 import ContentDivider from '../../common/ContentDivider';
 import { useRouter } from 'next/router';
 import { useStoreDetailQuery } from '~/query/common/commonQueries';
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
+import StoreContactDialog from './StoreContactDialog';
+import SolidButton from '~/components/common/buttons/SolidButton';
 
 const StoreDetailSide = () => {
   const router = useRouter();
 
   const { storeId } = router.query as { storeId: string };
 
-  const { data: storeDetail } = useStoreDetailQuery({ storeId });
+  const { data: storeDetail, isSuccess } = useStoreDetailQuery({ storeId });
 
+  const [contactOpen, setContactOpen] = useState<boolean>(false);
+
+  const handleContactOpen = () => {
+    setContactOpen(true);
+  };
+  const handleContactClose = () => {
+    setContactOpen(false);
+  };
   const handleClose = () => {
     const query = { ...router.query };
     delete query.storeId;
     router.push({ pathname: router.pathname, query });
   };
+
+  if (!isSuccess) {
+    return null;
+  }
 
   return (
     <Wrapper>
@@ -106,12 +120,27 @@ const StoreDetailSide = () => {
             </StoreInfoDetailItem>
           )}
         </StoreInfoDetail>
+        <ButtonGroup>
+          <ContactButton onClick={handleContactOpen} size="large">
+            대표번호 보기
+          </ContactButton>
+        </ButtonGroup>
+
+        {storeDetail.contactNumber && contactOpen && (
+          <StoreContactDialog
+            name={storeDetail.name}
+            address={storeDetail.address}
+            contactNumber={storeDetail.contactNumber}
+            onContactClose={handleContactClose}
+          />
+        )}
       </Suspense>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
+  position: relative;
   overflow-y: scroll;
 
   padding: 24px 20px;
@@ -158,6 +187,20 @@ const StoreInfoDetailItem = styled.div`
     ${({ theme }) => theme.fontWeight.medium}
     text-decoration: none;
   }
+`;
+
+const ButtonGroup = styled.div`
+  position: absolute;
+  box-sizing: border-box;
+
+  width: 100%;
+
+  padding: 24px 20px;
+  bottom: 0;
+  left: 0px;
+`;
+const ContactButton = styled(SolidButton)`
+  width: 100%;
 `;
 
 export default StoreDetailSide;
