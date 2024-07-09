@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import useNaverMap from './hooks/useNaverMap';
-import { useEffect } from 'react';
-import Side from './Side';
+import { Suspense, useEffect } from 'react';
+import StoreListSide from './storeList/StoreListSide';
 import Header from './header/Header';
 import StoreDetailSide from './storeDetail/StoreDetailSide';
 import { useRouter } from 'next/router';
+import { useStoreListQuery } from '~/query/common/commonQueries';
 
 const MainScreen = () => {
   const router = useRouter();
@@ -22,17 +23,20 @@ const MainScreen = () => {
     mapElementId: 'map',
   });
 
+  const storeListQuery = useStoreListQuery();
+
   useEffect(() => {
     mapInitialize({ center: { lng: 126.9769, lat: 37.5657 } });
     return () => {
       destroyMapInstance();
     };
   }, []);
+
   return (
     <Wrapper>
       <Header />
       <ContentWrapper>
-        <Side />
+        {storeListQuery.isSuccess && <StoreListSide stores={storeListQuery.data} />}
         {storeId && <StoreDetailSide />}
         <MapWrapper>
           <div id="map" style={{ width: '100%', height: '100%' }}></div>

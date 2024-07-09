@@ -3,7 +3,10 @@ import Text from '~/components/common/Text';
 import TextDivider from '~/components/common/TextDivider';
 import { flexBetweenCenter } from '~/style/mixins';
 
-const StoreListTitle = () => {
+interface Props {
+  storesCount?: number;
+}
+const StoreListTitle = ({ storesCount }: Props) => {
   return (
     <Wrapper>
       <Title>
@@ -11,7 +14,7 @@ const StoreListTitle = () => {
           자재업체
         </Text>
         <Text variant="body_1" weight="bold" color="violet_600" className="title">
-          150
+          {storesCount ?? 0}
         </Text>
       </Title>
       <Sort>

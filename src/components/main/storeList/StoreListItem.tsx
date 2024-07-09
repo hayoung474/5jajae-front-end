@@ -1,11 +1,15 @@
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
+import { StoreListItemDTO } from '~/api/common/commonService.types';
 import Badge from '~/components/common/Badge';
 import CustomImage from '~/components/common/CustomImage';
 import Text from '~/components/common/Text';
 import { Pin } from '~/components/common/icons';
 
-const StoreListItem = () => {
+interface Props {
+  store: StoreListItemDTO;
+}
+const StoreListItem = ({ store }: Props) => {
   const router = useRouter();
   const handleClick = () => {
     router.push({ pathname: router.pathname, query: { ...router.query, storeId: 1 } });
@@ -15,27 +19,34 @@ const StoreListItem = () => {
       <CustomImage
         width="136px"
         height="136px"
-        src="/image/default.png"
+        src={store.thumbnailImage || '/image/default.png'}
         alt="store-image"
         style={{ borderRadius: '4px' }}
       />
       <ContentWrapper>
         <BadgeList>
-          <Badge>목자재</Badge>
-          <Badge>경량자재</Badge>
+          {store.itemTags?.map((item) => {
+            return <Badge>{item.name}</Badge>;
+          })}
         </BadgeList>
+
         <Text variant="body_1" weight="bold" color="cool_gray_900">
-          우리우드
+          {store.name}
         </Text>
-        <Text variant="label_2" weight="regular" color="cool_gray_500" truncateLines={2}>
-          인테리어자재, 특수목, 핸드레일, 손스침, 계단판, 회전계단판, 라왕 등
-        </Text>
-        <Address>
-          <Pin color="cool_gray_300" />
-          <Text variant="caption_2" weight="medium" color="cool_gray_500">
-            서울특별시 중랑구 망우로 32길 37
+        {store.descriptions && (
+          <Text variant="label_2" weight="regular" color="cool_gray_500" truncateLines={2}>
+            {store.descriptions}
           </Text>
-        </Address>
+        )}
+        {store.address && (
+          <Address>
+            <Pin color="cool_gray_300" />
+            <Text variant="caption_2" weight="medium" color="cool_gray_500">
+              {store.address}
+            </Text>
+          </Address>
+        )}
+
         <Distance>
           <Text variant="caption_2" weight="medium" color="cool_gray_500">
             거리
@@ -71,6 +82,7 @@ const ContentWrapper = styled.div`
 const BadgeList = styled.div`
   display: flex;
   gap: 4px;
+  flex-wrap: wrap;
 `;
 
 const Address = styled.div`

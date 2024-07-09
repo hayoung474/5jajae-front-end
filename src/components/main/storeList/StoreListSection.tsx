@@ -1,12 +1,21 @@
 import styled from 'styled-components';
-import StoreList from './StoreList';
-import StoreListTitle from './StoreListTitle';
 
-const StoreListSection = () => {
+import StoreListTitle from './StoreListTitle';
+import { StoreListItemDTO } from '~/api/common/commonService.types';
+import StoreListItem from './StoreListItem';
+
+interface Props {
+  stores: StoreListItemDTO[];
+}
+const StoreListSection = ({ stores }: Props) => {
   return (
     <Wrapper>
-      <StoreListTitle />
-      <StoreList />
+      <StoreListTitle storesCount={stores.length} />
+      <StoreListWrapper>
+        {stores.map((store) => {
+          return <StoreListItem store={store} />;
+        })}
+      </StoreListWrapper>
     </Wrapper>
   );
 };
@@ -16,4 +25,5 @@ const Wrapper = styled.div`
   margin-bottom: 120px;
 `;
 
+const StoreListWrapper = styled.div``;
 export default StoreListSection;

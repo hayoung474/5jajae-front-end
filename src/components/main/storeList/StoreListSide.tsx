@@ -1,13 +1,17 @@
 import styled from 'styled-components';
 
-import SearchSection from './search/SearchSection';
-import StoreListSection from './storeList/StoreListSection';
+import SearchSection from '../search/SearchSection';
+import StoreListSection from './StoreListSection';
+import { StoreListItemDTO } from '~/api/common/commonService.types';
 
-const Side = () => {
+interface Props {
+  stores: StoreListItemDTO[];
+}
+const Side = ({ stores }: Props) => {
   return (
     <Wrapper>
       <SearchSection />
-      <StoreListSection />
+      <StoreListSection stores={stores} />
     </Wrapper>
   );
 };
