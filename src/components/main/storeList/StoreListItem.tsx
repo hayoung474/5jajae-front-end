@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { StoreListItemDTO } from '~/api/common/commonService.types';
 import Badge from '~/components/common/Badge';
@@ -9,15 +10,27 @@ import { Pin } from '~/components/common/icons';
 interface Props {
   store: StoreListItemDTO;
   onStoreMarkerActive: (storeId: number) => void;
+  activeStoreId?: number;
 }
-const StoreListItem = ({ store,onStoreMarkerActive }: Props) => {
+const StoreListItem = ({ store, onStoreMarkerActive, activeStoreId }: Props) => {
+  const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
+
+  const active = store.id === activeStoreId;
+
   const handleClick = () => {
     onStoreMarkerActive(store.id);
     router.push({ pathname: router.pathname, query: { ...router.query, storeId: store.id } });
   };
+
+  useEffect(() => {
+    if (activeStoreId === store.id) {
+      ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }),
+    [activeStoreId];
   return (
-    <Wrapper onClick={handleClick}>
+    <Wrapper onClick={handleClick} ref={ref} $active={active}>
       <CustomImage
         width="136px"
         height="136px"
@@ -62,11 +75,12 @@ const StoreListItem = ({ store,onStoreMarkerActive }: Props) => {
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ $active: boolean }>`
   padding: 8px 20px;
 
   display: flex;
   gap: 16px;
+  background-color: ${({ $active, theme }) => ($active ? theme.colors.cool_gray_50 : theme.colors.white)};
 
   &:hover {
     cursor: pointer;

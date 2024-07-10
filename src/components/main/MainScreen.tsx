@@ -10,9 +10,10 @@ import { useStoreListQuery } from '~/query/common/commonQueries';
 const MainScreen = () => {
   const router = useRouter();
   const { storeId } = router.query;
-  const { map, markers, mapInitialize, renderMarkers, handleActiveMarkerSet, destroyMapInstance } = useNaverMap({
-    mapElementId: 'map',
-  });
+  const { map, markers, activeMarker, mapInitialize, renderMarkers, handleActiveMarkerSet, destroyMapInstance } =
+    useNaverMap({
+      mapElementId: 'map',
+    });
 
   const storeListQuery = useStoreListQuery();
 
@@ -41,7 +42,11 @@ const MainScreen = () => {
       <Header />
       <ContentWrapper>
         {storeListQuery.isSuccess && (
-          <StoreListSide stores={storeListQuery.data} onStoreMarkerActive={handleStoreMarkerActive} />
+          <StoreListSide
+            stores={storeListQuery.data}
+            onStoreMarkerActive={handleStoreMarkerActive}
+            activeStoreId={activeMarker?.data.id}
+          />
         )}
         {storeId && <StoreDetailSide />}
         <MapWrapper>

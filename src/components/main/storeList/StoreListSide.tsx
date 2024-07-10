@@ -7,12 +7,13 @@ import { StoreListItemDTO } from '~/api/common/commonService.types';
 interface Props {
   stores: StoreListItemDTO[];
   onStoreMarkerActive: (storeId: number) => void;
+  activeStoreId?: number;
 }
-const Side = ({ stores,onStoreMarkerActive }: Props) => {
+const Side = ({ stores, activeStoreId,onStoreMarkerActive }: Props) => {
   return (
     <Wrapper>
       <SearchSection />
-      <StoreListSection stores={stores} onStoreMarkerActive={onStoreMarkerActive}/>
+      <StoreListSection stores={stores} onStoreMarkerActive={onStoreMarkerActive} activeStoreId={activeStoreId}/>
     </Wrapper>
   );
 };
