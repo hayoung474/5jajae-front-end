@@ -1,7 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 import { flexBetweenCenter } from '~/style/mixins';
 import IconButton from '../../common/buttons/IconButton';
-import { Close } from '../../common/icons';
+import { Close, Share } from '../../common/icons';
 import Text from '../../common/Text';
 import CustomImage from '../../common/CustomImage';
 import Badge from '../../common/Badge';
@@ -11,6 +11,7 @@ import { useStoreDetailQuery } from '~/query/common/commonQueries';
 import { Suspense, useState } from 'react';
 import StoreContactDialog from './StoreContactDialog';
 import SolidButton from '~/components/common/buttons/SolidButton';
+import IconContainedButton from '~/components/common/buttons/IconContainedButton';
 
 const StoreDetailSide = () => {
   const router = useRouter();
@@ -121,6 +122,9 @@ const StoreDetailSide = () => {
           )}
         </StoreInfoDetail>
         <ButtonGroup>
+          <IconContainedButton size="large">
+            <Share size="20px" />
+          </IconContainedButton>
           <ContactButton onClick={handleContactOpen} size="large">
             대표번호 보기
           </ContactButton>
@@ -190,6 +194,8 @@ const StoreInfoDetailItem = styled.div`
 `;
 
 const ButtonGroup = styled.div`
+  display: flex;
+  gap: 4px;
   position: absolute;
   box-sizing: border-box;
 
