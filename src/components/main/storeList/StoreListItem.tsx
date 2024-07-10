@@ -8,10 +8,12 @@ import { Pin } from '~/components/common/icons';
 
 interface Props {
   store: StoreListItemDTO;
+  onStoreMarkerActive: (storeId: number) => void;
 }
-const StoreListItem = ({ store }: Props) => {
+const StoreListItem = ({ store,onStoreMarkerActive }: Props) => {
   const router = useRouter();
   const handleClick = () => {
+    onStoreMarkerActive(store.id);
     router.push({ pathname: router.pathname, query: { ...router.query, storeId: store.id } });
   };
   return (

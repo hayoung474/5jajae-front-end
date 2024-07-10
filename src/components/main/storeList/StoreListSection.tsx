@@ -6,14 +6,15 @@ import StoreListItem from './StoreListItem';
 
 interface Props {
   stores: StoreListItemDTO[];
+  onStoreMarkerActive: (storeId: number) => void;
 }
-const StoreListSection = ({ stores }: Props) => {
+const StoreListSection = ({ stores,onStoreMarkerActive }: Props) => {
   return (
     <Wrapper>
       <StoreListTitle storesCount={stores.length} />
       <StoreListWrapper>
         {stores.map((store) => {
-          return <StoreListItem store={store} />;
+          return <StoreListItem store={store} onStoreMarkerActive={onStoreMarkerActive} />;
         })}
       </StoreListWrapper>
     </Wrapper>

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import useNaverMap from './hooks/useNaverMap';
-import { Suspense, useEffect } from 'react';
+import { useEffect } from 'react';
 import StoreListSide from './storeList/StoreListSide';
 import Header from './header/Header';
 import StoreDetailSide from './storeDetail/StoreDetailSide';
@@ -10,20 +10,18 @@ import { useStoreListQuery } from '~/query/common/commonQueries';
 const MainScreen = () => {
   const router = useRouter();
   const { storeId } = router.query;
-  const {
-    map,
-    markers,
-    mapInitialize,
-    activeMarker,
-    setActiveMarker,
-    renderMarkers,
-    handleActiveMarkerSet,
-    destroyMapInstance,
-  } = useNaverMap({
+  const { map, markers, mapInitialize, renderMarkers, handleActiveMarkerSet, destroyMapInstance } = useNaverMap({
     mapElementId: 'map',
   });
 
   const storeListQuery = useStoreListQuery();
+
+  const handleStoreMarkerActive = (storeId: number) => {
+    const targetMarker = markers.find((marker) => marker.data.id === storeId);
+    if (targetMarker) {
+      handleActiveMarkerSet(targetMarker);
+    }
+  };
 
   useEffect(() => {
     mapInitialize({ center: { lng: 126.9769, lat: 37.5657 } });
@@ -42,7 +40,9 @@ const MainScreen = () => {
     <Wrapper>
       <Header />
       <ContentWrapper>
-        {storeListQuery.isSuccess && <StoreListSide stores={storeListQuery.data} />}
+        {storeListQuery.isSuccess && (
+          <StoreListSide stores={storeListQuery.data} onStoreMarkerActive={handleStoreMarkerActive} />
+        )}
         {storeId && <StoreDetailSide />}
         <MapWrapper>
           <div id="map" style={{ width: '100%', height: '100%' }}></div>

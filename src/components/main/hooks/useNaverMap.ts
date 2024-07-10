@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { StoreListItemDTO } from '~/api/common/commonService.types';
 
@@ -17,6 +18,7 @@ interface InitProps {
 type StoreMarker = MapMarker<StoreListItemDTO>;
 
 const useNaverMap = ({ mapElementId }: Props) => {
+  const router = useRouter();
   /** map instance */
   const [map, setMap] = useState<NaverMap>();
   const [mapCenter, setMapCenter] = useState<Coordinates>();
@@ -56,6 +58,10 @@ const useNaverMap = ({ mapElementId }: Props) => {
     });
     targetMarker.marker.setIcon(icon);
     targetMarker.marker.setZIndex(999);
+
+    map?.panTo(targetMarker.marker.getPosition());
+  
+
     setActiveMarker(targetMarker);
   };
 
@@ -64,6 +70,7 @@ const useNaverMap = ({ mapElementId }: Props) => {
       status: 'default',
       name: targetMarker.data.name,
     });
+    targetMarker.marker.setZIndex(0);
     targetMarker.marker.setIcon(icon);
   };
 
@@ -95,6 +102,7 @@ const useNaverMap = ({ mapElementId }: Props) => {
 
       marker.addListener('click', () => {
         handleActiveMarkerSet(markerObj);
+        router.push({ pathname: router.pathname, query: { ...router.query, storeId: data.id } });
       });
 
       tempMarkers.push(markerObj);
@@ -102,11 +110,6 @@ const useNaverMap = ({ mapElementId }: Props) => {
 
     setMarkers(tempMarkers);
   };
-
-  // const goToCenter = () => {
-  //   const centerLocation = new naver.maps.LatLng(mapCenter.y, mapCenter.x);
-  //   map.setCenter(centerLocation);
-  // };
 
   const clearAllMarkers = () => {
     if (markers.length > 0) {
