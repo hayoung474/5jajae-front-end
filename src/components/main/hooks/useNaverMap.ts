@@ -1,13 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
+import { StoreListItemDTO } from '~/api/common/commonService.types';
 
 export interface MapMarker<T> {
   marker: NaverMapMarker;
   data: T;
 }
 
-export interface MapMarkerData {
-  name: string;
-}
 interface Props {
   mapElementId: string;
 }
@@ -16,7 +14,7 @@ interface InitProps {
   center: Coordinates;
 }
 
-type StoreMarker = MapMarker<MapMarkerData>;
+type StoreMarker = MapMarker<StoreListItemDTO>;
 
 const useNaverMap = ({ mapElementId }: Props) => {
   /** map instance */
@@ -35,7 +33,7 @@ const useNaverMap = ({ mapElementId }: Props) => {
     const centerLocation = new naver.maps.LatLng(center.lat, center.lng);
     let mapOptions = {
       center: centerLocation,
-      zoom: 10,
+      zoom: 11,
       scaleControl: true,
       mapDataControl: false,
       zoomControl: false,
@@ -44,22 +42,32 @@ const useNaverMap = ({ mapElementId }: Props) => {
 
     const map = new naver.maps.Map(mapElementId, mapOptions);
 
+    map.addListener('click', () => {
+      setActiveMarker(undefined);
+    });
+
     setMap(map);
   };
 
   const handleActiveMarkerSet = (targetMarker: StoreMarker) => {
-    // active된 마커 아이콘 세팅하기
-    //     targetMarker.marker.setIcon(markerIcon);
+    const icon = createHtmlStoreIconMarker({
+      status: 'active',
+      name: targetMarker.data.name,
+    });
+    targetMarker.marker.setIcon(icon);
     targetMarker.marker.setZIndex(999);
     setActiveMarker(targetMarker);
   };
 
   const handleInactiveMarkerSet = (targetMarker: StoreMarker) => {
-    // inactive된 마커 아이콘 세팅하기
-    //     targetMarker.marker.setIcon(markerIcon);
+    const icon = createHtmlStoreIconMarker({
+      status: 'default',
+      name: targetMarker.data.name,
+    });
+    targetMarker.marker.setIcon(icon);
   };
 
-  const renderMarkers = (dataList: MapMarkerData[]) => {
+  const renderMarkers = (dataList: StoreListItemDTO[]) => {
     if (markers) {
       clearAllMarkers();
     }
@@ -67,11 +75,17 @@ const useNaverMap = ({ mapElementId }: Props) => {
     let tempMarkers: StoreMarker[] = [];
 
     dataList.forEach((data) => {
+      const icon = createHtmlStoreIconMarker({
+        status: 'default',
+        name: data.name,
+      });
+
+      const position = new naver.maps.LatLng(data.lat, data.lng);
+
       const marker = new naver.maps.Marker({
         map,
-        position: { lat: 9, lng: 9 },
-        // position: uniqueMarkerPosition,
-        // icon: markerIcon,
+        position,
+        icon,
       });
 
       const markerObj: StoreMarker = {
@@ -124,6 +138,37 @@ const useNaverMap = ({ mapElementId }: Props) => {
     // goToCenter,
     clearAllMarkers,
     destroyMapInstance,
+  };
+};
+
+interface storeMarkerProps {
+  status: 'default' | 'active';
+  name: string;
+}
+
+const createHtmlStoreIconMarker = ({ status, name }: storeMarkerProps): naver.maps.HtmlIcon => {
+  const defaultMarkerImgSrc = '/image/defaultMarker.png';
+  const activeMarkerImgSrc = '/image/activeMarker.png';
+
+  if (status === 'default') {
+    return {
+      content: [
+        `<div class="map-store-marker-default">`,
+        `<img class="pin"src="${defaultMarkerImgSrc}" />`,
+        `<div class="label">${name}</div>`,
+        `</div>`,
+      ].join(''),
+      anchor: new naver.maps.Point(13, 13),
+    };
+  }
+  return {
+    content: [
+      `<div class="map-store-marker-active">`,
+      `<img class="pin"src="${activeMarkerImgSrc}"/>`,
+      `<div class="label">${name}</div>`,
+      `</div>`,
+    ].join(''),
+    anchor: new naver.maps.Point(20.5, 28),
   };
 };
 

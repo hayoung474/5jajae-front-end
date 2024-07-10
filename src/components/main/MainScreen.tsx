@@ -32,6 +32,12 @@ const MainScreen = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (map && storeListQuery.data) {
+      renderMarkers(storeListQuery.data);
+    }
+  }, [storeListQuery.data]);
+
   return (
     <Wrapper>
       <Header />
