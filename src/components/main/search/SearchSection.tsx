@@ -4,8 +4,11 @@ import Text from '~/components/common/Text';
 import TextDivider from '~/components/common/TextDivider';
 import { Pin } from '~/components/common/icons';
 import { flexBetweenCenter } from '~/style/mixins';
+import { useRouter } from 'next/router';
 
 const SearchSection = () => {
+  const router = useRouter();
+  const { address } = router.query as { address: string };
   return (
     <Wrapper>
       <Text variant="body_1" weight="bold" color="cool_gray_900" className="title">
@@ -22,20 +25,22 @@ const SearchSection = () => {
           서울시
         </Text>
       </ServiceInfo>
-      <SearchResult>
-        <div className="address">
-          <Text variant="label_2" weight="medium" color="violet_600">
-            '서울특별시 중랑구 망우로'
+      {address && (
+        <SearchResult>
+          <div className="address">
+            <Text variant="label_2" weight="medium" color="violet_600">
+              '{address}'
+            </Text>
+            <Text variant="label_2" weight="regular" color="cool_gray_500">
+              {' '}
+              의 검색결과
+            </Text>
+          </div>
+          <Text variant="label_2" weight="medium" color="cool_gray_500">
+            주소 초기화
           </Text>
-          <Text variant="label_2" weight="regular" color="cool_gray_500">
-            {' '}
-            의 검색결과
-          </Text>
-        </div>
-        <Text variant="label_2" weight="medium" color="cool_gray_500">
-          주소 초기화
-        </Text>
-      </SearchResult>
+        </SearchResult>
+      )}
     </Wrapper>
   );
 };

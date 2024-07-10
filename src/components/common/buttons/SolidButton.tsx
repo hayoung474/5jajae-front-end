@@ -44,6 +44,9 @@ const LargeButton = styled.button<StyleProps>`
     color: ${({ theme }) => theme.colors.cool_gray_400};
     background-color: ${({ theme }) => theme.colors.cool_gray_200};
   }
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const MediumButton = styled(LargeButton)`

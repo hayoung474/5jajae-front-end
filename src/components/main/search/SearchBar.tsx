@@ -1,20 +1,34 @@
-import { ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler, KeyboardEventHandler, useState } from 'react';
 import styled from 'styled-components';
 import IconButton from '~/components/common/buttons/IconButton';
 import SolidButton from '~/components/common/buttons/SolidButton';
 import { CircleClose, Search } from '~/components/common/icons';
 import RecentSearchKeyword from './RecentSearchKeyword';
+import { useRouter } from 'next/router';
 
 const SearchBar = () => {
+  const router = useRouter();
+
   const [keyword, setKeyword] = useState<string>('');
   const [showRecentKeyword, setShowRecentKeyword] = useState<boolean>(false);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setKeyword(e.target.value);
   };
+
+  const handleSearch = () => {
+    router.push({ pathname: router.pathname, query: { ...router.query, address: keyword } });
+  };
   const handleClear = () => {
     setKeyword('');
   };
+
+  const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <Wrapper>
       <CustomInputWrapper>
@@ -25,6 +39,7 @@ const SearchBar = () => {
             placeholder="도로명 또는 지번으로 검색"
             value={keyword}
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
             onFocus={() => {
               setShowRecentKeyword(true);
             }}
@@ -37,7 +52,7 @@ const SearchBar = () => {
         {showRecentKeyword && <RecentSearchKeyword />}
       </CustomInputWrapper>
 
-      <SolidButton size="medium" color="white" backgroundColor="violet_600">
+      <SolidButton size="medium" color="white" backgroundColor="violet_600" onClick={handleSearch}>
         주소 검색
       </SolidButton>
     </Wrapper>
