@@ -12,6 +12,7 @@
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query": "^5.40.1",
     "axios": "^1.7.2",
+    "framer-motion": "^11.3.2",
     "next": "13",
     "react": "^18",
     "react-dom": "^18",

@@ -1,15 +1,15 @@
-import { PropsWithChildren } from 'react';
+import { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 import styled from 'styled-components';
 import { flexCenter } from '~/style/mixins';
 
-interface Props {
+type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   size: 'medium' | 'large';
-}
-const IconContainedButton = ({ size, children }: PropsWithChildren<Props>) => {
+};
+const IconContainedButton = ({ size, children, ...attr }: PropsWithChildren<Props>) => {
   if (size === 'large') {
-    return <LargeButton>{children}</LargeButton>;
+    return <LargeButton {...attr}>{children}</LargeButton>;
   }
-  return <MediumButton>{children}</MediumButton>;
+  return <MediumButton {...attr}>{children}</MediumButton>;
 };
 
 const LargeButton = styled.button`
@@ -18,6 +18,7 @@ const LargeButton = styled.button`
   border-radius: 8px;
   border: solid 1px ${({ theme }) => theme.colors.cool_gray_200};
   background-color: ${({ theme }) => theme.colors.white};
+  outline: none;
 
   &:hover {
     cursor: pointer;
