@@ -2,32 +2,53 @@ import styled from 'styled-components';
 import Text from '~/components/common/Text';
 import IconButton from '~/components/common/buttons/IconButton';
 import { Close, Pin } from '~/components/common/icons';
+import { commonActions, useCommonStore } from '~/store/common';
 import { flexBetweenCenter, flexCenter } from '~/style/mixins';
 
 const RecentSearchKeyword = () => {
+  const recentSearchKeywordList = useCommonStore((state) => state.recentSearchKeywordList);
+
+  const handleKeywordDelete = (keywordIdx: number) => {
+    commonActions.deleteRecentSearchKeyword(keywordIdx);
+  };
+
+  const handleKeywordDeleteAll = () => {
+    commonActions.deleteRecentSearchKeywordAll();
+  };
   return (
     <Wrapper>
       <Title>
         <Text variant="body_1" color="cool_gray_900" weight="bold">
           최근 검색
         </Text>
-        <Text variant="label_2" color="cool_gray_500" weight="medium">
+        <Text variant="label_2" color="cool_gray_500" weight="medium" onClick={handleKeywordDeleteAll}>
           전체삭제
         </Text>
       </Title>
       <KeywordList>
-        <KeywordListEmpty>
-          <Text variant="label_1" color="cool_gray_500" weight="regular">
-            최근 검색한 내역이 없습니다.
-          </Text>
-        </KeywordListEmpty>
-        {/* <KeywordListItem>
-          <Pin size="20px" color="cool_gray_500" />
-          <Text variant="label_1" color="cool_gray_950" weight="regular" className="keyword" truncateLines={1}>
-            서울 금천구 가산디지털2로 127-20000
-          </Text>
-          <IconButton icon={<Close size="16px" color="cool_gray_400" />} />
-        </KeywordListItem> */}
+        {recentSearchKeywordList.length === 0 && (
+          <KeywordListEmpty>
+            <Text variant="label_1" color="cool_gray_500" weight="regular">
+              최근 검색한 내역이 없습니다.
+            </Text>
+          </KeywordListEmpty>
+        )}
+        {recentSearchKeywordList.length > 0 &&
+          recentSearchKeywordList.map((keyword, idx) => {
+            const uniqueKey = `recent-search-${keyword}-${idx}`;
+            return (
+              <KeywordListItem key={uniqueKey}>
+                <Pin size="20px" color="cool_gray_500" />
+                <Text variant="label_1" color="cool_gray_950" weight="regular" className="keyword" truncateLines={1}>
+                  {keyword}
+                </Text>
+                <IconButton
+                  onClick={() => handleKeywordDelete(idx)}
+                  icon={<Close size="16px" color="cool_gray_400" />}
+                />
+              </KeywordListItem>
+            );
+          })}
       </KeywordList>
     </Wrapper>
   );

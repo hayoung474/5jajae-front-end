@@ -9,6 +9,12 @@ import { useRouter } from 'next/router';
 const SearchSection = () => {
   const router = useRouter();
   const { address } = router.query as { address: string };
+
+  const handleAddressReset = () => {
+    const query = router.query;
+    delete query.address;
+    router.push({ pathname: router.pathname, query });
+  };
   return (
     <Wrapper>
       <Text variant="body_1" weight="bold" color="cool_gray_900" className="title">
@@ -36,7 +42,7 @@ const SearchSection = () => {
               의 검색결과
             </Text>
           </div>
-          <Text variant="label_2" weight="medium" color="cool_gray_500">
+          <Text variant="label_2" weight="medium" color="cool_gray_500" onClick={handleAddressReset}>
             주소 초기화
           </Text>
         </SearchResult>
