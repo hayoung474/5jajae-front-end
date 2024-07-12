@@ -19,6 +19,8 @@ type StoreMarker = MapMarker<StoreListItemDTO>;
 
 const useNaverMap = ({ mapElementId }: Props) => {
   const router = useRouter();
+  const { storeId } = router.query as { storeId: string };
+
   /** map instance */
   const [map, setMap] = useState<NaverMap>();
   const [mapCenter, setMapCenter] = useState<Coordinates>();
@@ -59,8 +61,14 @@ const useNaverMap = ({ mapElementId }: Props) => {
     targetMarker.marker.setIcon(icon);
     targetMarker.marker.setZIndex(999);
 
-    map?.panTo(targetMarker.marker.getPosition());
-  
+    if (map) {
+      const position = targetMarker.marker.getPosition();
+      const projection = map.getProjection();
+      let point = projection.fromCoordToOffset(position);
+      point.x = point.x - 213;
+      const newPosition = projection.fromOffsetToCoord(point);
+      map.panTo(newPosition);
+    }
 
     setActiveMarker(targetMarker);
   };
@@ -129,6 +137,12 @@ const useNaverMap = ({ mapElementId }: Props) => {
     setPrevMarker(activeMarker);
     prevMarker && handleInactiveMarkerSet(prevMarker);
   }, [activeMarker]);
+
+  useEffect(() => {
+    if (!storeId && activeMarker) {
+      handleInactiveMarkerSet(activeMarker);
+    }
+  }, [storeId]);
 
   return {
     map,
