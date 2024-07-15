@@ -11,19 +11,22 @@ import { AnimatePresence, motion } from 'framer-motion';
 const MainScreen = () => {
   const router = useRouter();
   const { storeId } = router.query;
-  const { map, markers, activeMarker, mapInitialize, renderMarkers, handleActiveMarkerSet, destroyMapInstance } =
-    useNaverMap({
-      mapElementId: 'map',
-    });
+  const {
+    map,
+    markers,
+    activeMarker,
+    mapInitialize,
+    renderMarkers,
+    handleActiveMarkerSet,
+    destroyMapInstance,
+    handleActiveMarkerByStoreId,
+  } = useNaverMap({
+    mapElementId: 'map',
+  });
 
   const storeListQuery = useStoreListQuery();
 
-  const handleStoreMarkerActive = (storeId: number) => {
-    const targetMarker = markers.find((marker) => marker.data.id === storeId);
-    if (targetMarker) {
-      handleActiveMarkerSet(targetMarker);
-    }
-  };
+
 
   useEffect(() => {
     mapInitialize({ center: { lng: 126.9769, lat: 37.5657 } });
@@ -65,7 +68,7 @@ const MainScreen = () => {
           {storeListQuery.isSuccess && (
             <StoreListSide
               stores={storeListQuery.data}
-              onStoreMarkerActive={handleStoreMarkerActive}
+              onStoreMarkerActive={handleActiveMarkerByStoreId}
               activeStoreId={activeMarker?.data.id}
             />
           )}

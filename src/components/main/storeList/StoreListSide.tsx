@@ -22,6 +22,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   border-right: solid 1px ${({ theme }) => theme.colors.cool_gray_200};
   background-color: ${({ theme }) => theme.colors.white};
+  padding-bottom: 120px;
 `;
 
 export default Side;

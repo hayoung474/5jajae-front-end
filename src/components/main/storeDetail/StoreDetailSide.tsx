@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { flexBetweenCenter } from '~/style/mixins';
 import IconButton from '../../common/buttons/IconButton';
 import { Close, Share } from '../../common/icons';
@@ -8,7 +8,7 @@ import Badge from '../../common/Badge';
 import ContentDivider from '../../common/ContentDivider';
 import { useRouter } from 'next/router';
 import { useStoreDetailQuery } from '~/query/common/commonQueries';
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import StoreContactDialog from './StoreContactDialog';
 import SolidButton from '~/components/common/buttons/SolidButton';
 import IconContainedButton from '~/components/common/buttons/IconContainedButton';
@@ -98,23 +98,24 @@ const StoreDetailSide = () => {
             </Text>
           </StoreInfoDetailItem>
         )}
-
         <StoreInfoDetailItem>
           <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
             상세품목
           </Text>
           <Text variant="label_2" weight="regular" color="cool_gray_500" className="text">
-            {storeDetail.itemTags?.map((item) => item.name).join(', ')}
+            {storeDetail.items}
           </Text>
         </StoreInfoDetailItem>
-        <StoreInfoDetailItem>
-          <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
-            영업시간
-          </Text>
-          <Text variant="label_2" weight="regular" color="cool_gray_500" className="text">
-            07:00 ~ 18:00
-          </Text>
-        </StoreInfoDetailItem>
+        {storeDetail.openingHours && (
+          <StoreInfoDetailItem>
+            <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
+              영업시간
+            </Text>
+            <Text variant="label_2" weight="regular" color="cool_gray_500" className="text">
+              {storeDetail.openingHours}
+            </Text>
+          </StoreInfoDetailItem>
+        )}
         {storeDetail.address && (
           <StoreInfoDetailItem>
             <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">

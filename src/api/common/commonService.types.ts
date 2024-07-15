@@ -41,6 +41,7 @@ export interface StoreDetailItemDTO {
   lat: number;
   lng: number;
   hits: number;
+  items: string;
   contactNumber?: string;
   homepage?: string;
   representativeName?: string;
