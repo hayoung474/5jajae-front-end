@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import ChipToggleFilter from '../../common/filter/ChipToggleFilter';
 import { useItemTagsQuery } from '~/query/common/commonQueries';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const Filter = () => {
   const { data: itemTags, isSuccess } = useItemTagsQuery();
@@ -13,7 +13,7 @@ const Filter = () => {
       {isSuccess &&
         itemTags.map((itemTag) => {
           const uniqueKey = `item-tag-${itemTag.id}`;
-          return <ChipToggleFilter key={uniqueKey} name={itemTag.name} />;
+          return <ChipToggleFilter key={uniqueKey} name={itemTag.name} iconSrc={itemTag.imageUrl} />;
         })}
     </Wrapper>
   );
