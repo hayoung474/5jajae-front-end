@@ -9,22 +9,20 @@ interface Props {
   onStoreMarkerActive: (storeId: number) => void;
   activeStoreId?: number;
 }
-const Side = ({ stores, activeStoreId,onStoreMarkerActive }: Props) => {
+const Side = ({ stores, activeStoreId, onStoreMarkerActive }: Props) => {
   return (
     <Wrapper>
       <SearchSection />
-      <StoreListSection stores={stores} onStoreMarkerActive={onStoreMarkerActive} activeStoreId={activeStoreId}/>
+      <StoreListSection stores={stores} onStoreMarkerActive={onStoreMarkerActive} activeStoreId={activeStoreId} />
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  z-index: 2;
-  overflow-y: scroll;
-  /* padding: 0 20px; */
-  width: 426px;
   box-sizing: border-box;
   border-right: solid 1px ${({ theme }) => theme.colors.cool_gray_200};
+  background-color: ${({ theme }) => theme.colors.white};
+  padding-bottom: 120px;
 `;
 
 export default Side;

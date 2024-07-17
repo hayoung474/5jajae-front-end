@@ -24,7 +24,6 @@ const StoreListSection = ({ stores,activeStoreId,onStoreMarkerActive }: Props) =
 
 const Wrapper = styled.div`
   margin-top: 24px;
-  margin-bottom: 120px;
 `;
 
 const StoreListWrapper = styled.div``;

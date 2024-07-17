@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { flexBetweenCenter } from '~/style/mixins';
 import IconButton from '../../common/buttons/IconButton';
 import { Close, Share } from '../../common/icons';
@@ -8,10 +8,11 @@ import Badge from '../../common/Badge';
 import ContentDivider from '../../common/ContentDivider';
 import { useRouter } from 'next/router';
 import { useStoreDetailQuery } from '~/query/common/commonQueries';
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import StoreContactDialog from './StoreContactDialog';
 import SolidButton from '~/components/common/buttons/SolidButton';
 import IconContainedButton from '~/components/common/buttons/IconContainedButton';
+import StoreShareInfo from './StoreShareInfo';
 
 const StoreDetailSide = () => {
   const router = useRouter();
@@ -21,6 +22,7 @@ const StoreDetailSide = () => {
   const { data: storeDetail, isSuccess } = useStoreDetailQuery({ storeId });
 
   const [contactOpen, setContactOpen] = useState<boolean>(false);
+  const [shareOpen, setShareOpen] = useState<boolean>(false);
 
   const handleContactOpen = () => {
     setContactOpen(true);
@@ -34,123 +36,138 @@ const StoreDetailSide = () => {
     router.push({ pathname: router.pathname, query });
   };
 
+  const handleShareClick = async () => {
+    const text = `https://ojajae.com?storeId=${storeId}`;
+    try {
+      await navigator.clipboard.writeText(text);
+      setShareOpen(true);
+    } catch (e) {
+      console.log('복사에 실패하였습니다');
+    }
+  };
+
+  const handleShareClose = () => {
+    setShareOpen(false);
+  };
+
   if (!isSuccess) {
     return null;
   }
 
   return (
     <Wrapper>
-      <Suspense fallback={<div>데이터 로딩중!</div>}>
-        <Title>
-          <Text variant="heading_1" weight="bold" color="cool_gray_900">
-            업체 정보
+      <Title>
+        <Text variant="heading_1" weight="bold" color="cool_gray_900">
+          업체 정보
+        </Text>
+        <IconButton onClick={handleClose} icon={<Close color="cool_gray_950" />} />
+      </Title>
+      <StoreImageSlide>
+        <CustomImage
+          width="100%"
+          height="208px"
+          src="/image/default.png"
+          alt="store-image"
+          style={{ borderRadius: '8px' }}
+        />
+      </StoreImageSlide>
+      <StoreInfo>
+        <BadgeList>
+          {storeDetail.itemTags?.map((item) => {
+            return <Badge>{item.name}</Badge>;
+          })}
+        </BadgeList>
+        <Text variant="heading_1" weight="bold" color="cool_gray_900">
+          {storeDetail.name}
+        </Text>
+        {storeDetail.descriptions && (
+          <Text variant="label_1" weight="regular" color="cool_gray_500">
+            {storeDetail.descriptions}
           </Text>
-          <IconButton onClick={handleClose} icon={<Close color="cool_gray_950" />} />
-        </Title>
-        <StoreImageSlide>
-          <CustomImage
-            width="100%"
-            height="208px"
-            src="/image/default.png"
-            alt="store-image"
-            style={{ borderRadius: '8px' }}
-          />
-        </StoreImageSlide>
-        <StoreInfo>
-          <BadgeList>
-            {storeDetail.itemTags?.map((item) => {
-              return <Badge>{item.name}</Badge>;
-            })}
-          </BadgeList>
-          <Text variant="heading_1" weight="bold" color="cool_gray_900">
-            {storeDetail.name}
-          </Text>
-          {storeDetail.descriptions && (
-            <Text variant="label_1" weight="regular" color="cool_gray_500">
-              {storeDetail.descriptions}
-            </Text>
-          )}
-        </StoreInfo>
-        <ContentDivider />
-        <StoreInfoDetail>
-          {storeDetail.representativeName && (
-            <StoreInfoDetailItem>
-              <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
-                대표자명
-              </Text>
-              <Text variant="label_2" weight="regular" color="cool_gray_500" className="text">
-                {storeDetail.representativeName}
-              </Text>
-            </StoreInfoDetailItem>
-          )}
-
+        )}
+      </StoreInfo>
+      <ContentDivider />
+      <StoreInfoDetail>
+        {storeDetail.representativeName && (
           <StoreInfoDetailItem>
             <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
-              상세품목
+              대표자명
             </Text>
             <Text variant="label_2" weight="regular" color="cool_gray_500" className="text">
-              {storeDetail.itemTags?.map((item) => item.name).join(', ')}
+              {storeDetail.representativeName}
             </Text>
           </StoreInfoDetailItem>
+        )}
+        <StoreInfoDetailItem>
+          <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
+            상세품목
+          </Text>
+          <Text variant="label_2" weight="regular" color="cool_gray_500" className="text">
+            {storeDetail.items}
+          </Text>
+        </StoreInfoDetailItem>
+        {storeDetail.openingHours && (
           <StoreInfoDetailItem>
             <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
               영업시간
             </Text>
             <Text variant="label_2" weight="regular" color="cool_gray_500" className="text">
-              07:00 ~ 18:00
+              {storeDetail.openingHours}
             </Text>
           </StoreInfoDetailItem>
-          {storeDetail.address && (
-            <StoreInfoDetailItem>
-              <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
-                주소
-              </Text>
-              <Text variant="label_2" weight="regular" color="cool_gray_500" className="text">
-                {storeDetail.address}
-              </Text>
-            </StoreInfoDetailItem>
-          )}
-          {storeDetail.homepage && (
-            <StoreInfoDetailItem>
-              <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
-                홈페이지
-              </Text>
-              <a target="_blank" href={storeDetail.homepage}>
-                {storeDetail.homepage}
-              </a>
-            </StoreInfoDetailItem>
-          )}
-        </StoreInfoDetail>
-        <ButtonGroup>
-          <IconContainedButton size="large">
-            <Share size="20px" />
-          </IconContainedButton>
-          <ContactButton onClick={handleContactOpen} size="large">
-            대표번호 보기
-          </ContactButton>
-        </ButtonGroup>
-
-        {storeDetail.contactNumber && contactOpen && (
-          <StoreContactDialog
-            name={storeDetail.name}
-            address={storeDetail.address}
-            contactNumber={storeDetail.contactNumber}
-            onContactClose={handleContactClose}
-          />
         )}
-      </Suspense>
+        {storeDetail.address && (
+          <StoreInfoDetailItem>
+            <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
+              주소
+            </Text>
+            <Text variant="label_2" weight="regular" color="cool_gray_500" className="text">
+              {storeDetail.address}
+            </Text>
+          </StoreInfoDetailItem>
+        )}
+        {storeDetail.homepage && (
+          <StoreInfoDetailItem>
+            <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
+              홈페이지
+            </Text>
+            <a target="_blank" href={storeDetail.homepage}>
+              {storeDetail.homepage}
+            </a>
+          </StoreInfoDetailItem>
+        )}
+      </StoreInfoDetail>
+      <ButtonGroup>
+        <IconContainedButton size="large" onClick={handleShareClick}>
+          <Share size="20px" />
+        </IconContainedButton>
+        <ContactButton onClick={handleContactOpen} size="large">
+          대표번호 보기
+        </ContactButton>
+        {shareOpen && <StoreShareInfo onShareClose={handleShareClose} />}
+      </ButtonGroup>
+
+      {storeDetail.contactNumber && contactOpen && (
+        <StoreContactDialog
+          name={storeDetail.name}
+          address={storeDetail.address}
+          contactNumber={storeDetail.contactNumber}
+          onContactClose={handleContactClose}
+        />
+      )}
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
   position: relative;
-  overflow-y: scroll;
 
   padding: 24px 20px;
-  width: 426px;
+  width: 100%;
+  height: 100%;
   box-sizing: border-box;
   border-right: solid 1px ${({ theme }) => theme.colors.cool_gray_200};
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const Title = styled.div`

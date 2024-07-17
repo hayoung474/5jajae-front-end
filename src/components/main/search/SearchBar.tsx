@@ -5,6 +5,7 @@ import SolidButton from '~/components/common/buttons/SolidButton';
 import { CircleClose, Search } from '~/components/common/icons';
 import RecentSearchKeyword from './RecentSearchKeyword';
 import { useRouter } from 'next/router';
+import { commonActions } from '~/store/common';
 
 const SearchBar = () => {
   const router = useRouter();
@@ -17,13 +18,19 @@ const SearchBar = () => {
   };
 
   const handleSearch = () => {
+    commonActions.addRecentSearchKeyword(keyword);
     router.push({ pathname: router.pathname, query: { ...router.query, address: keyword } });
+    handleClear();
   };
+
   const handleClear = () => {
     setKeyword('');
   };
 
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (e.nativeEvent.isComposing) {
+      return;
+    }
     if (e.key === 'Enter') {
       handleSearch();
     }

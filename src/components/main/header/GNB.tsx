@@ -3,6 +3,7 @@ import Logo from './Logo';
 
 import { flexBetweenCenter } from '~/style/mixins';
 import Text from '~/components/common/Text';
+import TextButton from '~/components/common/buttons/TextButton';
 
 const GNB = () => {
   const handleInquiryClick = () => {
@@ -12,15 +13,7 @@ const GNB = () => {
   return (
     <Wrapper>
       <Logo />
-      <Text
-        variant="label_2"
-        weight="medium"
-        color="cool_gray_500"
-        onClick={handleInquiryClick}
-        style={{ cursor: 'pointer' }}
-      >
-        문의하기
-      </Text>
+      <TextButton onClick={handleInquiryClick}>문의하기</TextButton>
     </Wrapper>
   );
 };

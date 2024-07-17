@@ -5,10 +5,17 @@ import TextDivider from '~/components/common/TextDivider';
 import { Pin } from '~/components/common/icons';
 import { flexBetweenCenter } from '~/style/mixins';
 import { useRouter } from 'next/router';
+import TextButton from '~/components/common/buttons/TextButton';
 
 const SearchSection = () => {
   const router = useRouter();
   const { address } = router.query as { address: string };
+
+  const handleAddressReset = () => {
+    const query = router.query;
+    delete query.address;
+    router.push({ pathname: router.pathname, query });
+  };
   return (
     <Wrapper>
       <Text variant="body_1" weight="bold" color="cool_gray_900" className="title">
@@ -36,9 +43,7 @@ const SearchSection = () => {
               의 검색결과
             </Text>
           </div>
-          <Text variant="label_2" weight="medium" color="cool_gray_500">
-            주소 초기화
-          </Text>
+          <TextButton onClick={handleAddressReset}>주소 초기화</TextButton>
         </SearchResult>
       )}
     </Wrapper>
