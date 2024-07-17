@@ -1,19 +1,63 @@
 import styled from 'styled-components';
 import ChipToggleFilter from '../../common/filter/ChipToggleFilter';
 import { useItemTagsQuery } from '~/query/common/commonQueries';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 const Filter = () => {
+  const router = useRouter();
+  const { itemTagIds } = router.query as { itemTagIds: string };
   const { data: itemTags, isSuccess } = useItemTagsQuery();
-  const [selectedFilter, setSelectedFilter] = useState<number[]>();
+
+  const [selectedFilter, setSelectedFilter] = useState<Set<number>>(new Set());
+
+  const handleFilterToggle = (itemTagId: number) => {
+    if (selectedFilter.has(itemTagId)) {
+      setSelectedFilter((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(itemTagId);
+        return newSet;
+      });
+    } else {
+      setSelectedFilter((prev) => {
+        const newSet = new Set(prev);
+        newSet.add(itemTagId);
+        return newSet;
+      });
+    }
+  };
+
+  const handleFilterToggleAll = () => {
+    if (selectedFilter.size !== 0) {
+      setSelectedFilter(new Set());
+    }
+  };
+
+  useEffect(() => {
+    const newItemTagIds = Array.from(selectedFilter).join(',');
+
+    if (itemTagIds) {
+      router.push({ pathname: router.pathname, query: { ...router.query, itemTagIds: newItemTagIds } });
+    } else {
+      router.replace({ pathname: router.pathname, query: { ...router.query, itemTagIds: newItemTagIds } });
+    }
+  }, [selectedFilter]);
 
   return (
     <Wrapper>
-      <ChipToggleFilter name="전체" filterActive />
+      <ChipToggleFilter name="전체" filterActive={selectedFilter.size === 0} onClick={handleFilterToggleAll} />
       {isSuccess &&
         itemTags.map((itemTag) => {
           const uniqueKey = `item-tag-${itemTag.id}`;
-          return <ChipToggleFilter key={uniqueKey} name={itemTag.name} iconSrc={itemTag.imageUrl} />;
+          return (
+            <ChipToggleFilter
+              key={uniqueKey}
+              name={itemTag.name}
+              iconSrc={itemTag.imageUrl}
+              onClick={() => handleFilterToggle(itemTag.id)}
+              filterActive={selectedFilter.has(itemTag.id)}
+            />
+          );
         })}
     </Wrapper>
   );

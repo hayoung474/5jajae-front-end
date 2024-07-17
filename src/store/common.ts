@@ -11,7 +11,7 @@ const initialState: CommonState = {
 
 const addRecentSearchKeyword = (keyword: string) => {
   const status = get();
-  const recentSearchKeywordList = [...status.recentSearchKeywordList, keyword];
+  const recentSearchKeywordList = [keyword, ...status.recentSearchKeywordList];
   set({ ...status, recentSearchKeywordList });
 };
 

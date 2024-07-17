@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import useNaverMap from './hooks/useNaverMap';
-import { useEffect } from 'react';
+import { use, useEffect } from 'react';
 import StoreListSide from './storeList/StoreListSide';
 import Header from './header/Header';
 import StoreDetailSide from './storeDetail/StoreDetailSide';
@@ -8,9 +8,14 @@ import { useRouter } from 'next/router';
 import { useStoreListQuery } from '~/query/common/commonQueries';
 import { AnimatePresence, motion } from 'framer-motion';
 
+type QueryParamsType = {
+  storeId?: string;
+  address?: string;
+  itemTagIds?: string;
+};
 const MainScreen = () => {
   const router = useRouter();
-  const { storeId } = router.query;
+  const { storeId, address, itemTagIds } = router.query as QueryParamsType;
   const {
     map,
     markers,
@@ -24,9 +29,7 @@ const MainScreen = () => {
     mapElementId: 'map',
   });
 
-  const storeListQuery = useStoreListQuery();
-
-
+  const storeListQuery = useStoreListQuery({ address, itemTagIds });
 
   useEffect(() => {
     mapInitialize({ center: { lng: 126.9769, lat: 37.5657 } });
@@ -40,6 +43,8 @@ const MainScreen = () => {
       renderMarkers(storeListQuery.data);
     }
   }, [storeListQuery.data]);
+
+
 
   return (
     <Wrapper>
@@ -65,13 +70,11 @@ const MainScreen = () => {
           )}
         </AnimatePresence>
         <StoreListSlideContainer>
-          {storeListQuery.isSuccess && (
-            <StoreListSide
-              stores={storeListQuery.data}
-              onStoreMarkerActive={handleActiveMarkerByStoreId}
-              activeStoreId={activeMarker?.data.id}
-            />
-          )}
+          <StoreListSide
+            stores={storeListQuery?.data}
+            onStoreMarkerActive={handleActiveMarkerByStoreId}
+            activeStoreId={activeMarker?.data.id}
+          />
         </StoreListSlideContainer>
 
         <MapWrapper>
