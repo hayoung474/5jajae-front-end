@@ -8,9 +8,13 @@ import { useRouter } from 'next/router';
 import { useStoreListQuery } from '~/query/common/commonQueries';
 import { AnimatePresence, motion } from 'framer-motion';
 
+type QueryParamsType = {
+  storeId: string;
+  address: string;
+};
 const MainScreen = () => {
   const router = useRouter();
-  const { storeId } = router.query;
+  const { storeId, address } = router.query as QueryParamsType;
   const {
     map,
     markers,
@@ -24,9 +28,7 @@ const MainScreen = () => {
     mapElementId: 'map',
   });
 
-  const storeListQuery = useStoreListQuery();
-
-
+  const storeListQuery = useStoreListQuery({ address });
 
   useEffect(() => {
     mapInitialize({ center: { lng: 126.9769, lat: 37.5657 } });
@@ -65,13 +67,11 @@ const MainScreen = () => {
           )}
         </AnimatePresence>
         <StoreListSlideContainer>
-          {storeListQuery.isSuccess && (
-            <StoreListSide
-              stores={storeListQuery.data}
-              onStoreMarkerActive={handleActiveMarkerByStoreId}
-              activeStoreId={activeMarker?.data.id}
-            />
-          )}
+          <StoreListSide
+            stores={storeListQuery?.data}
+            onStoreMarkerActive={handleActiveMarkerByStoreId}
+            activeStoreId={activeMarker?.data.id}
+          />
         </StoreListSlideContainer>
 
         <MapWrapper>
