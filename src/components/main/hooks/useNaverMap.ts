@@ -249,7 +249,8 @@ const createHtmlStoreInfoWindow = (store: StoreListItemDTO) => {
   return [
     '<div class="map-store-info-window" id="map-store-info-window">',
     `<div class="store-title">${store.name}</div>`,
-    `<div class="store-description">${store.descriptions}</div>`,
+
+    `<div class="store-description">${store.descriptions || ''}</div>`,
     `<div class="store-address">`,
     `<img class="pin-icon" src="/image/icon_pin_cool_gray_300.png"/>`,
     `<div>${store.address}</div>`,
