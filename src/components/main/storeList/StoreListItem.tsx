@@ -41,7 +41,8 @@ const StoreListItem = ({ store, onStoreMarkerActive, activeStoreId }: Props) => 
       <ContentWrapper>
         <BadgeList>
           {store.itemTags?.map((item) => {
-            return <Badge>{item.name}</Badge>;
+            const uniqueKey = `store-item-tag-${item.id}`;
+            return <Badge key={uniqueKey}>{item.name}</Badge>;
           })}
         </BadgeList>
 

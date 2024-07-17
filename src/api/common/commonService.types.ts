@@ -4,7 +4,7 @@
 
 export interface ReadCommonStoreListParams {
   address?: string;
-  itemTagIds?: number[];
+  itemTagIds?: string;
 }
 
 export interface ReadCommonStoreDetailParams {

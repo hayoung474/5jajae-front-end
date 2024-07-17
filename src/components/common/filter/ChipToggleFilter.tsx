@@ -1,16 +1,16 @@
 import styled, { css } from 'styled-components';
 import Text from '../Text';
 import { flexCenter } from '~/style/mixins';
-import { InputHTMLAttributes } from 'react';
+import { HTMLAttributes, InputHTMLAttributes } from 'react';
 
-type Props = InputHTMLAttributes<HTMLInputElement> & {
+type Props = {
   name: string;
   iconSrc?: string;
   filterActive?: boolean;
-};
-const ChipToggleFilter = ({ iconSrc, name, filterActive }: Props) => {
+} & HTMLAttributes<HTMLDivElement>;
+const ChipToggleFilter = ({ iconSrc, name, filterActive, onClick }: Props) => {
   return (
-    <Wrapper $filterActive={filterActive}>
+    <Wrapper $filterActive={filterActive} onClick={onClick}>
       {iconSrc && <Icon src={iconSrc} alt="filter-icon-image" />}
       <Text color={filterActive ? 'violet_600' : 'cool_gray_700'} variant="body_1" weight="medium">
         {name}
