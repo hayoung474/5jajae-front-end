@@ -6,14 +6,17 @@ import Text from '~/components/common/Text';
 import TextButton from '~/components/common/buttons/TextButton';
 
 const GNB = () => {
-  const handleInquiryClick = () => {
-    window.alert('문의하기 클릭!');
-  };
-
+  const email = 'ojajaeee@gmail.com';
   return (
     <Wrapper>
       <Logo />
-      <TextButton onClick={handleInquiryClick}>문의하기</TextButton>
+      <TextButton>
+        <InquiryLink target="_blank" href={`mailto:${email}`}>
+          <Text variant="label_2" weight="medium" color="cool_gray_500">
+            문의하기
+          </Text>
+        </InquiryLink>
+      </TextButton>
     </Wrapper>
   );
 };
@@ -28,4 +31,12 @@ const Wrapper = styled.div`
   border-bottom: solid 1px ${({ theme }) => theme.colors.cool_gray_200};
 `;
 
+const InquiryLink = styled.a`
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  text-decoration-line: none;
+  color:;
+`;
 export default GNB;
