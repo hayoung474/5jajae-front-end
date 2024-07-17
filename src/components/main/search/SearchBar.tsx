@@ -18,6 +18,10 @@ const SearchBar = () => {
   };
 
   const handleSearch = () => {
+    if (!keyword) {
+      alert('검색어를 입력해주세요.');
+      return;
+    }
     commonActions.addRecentSearchKeyword(keyword);
     router.push({ pathname: router.pathname, query: { ...router.query, address: keyword } });
     handleClear();
@@ -59,7 +63,7 @@ const SearchBar = () => {
         {showRecentKeyword && <RecentSearchKeyword />}
       </CustomInputWrapper>
 
-      <SolidButton size="medium" color="white" backgroundColor="violet_600" onClick={handleSearch}>
+      <SolidButton size="medium" color="white" backgroundColor="violet_600" onClick={handleSearch} disabled={!keyword}>
         주소 검색
       </SolidButton>
     </Wrapper>
