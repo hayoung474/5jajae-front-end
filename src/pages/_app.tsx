@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app';
 import Script from 'next/script';
 import { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
+import MetaTags from '~/components/meta/MetaTags';
 import GlobalStyles from '~/style/GlobalStyles';
 import { theme } from '~/style/theme';
 
@@ -47,6 +48,7 @@ export default function App({ Component, pageProps }: AppProps) {
         strategy="beforeInteractive"
         src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NCP_CLIENT_ID}&submodules=geocoder`}
       />
+      <MetaTags />
     </QueryClientProvider>
   );
 }
