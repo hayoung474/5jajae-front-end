@@ -13,6 +13,7 @@ import StoreContactDialog from './StoreContactDialog';
 import SolidButton from '~/components/common/buttons/SolidButton';
 import IconContainedButton from '~/components/common/buttons/IconContainedButton';
 import StoreShareInfo from './StoreShareInfo';
+import copyText from '~/lib/copyText';
 
 const StoreDetailSide = () => {
   const router = useRouter();
@@ -38,12 +39,7 @@ const StoreDetailSide = () => {
 
   const handleShareClick = async () => {
     const text = `https://ojajae.com?storeId=${storeId}`;
-    try {
-      await navigator.clipboard.writeText(text);
-      setShareOpen(true);
-    } catch (e) {
-      console.log('복사에 실패하였습니다');
-    }
+    copyText(text);
   };
 
   const handleShareClose = () => {
