@@ -1,11 +1,17 @@
+import { forwardRef } from 'react';
 import styled from 'styled-components';
 import Text from '~/components/common/Text';
 import IconButton from '~/components/common/buttons/IconButton';
+import TextButton from '~/components/common/buttons/TextButton';
 import { Close, Pin } from '~/components/common/icons';
 import { commonActions, useCommonStore } from '~/store/common';
 import { flexBetweenCenter, flexCenter } from '~/style/mixins';
 
-const RecentSearchKeyword = () => {
+interface Props {
+  onSearch: (keyword: string) => void;
+}
+
+const RecentSearchKeyword = forwardRef<HTMLDivElement, Props>(({ onSearch }, ref) => {
   const recentSearchKeywordList = useCommonStore((state) => state.recentSearchKeywordList);
 
   const handleKeywordDelete = (keywordIdx: number) => {
@@ -15,15 +21,17 @@ const RecentSearchKeyword = () => {
   const handleKeywordDeleteAll = () => {
     commonActions.deleteRecentSearchKeywordAll();
   };
+
+  const handleSearch = (keyword: string) => {
+    onSearch(keyword);
+  };
   return (
-    <Wrapper>
+    <Wrapper ref={ref}>
       <Title>
         <Text variant="body_1" color="cool_gray_900" weight="bold">
           최근 검색
         </Text>
-        <Text variant="label_2" color="cool_gray_500" weight="medium" onClick={handleKeywordDeleteAll}>
-          전체삭제
-        </Text>
+        <TextButton onClick={handleKeywordDeleteAll}>전체삭제</TextButton>
       </Title>
       <KeywordList>
         {recentSearchKeywordList.length === 0 && (
@@ -39,7 +47,14 @@ const RecentSearchKeyword = () => {
             return (
               <KeywordListItem key={uniqueKey}>
                 <Pin size="20px" color="cool_gray_500" />
-                <Text variant="label_1" color="cool_gray_950" weight="regular" className="keyword" truncateLines={1}>
+                <Text
+                  variant="label_1"
+                  color="cool_gray_950"
+                  weight="regular"
+                  className="keyword"
+                  truncateLines={1}
+                  onClick={() => handleSearch(keyword)}
+                >
                   {keyword}
                 </Text>
                 <IconButton
@@ -52,7 +67,7 @@ const RecentSearchKeyword = () => {
       </KeywordList>
     </Wrapper>
   );
-};
+});
 
 const Wrapper = styled.div`
   z-index: 2;

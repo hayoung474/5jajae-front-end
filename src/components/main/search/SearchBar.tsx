@@ -1,4 +1,4 @@
-import { ChangeEventHandler, KeyboardEventHandler, useState } from 'react';
+import { ChangeEventHandler, KeyboardEventHandler, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import IconButton from '~/components/common/buttons/IconButton';
 import SolidButton from '~/components/common/buttons/SolidButton';
@@ -8,6 +8,10 @@ import { useRouter } from 'next/router';
 import { commonActions } from '~/store/common';
 
 const SearchBar = () => {
+  const recentRef = useRef<HTMLDivElement>(null);
+  const searchBarRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const router = useRouter();
 
   const [keyword, setKeyword] = useState<string>('');
@@ -25,6 +29,13 @@ const SearchBar = () => {
     commonActions.addRecentSearchKeyword(keyword);
     router.push({ pathname: router.pathname, query: { ...router.query, address: keyword } });
     handleClear();
+    setShowRecentKeyword(false);
+    inputRef.current?.blur();
+  };
+
+  const handleRecentSearch = (keyword: string) => {
+    router.push({ pathname: router.pathname, query: { ...router.query, address: keyword } });
+    handleClear();
   };
 
   const handleClear = () => {
@@ -40,12 +51,34 @@ const SearchBar = () => {
     }
   };
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        recentRef.current &&
+        !recentRef.current.contains(event.target as Node) &&
+        searchBarRef.current &&
+        !searchBarRef.current.contains(event.target as Node)
+      ) {
+        setShowRecentKeyword(false);
+      }
+    }
+
+    // 마운트 시 이벤트 리스너 추가
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // 언마운트 시 이벤트 리스너 제거
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <Wrapper>
-      <CustomInputWrapper>
+      <CustomInputWrapper ref={searchBarRef}>
         <CustomInput>
           <Search size="20px" color="cool_gray_400" />
           <input
+            ref={inputRef}
             type="text"
             placeholder="도로명 또는 지번으로 검색"
             value={keyword}
@@ -54,13 +87,10 @@ const SearchBar = () => {
             onFocus={() => {
               setShowRecentKeyword(true);
             }}
-            onBlur={() => {
-              setShowRecentKeyword(false);
-            }}
           />
           {keyword && <IconButton onClick={handleClear} icon={<CircleClose size="20px" color="cool_gray_400" />} />}
         </CustomInput>
-        {showRecentKeyword && <RecentSearchKeyword />}
+        {showRecentKeyword && <RecentSearchKeyword onSearch={handleRecentSearch} ref={recentRef} />}
       </CustomInputWrapper>
 
       <SolidButton size="medium" color="white" backgroundColor="violet_600" onClick={handleSearch} disabled={!keyword}>
