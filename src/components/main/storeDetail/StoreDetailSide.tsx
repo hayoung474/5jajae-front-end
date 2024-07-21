@@ -14,6 +14,7 @@ import SolidButton from '~/components/common/buttons/SolidButton';
 import IconContainedButton from '~/components/common/buttons/IconContainedButton';
 import StoreShareInfo from './StoreShareInfo';
 import copyText from '~/lib/copyText';
+import ImageSlide from '~/components/common/ImageSlide';
 
 const StoreDetailSide = () => {
   const router = useRouter();
@@ -60,13 +61,18 @@ const StoreDetailSide = () => {
         <IconButton onClick={handleClose} icon={<Close color="cool_gray_950" />} />
       </Title>
       <StoreImageSlide>
-        <CustomImage
-          width="100%"
-          height="208px"
-          src="/image/default.png"
-          alt="store-image"
-          style={{ borderRadius: '8px' }}
-        />
+        {storeDetail.imageUrls.length === 0 && (
+          <CustomImage
+            width="100%"
+            height="208px"
+            src="/image/default.png"
+            alt="store-image"
+            style={{ borderRadius: '8px' }}
+          />
+        )}
+        {storeDetail.imageUrls.length > 0 && (
+          <ImageSlide images={storeDetail.imageUrls.map((image) => image.imageUrl)} />
+        )}
       </StoreImageSlide>
       <StoreInfo>
         <BadgeList>
