@@ -40,6 +40,7 @@ const StoreDetailSide = () => {
   const handleShareClick = async () => {
     const text = `https://ojajae.com?storeId=${storeId}`;
     copyText(text);
+    setShareOpen(true);
   };
 
   const handleShareClose = () => {
