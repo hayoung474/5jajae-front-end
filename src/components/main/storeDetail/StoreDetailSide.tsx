@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { flexBetweenCenter } from '~/style/mixins';
 import IconButton from '../../common/buttons/IconButton';
-import { Close, Share } from '../../common/icons';
+import { Close, Copy, Share } from '../../common/icons';
 import Text from '../../common/Text';
 import CustomImage from '../../common/CustomImage';
 import Badge from '../../common/Badge';
@@ -44,6 +44,13 @@ const StoreDetailSide = () => {
     setShareOpen(true);
   };
 
+  const handleAddressCopyClick = (address?: string) => {
+    if (!address) {
+      return;
+    }
+    copyText(address);
+    alert('업체 주소가 복사되었습니다!');
+  };
   const handleShareClose = () => {
     setShareOpen(false);
   };
@@ -96,7 +103,7 @@ const StoreDetailSide = () => {
             <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
               대표자명
             </Text>
-            <Text variant="label_2" weight="regular" color="cool_gray_500" className="text">
+            <Text variant="label_2" weight="regular" color="cool_gray_500" className="text-wrapper">
               {storeDetail.representativeName}
             </Text>
           </StoreInfoDetailItem>
@@ -105,7 +112,7 @@ const StoreDetailSide = () => {
           <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
             상세품목
           </Text>
-          <Text variant="label_2" weight="regular" color="cool_gray_500" className="text">
+          <Text variant="label_2" weight="regular" color="cool_gray_500" className="text-wrapper">
             {storeDetail.items}
           </Text>
         </StoreInfoDetailItem>
@@ -114,7 +121,7 @@ const StoreDetailSide = () => {
             <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
               영업시간
             </Text>
-            <Text variant="label_2" weight="regular" color="cool_gray_500" className="text">
+            <Text variant="label_2" weight="regular" color="cool_gray_500" className="text-wrapper">
               {storeDetail.openingHours}
             </Text>
           </StoreInfoDetailItem>
@@ -124,9 +131,14 @@ const StoreDetailSide = () => {
             <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
               주소
             </Text>
-            <Text variant="label_2" weight="regular" color="cool_gray_500" className="text">
-              {storeDetail.address}
-            </Text>
+            <AddressTextItem>
+              <Text variant="label_2" weight="regular" color="cool_gray_500" className="text">
+                {storeDetail.address}
+              </Text>
+              <div className="copy-button" onClick={() => handleAddressCopyClick(storeDetail.address)}>
+                <Copy size="16px" color="cool_gray_500" />
+              </div>
+            </AddressTextItem>
           </StoreInfoDetailItem>
         )}
         {storeDetail.homepage && (
@@ -202,7 +214,10 @@ const StoreInfoDetailItem = styled.div`
   .label {
     width: 88px;
   }
-  .text {
+  .text-container {
+    display: flex;
+    gap: 4px;
+    flex: 1;
   }
 
   a {
@@ -210,6 +225,20 @@ const StoreInfoDetailItem = styled.div`
     ${({ theme }) => theme.fontStyle.label_2}
     ${({ theme }) => theme.fontWeight.medium}
     text-decoration: none;
+    text-decoration-line: none;
+  }
+`;
+
+const AddressTextItem = styled.div`
+  display: flex;
+  flex: 1;
+  gap: 4px;
+  align-items: center;
+  .text {
+    flex: 1;
+  }
+  .copy-button {
+    cursor: pointer;
   }
 `;
 
