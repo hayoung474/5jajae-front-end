@@ -12,8 +12,6 @@ const SearchBar = () => {
   const searchBarRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const router = useRouter();
-
   const [keyword, setKeyword] = useState<string>('');
   const [showRecentKeyword, setShowRecentKeyword] = useState<boolean>(false);
 
@@ -27,15 +25,17 @@ const SearchBar = () => {
       return;
     }
     commonActions.addRecentSearchKeyword(keyword);
-    router.push({ pathname: router.pathname, query: { ...router.query, address: keyword } });
+    commonActions.setAddress(keyword);
+
     handleClear();
     setShowRecentKeyword(false);
     inputRef.current?.blur();
   };
 
   const handleRecentSearch = (keyword: string) => {
-    router.push({ pathname: router.pathname, query: { ...router.query, address: keyword } });
+    commonActions.setAddress(keyword);
     handleClear();
+    setShowRecentKeyword(false);
   };
 
   const handleClear = () => {

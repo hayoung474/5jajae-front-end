@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 import SearchSection from '../search/SearchSection';
 import StoreListSection from './StoreListSection';
-import { StoreListItemDTO } from '~/api/common/commonService.types';
+import { StoreListItemType } from '~/api/common/commonService.types';
 
 interface Props {
-  stores: StoreListItemDTO[] | undefined;
+  stores: StoreListItemType[] | undefined;
   onStoreMarkerActive: (storeId: number) => void;
   activeStoreId?: number;
 }

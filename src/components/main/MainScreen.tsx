@@ -7,15 +7,15 @@ import StoreDetailSide from './storeDetail/StoreDetailSide';
 import { useRouter } from 'next/router';
 import { useStoreListQuery } from '~/query/common/commonQueries';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useCommonStore } from '~/store/common';
 
 type QueryParamsType = {
   storeId?: string;
-  address?: string;
   itemTagIds?: string;
 };
 const MainScreen = () => {
   const router = useRouter();
-  const { storeId, address, itemTagIds } = router.query as QueryParamsType;
+  const { storeId, itemTagIds } = router.query as QueryParamsType;
   const {
     map,
     markers,
@@ -29,7 +29,10 @@ const MainScreen = () => {
     mapElementId: 'map',
   });
 
-  const storeListQuery = useStoreListQuery({ address, itemTagIds });
+  const address = useCommonStore((state) => state.address);
+  const sort = useCommonStore((state) => state.sort);
+
+  const storeListQuery = useStoreListQuery({ sort, address, itemTagIds });
 
   useEffect(() => {
     mapInitialize({ center: { lng: 126.9769, lat: 37.5657 } });
@@ -43,8 +46,6 @@ const MainScreen = () => {
       renderMarkers(storeListQuery.data);
     }
   }, [storeListQuery.data]);
-
-
 
   return (
     <Wrapper>

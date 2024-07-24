@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
 import StoreListTitle from './StoreListTitle';
-import { StoreListItemDTO } from '~/api/common/commonService.types';
+import { StoreListItemType } from '~/api/common/commonService.types';
 import StoreListItem from './StoreListItem';
 
 interface Props {
-  stores: StoreListItemDTO[];
+  stores: StoreListItemType[];
   onStoreMarkerActive: (storeId: number) => void;
   activeStoreId?: number;
 }

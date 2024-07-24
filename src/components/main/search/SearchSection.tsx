@@ -4,17 +4,14 @@ import Text from '~/components/common/Text';
 import TextDivider from '~/components/common/TextDivider';
 import { Pin } from '~/components/common/icons';
 import { flexBetweenCenter } from '~/style/mixins';
-import { useRouter } from 'next/router';
 import TextButton from '~/components/common/buttons/TextButton';
+import { commonActions, useCommonStore } from '~/store/common';
 
 const SearchSection = () => {
-  const router = useRouter();
-  const { address } = router.query as { address: string };
+  const address = useCommonStore((state) => state.address);
 
   const handleAddressReset = () => {
-    const query = router.query;
-    delete query.address;
-    router.push({ pathname: router.pathname, query });
+    commonActions.resetAddress();
   };
   return (
     <Wrapper>

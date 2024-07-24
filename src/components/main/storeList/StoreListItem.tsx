@@ -1,14 +1,15 @@
 import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { StoreListItemDTO } from '~/api/common/commonService.types';
+import { StoreListItemType } from '~/api/common/commonService.types';
 import Badge from '~/components/common/Badge';
 import CustomImage from '~/components/common/CustomImage';
 import Text from '~/components/common/Text';
 import { Pin } from '~/components/common/icons';
+import { meterToKilometer } from '~/lib/meterToKilometer';
 
 interface Props {
-  store: StoreListItemDTO;
+  store: StoreListItemType;
   onStoreMarkerActive: (storeId: number) => void;
   activeStoreId?: number;
 }
@@ -68,7 +69,7 @@ const StoreListItem = ({ store, onStoreMarkerActive, activeStoreId }: Props) => 
             거리
           </Text>
           <Text variant="caption_2" weight="bold" color="cool_gray_500">
-            100m
+            {meterToKilometer(store.distance)}
           </Text>
         </Distance>
       </ContentWrapper>
