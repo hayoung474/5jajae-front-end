@@ -1,12 +1,18 @@
 import styled from 'styled-components';
 import Text from '~/components/common/Text';
 import TextDivider from '~/components/common/TextDivider';
+import { SortType, commonActions, useCommonStore } from '~/store/common';
 import { flexBetweenCenter } from '~/style/mixins';
 
 interface Props {
   storesCount?: number;
 }
 const StoreListTitle = ({ storesCount }: Props) => {
+  const sort = useCommonStore((state) => state.sort);
+
+  const handleSortClick = (sort: SortType) => {
+    commonActions.setSort(sort);
+  };
   return (
     <Wrapper>
       <Title>
@@ -18,11 +24,23 @@ const StoreListTitle = ({ storesCount }: Props) => {
         </Text>
       </Title>
       <Sort>
-        <Text variant="label_2" color="cool_gray_500" weight="medium" style={{ cursor: 'pointer' }}>
+        <Text
+          variant="label_2"
+          color={sort === 'newest' ? 'violet_600' : 'cool_gray_500'}
+          weight="medium"
+          style={{ cursor: 'pointer' }}
+          onClick={() => handleSortClick('newest')}
+        >
           최근 등록순
         </Text>
         <TextDivider />
-        <Text variant="label_2" color="violet_600" weight="medium" style={{ cursor: 'pointer' }}>
+        <Text
+          variant="label_2"
+          color={sort === 'nearest' ? 'violet_600' : 'cool_gray_500'}
+          weight="medium"
+          style={{ cursor: 'pointer' }}
+          onClick={() => handleSortClick('nearest')}
+        >
           가까운 거리순
         </Text>
       </Sort>

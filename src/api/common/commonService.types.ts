@@ -1,10 +1,13 @@
 /** service에서 사용할 타입들을 정의합니다. */
 
+import { SortType } from '~/store/common';
+
 /** params */
 
 export interface ReadCommonStoreListParams {
-  address?: string;
   itemTagIds?: string;
+  address: string;
+  sort: SortType;
 }
 
 export interface ReadCommonStoreDetailParams {
@@ -63,3 +66,5 @@ export interface StoreImage {
   id: number;
   imageUrl: string;
 }
+
+export type StoreListItemType = StoreListItemDTO & { distance: number };

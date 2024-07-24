@@ -1,7 +1,6 @@
 import CommonService from '~/api/common/commonService';
 import type * as serviceTypes from '~/api/common/commonService.types';
-
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 const COMMON_QUERY_KEYS = {
   COMMON_STORE_LIST: 'COMMON/STORE_LIST',
@@ -10,12 +9,14 @@ const COMMON_QUERY_KEYS = {
 };
 const commonService = new CommonService();
 
-export const useStoreListQuery = (params: serviceTypes.ReadCommonStoreListParams = {}) =>
-  useQuery({
-    queryKey: [COMMON_QUERY_KEYS.COMMON_STORE_LIST, params.address, params.itemTagIds],
+export const useStoreListQuery = (params: serviceTypes.ReadCommonStoreListParams) => {
+  const { address, sort, itemTagIds } = params;
+  return useQuery({
+    queryKey: [COMMON_QUERY_KEYS.COMMON_STORE_LIST, address, sort, itemTagIds],
     queryFn: () => commonService.readCommonStoreList(params),
-    select: (res) => res.data.stores,
+    enabled: !!params.address && !!params.sort,
   });
+};
 
 export const useStoreDetailQuery = (params: serviceTypes.ReadCommonStoreDetailParams) =>
   useQuery({

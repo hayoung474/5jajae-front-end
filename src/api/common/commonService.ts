@@ -1,5 +1,7 @@
+import geocoder from '~/lib/geocoder';
 import ApiClient from '../util/apiClient';
 import type * as types from './commonService.types';
+import haversine from '~/lib/haversine';
 
 const URLS = {
   READ_STORE_LIST: '/v1/ojajae/stores',
@@ -15,11 +17,34 @@ export default class CommonService {
     this.apiClient = new ApiClient();
   }
 
-  async readCommonStoreList(params: types.ReadCommonStoreListParams): Promise<types.ReadCommonStoreListResponse> {
+  async readCommonStoreList(params: types.ReadCommonStoreListParams): Promise<types.StoreListItemType[]> {
+    const { address, sort, itemTagIds } = params;
     const { data } = await this.apiClient.get<types.ReadCommonStoreListResponse>(URLS.READ_STORE_LIST, {
-      params,
+      params: { itemTagIds },
     });
-    return data;
+
+    const stores = data.data.stores;
+    const addressItem = await geocoder(address);
+
+    let addressLat = Number(addressItem.y);
+    let addressLon = Number(addressItem.x);
+
+    const newStores = stores.map((store) => {
+      const storeLat = store.lat;
+      const storeLng = store.lng;
+      const distance = Math.round(haversine(storeLat, storeLng, addressLat, addressLon));
+
+      return { ...store, distance };
+    });
+
+    // 2. 정렬 (최근 등록순은 default 값 사용하면 됨.)
+    if (sort === 'nearest') {
+      newStores.sort(function (a, b) {
+        return a.distance - b.distance;
+      });
+    }
+
+    return newStores;
   }
 
   async readCommonStoreDetail(params: types.ReadCommonStoreDetailParams) {
