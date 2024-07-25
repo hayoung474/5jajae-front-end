@@ -41,7 +41,10 @@ const useNaverMap = ({ mapElementId }: Props) => {
       zoom: 11,
       scaleControl: true,
       mapDataControl: false,
-      zoomControl: false,
+      zoomControl: true,
+      zoomControlOptions: {
+        position: naver.maps.Position.RIGHT_BOTTOM, // 줌 컨트롤러의 위치 설정
+      },
       disableKineticPan: false,
     };
 

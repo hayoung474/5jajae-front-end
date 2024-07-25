@@ -14,14 +14,18 @@ export interface ReadCommonStoreDetailParams {
   storeId: string;
 }
 
-export interface CreateCommonDashboardPayload {}
-
 /** payload */
+
+export interface CreateCommonDashboardPayload {
+  storeId: number;
+  dashboardType: DashboardType;
+}
 
 /** response */
 export type ReadCommonStoreListResponse = ResponseDTO<{ stores: StoreListItemDTO[] }>;
 export type ReadCommonStoreDetailResponse = ResponseDTO<StoreDetailItemDTO>;
 export type ReadCommonItemTagsResponse = ResponseDTO<{ itemTags: ItemTag[] }>;
+export type CreateCommonDashboardResponse = ResponseDTO<void>;
 
 /** DTO */
 
@@ -68,3 +72,5 @@ export interface StoreImage {
 }
 
 export type StoreListItemType = StoreListItemDTO & { distance: number };
+// 대시보드 타입(STORE_COUNT: 조회, STORE_CALL: 전화, STORE_SHARE: 공유하기)
+export type DashboardType = 'STORE_COUNT' | 'STORE_CALL' | 'STORE_SHARE';

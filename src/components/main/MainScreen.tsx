@@ -7,7 +7,7 @@ import StoreDetailSide from './storeDetail/StoreDetailSide';
 import { useRouter } from 'next/router';
 import { useStoreListQuery } from '~/query/common/commonQueries';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useCommonStore } from '~/store/common';
+import { commonActions, useCommonStore } from '~/store/common';
 
 type QueryParamsType = {
   storeId?: string;
@@ -34,8 +34,33 @@ const MainScreen = () => {
 
   const storeListQuery = useStoreListQuery({ sort, address, itemTagIds });
 
+  const handleLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        naver.maps.Service.reverseGeocode(
+          {
+            coords: new naver.maps.LatLng(lat, lng),
+          },
+          function (status, response) {
+            if (status !== naver.maps.Service.Status.OK) {
+              return alert('주소를 변환하는데 실패하였습니다.');
+            }
+
+            const result = response.v2;
+            const address = result.address.jibunAddress;
+
+            commonActions.setAddress(address);
+          },
+        );
+      });
+    }
+  };
+
   useEffect(() => {
     mapInitialize({ center: { lng: 126.9769, lat: 37.5657 } });
+    handleLocation();
     return () => {
       destroyMapInstance();
     };

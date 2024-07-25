@@ -58,4 +58,9 @@ export default class CommonService {
     const { data } = await this.apiClient.get<types.ReadCommonItemTagsResponse>(URLS.READ_ITEM_TAGS);
     return data;
   }
+
+  async createCommonDashboard(payload: types.CreateCommonDashboardPayload) {
+    const { data } = await this.apiClient.post<types.CreateCommonDashboardResponse>(URLS.CREATE_DASHBOARD, payload);
+    return data;
+  }
 }

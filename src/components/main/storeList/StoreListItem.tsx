@@ -1,12 +1,13 @@
 import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { StoreListItemType } from '~/api/common/commonService.types';
+import { CreateCommonDashboardPayload, StoreListItemType } from '~/api/common/commonService.types';
 import Badge from '~/components/common/Badge';
 import CustomImage from '~/components/common/CustomImage';
 import Text from '~/components/common/Text';
 import { Pin } from '~/components/common/icons';
 import { meterToKilometer } from '~/lib/meterToKilometer';
+import useDashboard from '../hooks/useDashboard';
 
 interface Props {
   store: StoreListItemType;
@@ -19,9 +20,13 @@ const StoreListItem = ({ store, onStoreMarkerActive, activeStoreId }: Props) => 
 
   const active = store.id === activeStoreId;
 
+  const { sendDashboardEvent } = useDashboard();
+
   const handleClick = () => {
     onStoreMarkerActive(store.id);
     router.push({ pathname: router.pathname, query: { ...router.query, storeId: store.id } });
+
+    sendDashboardEvent(store.id, 'STORE_COUNT');
   };
 
   useEffect(() => {
