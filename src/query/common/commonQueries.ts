@@ -1,6 +1,6 @@
 import CommonService from '~/api/common/commonService';
 import type * as serviceTypes from '~/api/common/commonService.types';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 const COMMON_QUERY_KEYS = {
   COMMON_STORE_LIST: 'COMMON/STORE_LIST',
@@ -32,4 +32,9 @@ export const useItemTagsQuery = () =>
     queryKey: [COMMON_QUERY_KEYS.COMMON_ITEM_TAGS],
     queryFn: () => commonService.readCommonItemTags(),
     select: (res) => res.data.itemTags,
+  });
+
+export const useDashboardMutation = () =>
+  useMutation({
+    mutationFn: (payload: serviceTypes.CreateCommonDashboardPayload) => commonService.createCommonDashboard(payload),
   });

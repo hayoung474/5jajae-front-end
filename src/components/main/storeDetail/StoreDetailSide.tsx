@@ -7,7 +7,7 @@ import CustomImage from '../../common/CustomImage';
 import Badge from '../../common/Badge';
 import ContentDivider from '../../common/ContentDivider';
 import { useRouter } from 'next/router';
-import { useStoreDetailQuery } from '~/query/common/commonQueries';
+import { useDashboardMutation, useStoreDetailQuery } from '~/query/common/commonQueries';
 import { useState } from 'react';
 import StoreContactDialog from './StoreContactDialog';
 import SolidButton from '~/components/common/buttons/SolidButton';
@@ -15,6 +15,8 @@ import IconContainedButton from '~/components/common/buttons/IconContainedButton
 import StoreShareInfo from './StoreShareInfo';
 import copyText from '~/lib/copyText';
 import ImageSlide from '~/components/common/ImageSlide';
+import { CreateCommonDashboardPayload } from '~/api/common/commonService.types';
+import useDashboard from '../hooks/useDashboard';
 
 const StoreDetailSide = () => {
   const router = useRouter();
@@ -22,11 +24,13 @@ const StoreDetailSide = () => {
   const { storeId } = router.query as { storeId: string };
 
   const { data: storeDetail, isSuccess } = useStoreDetailQuery({ storeId });
+  const { sendDashboardEvent } = useDashboard();
 
   const [contactOpen, setContactOpen] = useState<boolean>(false);
   const [shareOpen, setShareOpen] = useState<boolean>(false);
 
   const handleContactOpen = () => {
+    sendDashboardEvent(Number(storeId), 'STORE_CALL');
     setContactOpen(true);
   };
   const handleContactClose = () => {
@@ -42,6 +46,8 @@ const StoreDetailSide = () => {
     const text = `https://ojajae.com?storeId=${storeId}`;
     copyText(text);
     setShareOpen(true);
+
+    sendDashboardEvent(Number(storeId), 'STORE_SHARE');
   };
 
   const handleAddressCopyClick = (address?: string) => {
