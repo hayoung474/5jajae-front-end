@@ -20,13 +20,9 @@ const StoreListItem = ({ store, onStoreMarkerActive, activeStoreId }: Props) => 
 
   const active = store.id === activeStoreId;
 
-  const { sendDashboardEvent } = useDashboard();
-
   const handleClick = () => {
     onStoreMarkerActive(store.id);
     router.push({ pathname: router.pathname, query: { ...router.query, storeId: store.id } });
-
-    sendDashboardEvent(store.id, 'STORE_COUNT');
   };
 
   useEffect(() => {
