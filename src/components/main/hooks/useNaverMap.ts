@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { StoreListItemDTO } from '~/api/common/commonService.types';
+import copyText from '~/lib/copyText';
 import sleep from '~/lib/sleep';
 
 export interface MapMarker<T> {
@@ -167,9 +168,10 @@ const useNaverMap = ({ mapElementId }: Props) => {
           handleActiveMarkerByStoreId(Number(storeId));
           router.push({ pathname: router.pathname, query: { ...router.query, storeId } });
         }
-        if (storeId === 'map-info-window-store-share-button') {
-          console.log('hello');
-          console.log(storeId, '를 공유하였습니다!');
+        if (elementId === 'map-info-window-store-share-button') {
+          const text = `https://ojajae.com?storeId=${storeId}`;
+          copyText(text);
+          alert('업체 주소가 복사되었습니다!');
         }
       });
       tempMarkers.push(markerObj);

@@ -8,7 +8,7 @@ import Badge from '../../common/Badge';
 import ContentDivider from '../../common/ContentDivider';
 import { useRouter } from 'next/router';
 import { useDashboardMutation, useStoreDetailQuery } from '~/query/common/commonQueries';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import StoreContactDialog from './StoreContactDialog';
 import SolidButton from '~/components/common/buttons/SolidButton';
 import IconContainedButton from '~/components/common/buttons/IconContainedButton';
@@ -60,6 +60,10 @@ const StoreDetailSide = () => {
   const handleShareClose = () => {
     setShareOpen(false);
   };
+
+  useEffect(() => {
+    sendDashboardEvent(Number(storeId), 'STORE_COUNT');
+  }, []);
 
   if (!isSuccess) {
     return null;

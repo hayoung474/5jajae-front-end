@@ -7,6 +7,7 @@ import { ThemeProvider } from 'styled-components';
 import MetaTags from '~/components/meta/MetaTags';
 import GlobalStyles from '~/style/GlobalStyles';
 import { theme } from '~/style/theme';
+import '~/style/app.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(
