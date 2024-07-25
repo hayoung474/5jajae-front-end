@@ -163,11 +163,12 @@ const useNaverMap = ({ mapElementId }: Props) => {
           return;
         }
 
+
         if (elementId === 'map-info-window-store-detail-button') {
           handleActiveMarkerByStoreId(Number(storeId));
           router.push({ pathname: router.pathname, query: { ...router.query, storeId } });
         }
-        if (storeId === 'map-info-window-store-share-button') {
+        if (elementId === 'map-info-window-store-share-button') {
           console.log('hello');
           console.log(storeId, '를 공유하였습니다!');
         }
