@@ -34,11 +34,20 @@ const Filter = () => {
   };
 
   useEffect(() => {
-    const newItemTagIds = Array.from(selectedFilter).join(',');
+    if (router.isReady && itemTagIds) {
+      const newSet = new Set<number>();
+      const parsedItemTagIds = itemTagIds.split(',');
 
-    if (itemTagIds) {
-      router.push({ pathname: router.pathname, query: { ...router.query, itemTagIds: newItemTagIds } });
-    } else {
+      parsedItemTagIds.forEach((itemTagId) => {
+        newSet.add(Number(itemTagId));
+      });
+      setSelectedFilter(newSet);
+    }
+  }, [router.isReady]);
+
+  useEffect(() => {
+    const newItemTagIds = Array.from(selectedFilter).join(',');
+    if (newItemTagIds) {
       router.replace({ pathname: router.pathname, query: { ...router.query, itemTagIds: newItemTagIds } });
     }
   }, [selectedFilter]);
