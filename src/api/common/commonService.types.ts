@@ -6,8 +6,10 @@ import { SortType } from '~/store/common';
 
 export interface ReadCommonStoreListParams {
   itemTagIds?: string;
-  address: string;
+  // address: string;
   sort: SortType;
+  lng: number;
+  lat: number;
 }
 
 export interface ReadCommonStoreDetailParams {
@@ -56,7 +58,7 @@ export interface StoreDetailItemDTO {
   address?: string;
   itemTags?: ItemTag[];
   openingHours?: string;
-  imageUrls: StoreImage[];
+  imageUrls: string[];
   storeReadCount: number;
 }
 
