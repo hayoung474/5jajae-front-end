@@ -5,7 +5,7 @@ import { SortType } from '~/store/common';
 /** params */
 
 export interface ReadCommonStoreListParams {
-  itemTagIds?: string;
+  itemTagId?: string;
   // address: string;
   sort: SortType;
   lng: number;

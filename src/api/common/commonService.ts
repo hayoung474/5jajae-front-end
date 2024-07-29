@@ -18,9 +18,9 @@ export default class CommonService {
   }
 
   async readCommonStoreList(params: types.ReadCommonStoreListParams): Promise<types.StoreListItemType[]> {
-    const { lat,lng, sort, itemTagIds } = params;
+    const { lat, lng, sort, itemTagId } = params;
     const { data } = await this.apiClient.get<types.ReadCommonStoreListResponse>(URLS.READ_STORE_LIST, {
-      params: { itemTagIds },
+      params: { itemTagIds: itemTagId },
     });
 
     const stores = data.data.stores;

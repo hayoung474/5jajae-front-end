@@ -11,11 +11,11 @@ import { commonActions, useCommonStore } from '~/store/common';
 
 type QueryParamsType = {
   storeId?: string;
-  itemTagIds?: string;
+  itemTagId?: string;
 };
 const MainScreen = () => {
   const router = useRouter();
-  const { storeId, itemTagIds } = router.query as QueryParamsType;
+  const { storeId, itemTagId } = router.query as QueryParamsType;
   const {
     map,
     markers,
@@ -33,7 +33,7 @@ const MainScreen = () => {
   const addressInfo = useCommonStore((state) => state.addressInfo);
   const sort = useCommonStore((state) => state.sort);
 
-  const storeListQuery = useStoreListQuery({ sort, lat: addressInfo.lat, lng: addressInfo.lng, itemTagIds });
+  const storeListQuery = useStoreListQuery({ sort, lat: addressInfo.lat, lng: addressInfo.lng, itemTagId });
 
   const handleLocation = () => {
     if (navigator.geolocation) {
