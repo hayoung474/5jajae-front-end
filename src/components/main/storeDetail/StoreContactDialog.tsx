@@ -12,7 +12,9 @@ interface Props {
 }
 const StoreContactDialog = ({ name, address, contactNumber, onContactClose }: Props) => {
   return (
-    <Backdrop onClick={onContactClose}>
+    <Wrapper>
+      <Backdrop onClick={onContactClose}></Backdrop>
+
       <Dialog>
         <div>
           <Text variant="heading_1" weight="bold" color="cool_gray_900">
@@ -39,24 +41,36 @@ const StoreContactDialog = ({ name, address, contactNumber, onContactClose }: Pr
           닫기
         </CloseButton>
       </Dialog>
-    </Backdrop>
+    </Wrapper>
   );
 };
 
-const Backdrop = styled.div`
-  position: absolute;
-  box-sizing: border-box;
+const Wrapper = styled.div`
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #00000050;
-
+  position: absolute;
+  box-sizing: border-box;
   ${flexCenter}
 `;
 
+const Backdrop = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: #00000050;
+
+  &:hover{
+    cursor:pointer;
+  }
+`;
+
 const Dialog = styled.div`
-  ${flexCenter}
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 16px;
   padding: 32px 20px;
