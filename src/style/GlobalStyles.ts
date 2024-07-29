@@ -13,6 +13,28 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   };
 
+  .map-center-marker-pin{
+    width:16px;
+    height:16px;
+    background-color:#FC3059;
+    border:solid 2px #ffffff;
+    border-radius:50%;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+
+    &::after{
+      position:absolute;
+      display:block;
+      content:"";
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      background-color:#FC305920;
+      top:50%;
+      left:50%;
+      transform: translate(-50%, -50%);
+
+    }
+  }
   .map-store-marker-default{
     display:flex;
     flex-direction:column;

@@ -10,11 +10,11 @@ const COMMON_QUERY_KEYS = {
 const commonService = new CommonService();
 
 export const useStoreListQuery = (params: serviceTypes.ReadCommonStoreListParams) => {
-  const { address, sort, itemTagIds } = params;
+  const { lat, lng, sort, itemTagId } = params;
   return useQuery({
-    queryKey: [COMMON_QUERY_KEYS.COMMON_STORE_LIST, address, sort, itemTagIds],
+    queryKey: [COMMON_QUERY_KEYS.COMMON_STORE_LIST, lat, lng, sort, itemTagId],
     queryFn: () => commonService.readCommonStoreList(params),
-    enabled: !!params.address && !!params.sort,
+    enabled: !!params.lat && !!params.lng && !!params.sort,
   });
 };
 

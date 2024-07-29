@@ -8,7 +8,7 @@ import TextButton from '~/components/common/buttons/TextButton';
 import { commonActions, useCommonStore } from '~/store/common';
 
 const SearchSection = () => {
-  const address = useCommonStore((state) => state.address);
+  const addressInfo = useCommonStore((state) => state.addressInfo);
 
   const handleAddressReset = () => {
     commonActions.resetAddress();
@@ -29,11 +29,11 @@ const SearchSection = () => {
           서울시
         </Text>
       </ServiceInfo>
-      {address && (
+      {addressInfo && (
         <SearchResult>
           <div className="address">
             <Text variant="label_2" weight="medium" color="violet_600">
-              '{address}'
+              '{addressInfo.address}'
             </Text>
             <Text variant="label_2" weight="regular" color="cool_gray_500">
               {' '}

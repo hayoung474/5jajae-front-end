@@ -18,21 +18,18 @@ export default class CommonService {
   }
 
   async readCommonStoreList(params: types.ReadCommonStoreListParams): Promise<types.StoreListItemType[]> {
-    const { address, sort, itemTagIds } = params;
+    const { lat, lng, sort, itemTagId } = params;
     const { data } = await this.apiClient.get<types.ReadCommonStoreListResponse>(URLS.READ_STORE_LIST, {
-      params: { itemTagIds },
+      params: { itemTagIds: itemTagId },
     });
 
     const stores = data.data.stores;
-    const addressItem = await geocoder(address);
 
-    let addressLat = Number(addressItem.y);
-    let addressLon = Number(addressItem.x);
 
     const newStores = stores.map((store) => {
       const storeLat = store.lat;
       const storeLng = store.lng;
-      const distance = Math.round(haversine(storeLat, storeLng, addressLat, addressLon));
+      const distance = Math.round(haversine(storeLat, storeLng, lat, lng));
 
       return { ...store, distance };
     });

@@ -26,6 +26,7 @@ const useNaverMap = ({ mapElementId }: Props) => {
   /** map instance */
   const [map, setMap] = useState<NaverMap>();
   const [mapCenter, setMapCenter] = useState<Coordinates>();
+  const [mapCenterMarker, setMapCenterMarker] = useState<NaverMapMarker>();
 
   const [markers, setMarkers] = useState<StoreMarker[]>([]);
 
@@ -51,6 +52,8 @@ const useNaverMap = ({ mapElementId }: Props) => {
 
     const map = new naver.maps.Map(mapElementId, mapOptions);
 
+
+
     map.addListener('click', () => {
       setActiveMarker(undefined);
     });
@@ -58,9 +61,12 @@ const useNaverMap = ({ mapElementId }: Props) => {
     setMap(map);
   };
 
+  const handleCenterChange = (center: Coordinates) => {
+    setMapCenter(center);
+  };
+
   const handleActiveMarkerByStoreId = (storeId: number) => {
     const targetMarker = markers.find((marker) => marker.data.id === Number(storeId));
-    console.log(targetMarker);
     if (targetMarker) {
       handleActiveMarkerSet(targetMarker);
     }
@@ -70,7 +76,6 @@ const useNaverMap = ({ mapElementId }: Props) => {
       status: 'active',
       name: targetMarker.data.name,
     });
-    console.log(icon);
     targetMarker.marker.setIcon(icon);
     targetMarker.marker.setZIndex(999);
 
@@ -205,6 +210,27 @@ const useNaverMap = ({ mapElementId }: Props) => {
     }
   }, [storeId]);
 
+  useEffect(() => {
+    if (map && mapCenter) {
+      if (mapCenterMarker) {
+        mapCenterMarker.setMap(null);
+      }
+      const centerLocation = new naver.maps.LatLng(mapCenter.lat, mapCenter.lng);
+      map.setCenter(centerLocation);
+
+      const icon = createHtmlCenterIconMarker();
+      
+      const marker = new naver.maps.Marker({
+        map,
+        icon,
+        position: centerLocation,
+      });
+      marker.setZIndex(1000);
+
+      setMapCenterMarker(marker);
+    }
+  }, [mapCenter]);
+
   return {
     map,
     markers,
@@ -215,6 +241,7 @@ const useNaverMap = ({ mapElementId }: Props) => {
     renderMarkers,
     handleActiveMarkerSet,
     handleActiveMarkerByStoreId,
+    handleCenterChange,
     destroyMapInstance,
   };
 };
@@ -224,6 +251,12 @@ interface storeMarkerProps {
   name: string;
 }
 
+const createHtmlCenterIconMarker = (): naver.maps.HtmlIcon => {
+  return {
+    content: ['<div>', '<div class="map-center-marker-pin"></div>', '</div>'].join(''),
+    anchor: new naver.maps.Point(10, 10),
+  };
+};
 const createHtmlStoreIconMarker = ({ status, name }: storeMarkerProps): naver.maps.HtmlIcon => {
   const defaultMarkerImgSrc = '/image/defaultMarker.png';
   const activeMarkerImgSrc = '/image/activeMarker.png';
@@ -269,4 +302,5 @@ const createHtmlStoreInfoWindow = (store: StoreListItemDTO) => {
     '</div>',
   ].join('');
 };
+
 export default useNaverMap;

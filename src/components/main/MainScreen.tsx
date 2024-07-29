@@ -11,17 +11,18 @@ import { commonActions, useCommonStore } from '~/store/common';
 
 type QueryParamsType = {
   storeId?: string;
-  itemTagIds?: string;
+  itemTagId?: string;
 };
 const MainScreen = () => {
   const router = useRouter();
-  const { storeId, itemTagIds } = router.query as QueryParamsType;
+  const { storeId, itemTagId } = router.query as QueryParamsType;
   const {
     map,
     markers,
     activeMarker,
     mapInitialize,
     renderMarkers,
+    handleCenterChange,
     handleActiveMarkerSet,
     destroyMapInstance,
     handleActiveMarkerByStoreId,
@@ -29,19 +30,21 @@ const MainScreen = () => {
     mapElementId: 'map',
   });
 
-  const address = useCommonStore((state) => state.address);
+  const addressInfo = useCommonStore((state) => state.addressInfo);
   const sort = useCommonStore((state) => state.sort);
 
-  const storeListQuery = useStoreListQuery({ sort, address, itemTagIds });
+  const storeListQuery = useStoreListQuery({ sort, lat: addressInfo.lat, lng: addressInfo.lng, itemTagId });
 
   const handleLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
+
+        const centerLocation = new naver.maps.LatLng(lat, lng);
         naver.maps.Service.reverseGeocode(
           {
-            coords: new naver.maps.LatLng(lat, lng),
+            coords: centerLocation,
           },
           function (status, response) {
             if (status !== naver.maps.Service.Status.OK) {
@@ -59,8 +62,11 @@ const MainScreen = () => {
   };
 
   useEffect(() => {
-    mapInitialize({ center: { lng: 126.9769, lat: 37.5657 } });
-    handleLocation();
+    if (addressInfo) {
+      mapInitialize({ center: { lng: addressInfo.lng, lat: addressInfo.lat } });
+      handleLocation();
+    }
+
     return () => {
       destroyMapInstance();
     };
@@ -71,6 +77,12 @@ const MainScreen = () => {
       renderMarkers(storeListQuery.data);
     }
   }, [storeListQuery.data]);
+
+  useEffect(() => {
+    if (addressInfo) {
+      handleCenterChange({ lat: addressInfo.lat, lng: addressInfo.lng });
+    }
+  }, [addressInfo]);
 
   return (
     <Wrapper>

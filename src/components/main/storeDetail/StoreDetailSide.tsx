@@ -7,7 +7,7 @@ import CustomImage from '../../common/CustomImage';
 import Badge from '../../common/Badge';
 import ContentDivider from '../../common/ContentDivider';
 import { useRouter } from 'next/router';
-import { useDashboardMutation, useStoreDetailQuery } from '~/query/common/commonQueries';
+import { useStoreDetailQuery } from '~/query/common/commonQueries';
 import { useEffect, useState } from 'react';
 import StoreContactDialog from './StoreContactDialog';
 import SolidButton from '~/components/common/buttons/SolidButton';
@@ -15,7 +15,6 @@ import IconContainedButton from '~/components/common/buttons/IconContainedButton
 import StoreShareInfo from './StoreShareInfo';
 import copyText from '~/lib/copyText';
 import ImageSlide from '~/components/common/ImageSlide';
-import { CreateCommonDashboardPayload } from '~/api/common/commonService.types';
 import useDashboard from '../hooks/useDashboard';
 
 const StoreDetailSide = () => {
@@ -87,9 +86,7 @@ const StoreDetailSide = () => {
             style={{ borderRadius: '8px' }}
           />
         )}
-        {storeDetail.imageUrls.length > 0 && (
-          <ImageSlide images={storeDetail.imageUrls.map((image) => image.imageUrl)} />
-        )}
+        {storeDetail.imageUrls.length > 0 && <ImageSlide images={storeDetail.imageUrls.map((image) => image)} />}
       </StoreImageSlide>
       <StoreInfo>
         <BadgeList>

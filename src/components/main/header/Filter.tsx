@@ -6,55 +6,59 @@ import { useRouter } from 'next/router';
 
 const Filter = () => {
   const router = useRouter();
-  const { itemTagIds } = router.query as { itemTagIds: string };
+  const { itemTagId } = router.query as { itemTagId: string };
   const { data: itemTags, isSuccess } = useItemTagsQuery();
 
-  const [selectedFilter, setSelectedFilter] = useState<Set<number>>(new Set());
+  const [selectedFilter, setSelectedFilter] = useState<number>();
 
-  const handleFilterToggle = (itemTagId: number) => {
-    if (selectedFilter.has(itemTagId)) {
-      setSelectedFilter((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(itemTagId);
-        return newSet;
-      });
-    } else {
-      setSelectedFilter((prev) => {
-        const newSet = new Set(prev);
-        newSet.add(itemTagId);
-        return newSet;
-      });
-    }
+  // const handleFilterToggle = (itemTagId: number) => {
+  // if (selectedFilter.has(itemTagId)) {
+  //   setSelectedFilter((prev) => {
+  //     const newSet = new Set(prev);
+  //     newSet.delete(itemTagId);
+  //     return newSet;
+  //   });
+  // } else {
+  //   setSelectedFilter((prev) => {
+  //     const newSet = new Set(prev);
+  //     newSet.add(itemTagId);
+  //     return newSet;
+  //   });
+  // }
+  // };
+
+  const handleFilterActive = (itemTagId: number) => {
+    setSelectedFilter(itemTagId);
   };
-
   const handleFilterToggleAll = () => {
-    if (selectedFilter.size !== 0) {
-      setSelectedFilter(new Set());
+    if (selectedFilter) {
+      setSelectedFilter(undefined);
     }
+    // if (selectedFilter.size !== 0) {
+    //   setSelectedFilter(new Set());
+    // }
   };
 
   useEffect(() => {
-    if (router.isReady && itemTagIds) {
-      const newSet = new Set<number>();
-      const parsedItemTagIds = itemTagIds.split(',');
+    if (router.isReady && itemTagId) {
+      // const newSet = new Set<number>();
+      // const parsedItemTagIds = itemTagIds.split(',');
 
-      parsedItemTagIds.forEach((itemTagId) => {
-        newSet.add(Number(itemTagId));
-      });
-      setSelectedFilter(newSet);
+      // parsedItemTagIds.forEach((itemTagId) => {
+      // newSet.add(Number(itemTagId));
+      // });
+      setSelectedFilter(Number(itemTagId));
     }
   }, [router.isReady]);
 
   useEffect(() => {
-    const newItemTagIds = Array.from(selectedFilter).join(',');
-    if (newItemTagIds) {
-      router.replace({ pathname: router.pathname, query: { ...router.query, itemTagIds: newItemTagIds } });
-    }
+    // const newItemTagIds = Array.from(selectedFilter).join(',');
+    router.replace({ pathname: router.pathname, query: { ...router.query, itemTagId: selectedFilter } });
   }, [selectedFilter]);
 
   return (
     <Wrapper>
-      <ChipToggleFilter name="전체" filterActive={selectedFilter.size === 0} onClick={handleFilterToggleAll} />
+      <ChipToggleFilter name="전체" filterActive={!selectedFilter} onClick={handleFilterToggleAll} />
       {isSuccess &&
         itemTags.map((itemTag) => {
           const uniqueKey = `item-tag-${itemTag.id}`;
@@ -63,8 +67,8 @@ const Filter = () => {
               key={uniqueKey}
               name={itemTag.name}
               iconSrc={itemTag.imageUrl}
-              onClick={() => handleFilterToggle(itemTag.id)}
-              filterActive={selectedFilter.has(itemTag.id)}
+              onClick={() => handleFilterActive(itemTag.id)}
+              filterActive={selectedFilter === itemTag.id}
             />
           );
         })}
