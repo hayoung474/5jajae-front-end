@@ -85,6 +85,23 @@ const GlobalStyles = createGlobalStyle`
     padding:20px;
     background-color:${({ theme }) => theme.colors.white};
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+
+    .store-badge-list{
+      display:flex;
+      gap:4px;
+      flex-wrap: wrap;
+      margin-bottom:4px;
+      .store-badge-list-item{
+        ${({ theme }) => theme.fontStyle.caption_2};
+        ${({ theme }) => theme.fontWeight.medium};
+        color:${({ theme }) => theme.colors.cool_gray_500};
+        display: inline-block;
+        background-color: ${({ theme }) => theme.colors.cool_gray_100};
+        border-radius: 4px;
+        padding: 4px 6px;
+        white-space: nowrap;
+      }
+    }
     .store-title{
       ${({ theme }) => theme.fontStyle.heading_2};
       ${({ theme }) => theme.fontWeight.bold};

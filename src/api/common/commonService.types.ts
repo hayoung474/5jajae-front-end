@@ -39,7 +39,7 @@ export interface StoreListItemDTO {
   lng: number;
   thumbnailImage: string;
   address?: string;
-  itemTags?: ItemTag[];
+  itemTags: ItemTag[];
 }
 
 export interface StoreDetailItemDTO {

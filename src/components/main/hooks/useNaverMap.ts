@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
+import { ItemTag } from '~/api/common/commonService.types';
 import { StoreListItemDTO } from '~/api/common/commonService.types';
 import copyText from '~/lib/copyText';
 import sleep from '~/lib/sleep';
@@ -51,8 +52,6 @@ const useNaverMap = ({ mapElementId }: Props) => {
     };
 
     const map = new naver.maps.Map(mapElementId, mapOptions);
-
-
 
     map.addListener('click', () => {
       setActiveMarker(undefined);
@@ -219,7 +218,7 @@ const useNaverMap = ({ mapElementId }: Props) => {
       map.setCenter(centerLocation);
 
       const icon = createHtmlCenterIconMarker();
-      
+
       const marker = new naver.maps.Marker({
         map,
         icon,
@@ -286,8 +285,8 @@ const createHtmlStoreIconMarker = ({ status, name }: storeMarkerProps): naver.ma
 const createHtmlStoreInfoWindow = (store: StoreListItemDTO) => {
   return [
     '<div class="map-store-info-window" id="map-store-info-window">',
+    ...createHtmlBadgeList(store.itemTags),
     `<div class="store-title">${store.name}</div>`,
-
     `<div class="store-description">${store.descriptions || ''}</div>`,
     `<div class="store-address">`,
     `<img class="pin-icon" src="/image/icon_pin_cool_gray_300.png"/>`,
@@ -303,4 +302,11 @@ const createHtmlStoreInfoWindow = (store: StoreListItemDTO) => {
   ].join('');
 };
 
+const createHtmlBadgeList = (itemTags: ItemTag[]) => {
+  const list = itemTags.map((item) => {
+    return `<div class="store-badge-list-item">${item.name}</div>`;
+  });
+
+  return ['<div class="store-badge-list">', ...list, '</div>'];
+};
 export default useNaverMap;
