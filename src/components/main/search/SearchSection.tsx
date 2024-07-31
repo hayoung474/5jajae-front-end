@@ -40,10 +40,10 @@ const SearchSection = () => {
               의 검색결과
             </Text>
           </div>
-          <div className="reset-button">
+          <TextButton onClick={handleAddressReset}>
             <Refresh size="16px" color="cool_gray_500" />
-            <TextButton onClick={handleAddressReset}>주소 초기화</TextButton>
-          </div>
+            주소 초기화
+          </TextButton>
         </SearchResult>
       )}
     </Wrapper>
@@ -51,8 +51,7 @@ const SearchSection = () => {
 };
 
 const Wrapper = styled.div`
-  margin-top: 24px;
-  padding: 0 20px;
+  padding: 24px 20px 0px 20px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -85,10 +84,6 @@ const SearchResult = styled.div`
       flex: 1; /* 가변 요소 설정 */
       max-width: 100%; /* 최대 너비를 부모 요소의 너비로 제한 */
     }
-  }
-  .reset-button {
-    ${flexCenter}
-    gap:2px;
   }
 `;
 

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import SearchSection from '../search/SearchSection';
 import StoreListSection from './StoreListSection';
 import { StoreListItemType } from '~/api/common/commonService.types';
+import StoreListTitle from './StoreListTitle';
 
 interface Props {
   stores: StoreListItemType[] | undefined;
@@ -12,7 +13,11 @@ interface Props {
 const Side = ({ stores, activeStoreId, onStoreMarkerActive }: Props) => {
   return (
     <Wrapper>
-      <SearchSection />
+      <FixedSection>
+        <SearchSection />
+        {stores && <StoreListTitle storesCount={stores.length} />}
+      </FixedSection>
+
       {stores && (
         <StoreListSection stores={stores} onStoreMarkerActive={onStoreMarkerActive} activeStoreId={activeStoreId} />
       )}
@@ -27,4 +32,10 @@ const Wrapper = styled.div`
   padding-bottom: 120px;
 `;
 
+const FixedSection = styled.div`
+  background-color: ${({ theme }) => theme.colors.white};
+  position: sticky;
+  top: 0;
+  z-index: 2;
+`;
 export default Side;
