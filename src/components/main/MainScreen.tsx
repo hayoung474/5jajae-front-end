@@ -73,6 +73,12 @@ const MainScreen = () => {
   }, []);
 
   useEffect(() => {
+    if (markers && storeId) {
+      handleActiveMarkerByStoreId(Number(storeId));
+    }
+  }, [markers, storeId]);
+
+  useEffect(() => {
     if (map && storeListQuery.data) {
       renderMarkers(storeListQuery.data);
     }

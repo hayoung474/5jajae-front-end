@@ -65,9 +65,12 @@ const useNaverMap = ({ mapElementId }: Props) => {
   };
 
   const handleActiveMarkerByStoreId = (storeId: number) => {
-    const targetMarker = markers.find((marker) => marker.data.id === Number(storeId));
-    if (targetMarker) {
+    const targetMarker = markers.find((marker) => marker.data.id === storeId);
+
+    if (map && targetMarker) {
       handleActiveMarkerSet(targetMarker);
+      const infoWindow = renderInfoWindow(targetMarker.data);
+      infoWindow.open(map, targetMarker.marker);
     }
   };
   const handleActiveMarkerSet = (targetMarker: StoreMarker) => {
@@ -128,17 +131,18 @@ const useNaverMap = ({ mapElementId }: Props) => {
         data,
       };
 
-      const infoWindow = new naver.maps.InfoWindow({
-        content: createHtmlStoreInfoWindow(data),
-        borderWidth: 0,
+      // const infoWindow = new naver.maps.InfoWindow({
+      //   content: createHtmlStoreInfoWindow(data),
+      //   borderWidth: 0,
 
-        backgroundColor: 'transparent',
-        anchorSize: new naver.maps.Size(12, 9),
+      //   backgroundColor: 'transparent',
+      //   anchorSize: new naver.maps.Size(12, 9),
 
-        anchorColor: '#fff',
-        anchorSkew: true,
-      });
+      //   anchorColor: '#fff',
+      //   anchorSkew: true,
+      // });
 
+      const infoWindow = renderInfoWindow(data);
       marker.addListener('click', () => {
         handleActiveMarkerSet(markerObj);
         router.push({ pathname: router.pathname, query: { ...router.query, storeId: data.id } });
@@ -164,36 +168,75 @@ const useNaverMap = ({ mapElementId }: Props) => {
       //   }
       // });
 
-      naver.maps.Event.addListener(map, 'click', function (e) {
-        if (infoWindow.getMap()) {
-          infoWindow.close();
-        }
-      });
+      // naver.maps.Event.addListener(map, 'click', function (e) {
+      //   if (infoWindow.getMap()) {
+      //     infoWindow.close();
+      //   }
+      // });
 
-      naver.maps.Event.addDOMListener(infoWindow.getContentElement(), 'click', (e) => {
-        const elementId = e.target.id;
-        const storeId = e.target.dataset?.storeId;
+      // naver.maps.Event.addDOMListener(infoWindow.getContentElement(), 'click', (e) => {
+      //   const elementId = e.target.id;
+      //   const storeId = e.target.dataset?.storeId;
 
-        if (!storeId || !elementId) {
-          return;
-        }
+      //   if (!storeId || !elementId) {
+      //     return;
+      //   }
 
-        if (elementId === 'map-info-window-store-detail-button') {
-          handleActiveMarkerByStoreId(Number(storeId));
-          router.push({ pathname: router.pathname, query: { ...router.query, storeId } });
-        }
-        if (elementId === 'map-info-window-store-share-button') {
-          const text = `https://ojajae.com?storeId=${storeId}`;
-          copyText(text);
-          alert('업체 주소가 복사되었습니다!');
-        }
-      });
+      //   if (elementId === 'map-info-window-store-detail-button') {
+      //     handleActiveMarkerByStoreId(Number(storeId));
+      //     router.push({ pathname: router.pathname, query: { ...router.query, storeId } });
+      //   }
+      //   if (elementId === 'map-info-window-store-share-button') {
+      //     const text = `https://ojajae.com?storeId=${storeId}`;
+      //     copyText(text);
+      //     alert('업체 주소가 복사되었습니다!');
+      //   }
+      // });
       tempMarkers.push(markerObj);
     });
 
     setMarkers(tempMarkers);
   };
 
+  const renderInfoWindow = (data: StoreListItemDTO) => {
+    const infoWindow = new naver.maps.InfoWindow({
+      content: createHtmlStoreInfoWindow(data),
+      borderWidth: 0,
+
+      backgroundColor: 'transparent',
+      anchorSize: new naver.maps.Size(12, 9),
+
+      anchorColor: '#fff',
+      anchorSkew: true,
+    });
+
+    naver.maps.Event.addListener(map, 'click', function (e) {
+      if (infoWindow.getMap()) {
+        infoWindow.close();
+      }
+    });
+
+    naver.maps.Event.addDOMListener(infoWindow.getContentElement(), 'click', (e) => {
+      const elementId = e.target.id;
+      const storeId = e.target.dataset?.storeId;
+
+      if (!storeId || !elementId) {
+        return;
+      }
+
+      if (elementId === 'map-info-window-store-detail-button') {
+        handleActiveMarkerByStoreId(Number(storeId));
+        router.push({ pathname: router.pathname, query: { ...router.query, storeId } });
+      }
+      if (elementId === 'map-info-window-store-share-button') {
+        const text = `https://ojajae.com?storeId=${storeId}`;
+        copyText(text);
+        alert('업체 주소가 복사되었습니다!');
+      }
+    });
+
+    return infoWindow;
+  };
   const clearAllMarkers = () => {
     if (markers.length > 0) {
       markers.forEach((markerObj) => {
