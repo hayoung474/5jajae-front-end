@@ -44,10 +44,7 @@ const useNaverMap = ({ mapElementId }: Props) => {
       zoom: 11,
       scaleControl: true,
       mapDataControl: false,
-      zoomControl: true,
-      zoomControlOptions: {
-        position: naver.maps.Position.RIGHT_BOTTOM, // 줌 컨트롤러의 위치 설정
-      },
+      zoomControl: false,
       disableKineticPan: false,
     };
 
@@ -58,6 +55,28 @@ const useNaverMap = ({ mapElementId }: Props) => {
     });
 
     setMap(map);
+  };
+
+  const handleCenterMove = () => {
+    if (map && mapCenter) {
+      const centerLocation = new naver.maps.LatLng(mapCenter.lat, mapCenter.lng);
+      map.panTo(centerLocation);
+    }
+  };
+
+  const handleZoomIn = () => {
+    if (map) {
+      if (map.getMaxZoom() !== map.getZoom()) {
+        map.setZoom(map.getZoom() + 1, true);
+      }
+    }
+  };
+  const handleZoomOut = () => {
+    if (map) {
+      if (map.getMinZoom() !== map.getZoom()) {
+        map.setZoom(map.getZoom() - 1, true);
+      }
+    }
   };
 
   const handleCenterChange = (center: Coordinates) => {
@@ -291,6 +310,9 @@ const useNaverMap = ({ mapElementId }: Props) => {
     setActiveMarker,
     clearAllMarkers,
     renderMarkers,
+    handleZoomIn,
+    handleZoomOut,
+    handleCenterMove,
     handleActiveMarkerSet,
     handleActiveMarkerByStoreId,
     handleCenterChange,

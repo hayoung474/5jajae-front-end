@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { useStoreListQuery } from '~/query/common/commonQueries';
 import { AnimatePresence, motion } from 'framer-motion';
 import { commonActions, useCommonStore } from '~/store/common';
+import ButtonGroup from './map/ButtonGroup';
 
 type QueryParamsType = {
   storeId?: string;
@@ -22,8 +23,10 @@ const MainScreen = () => {
     activeMarker,
     mapInitialize,
     renderMarkers,
+    handleZoomIn,
+    handleZoomOut,
+    handleCenterMove,
     handleCenterChange,
-    handleActiveMarkerSet,
     destroyMapInstance,
     handleActiveMarkerByStoreId,
   } = useNaverMap({
@@ -123,6 +126,7 @@ const MainScreen = () => {
 
         <MapWrapper>
           <div id="map" style={{ width: '100%', height: '100%' }}></div>
+          <ButtonGroup onCenterMove={handleCenterMove} onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
         </MapWrapper>
       </ContentWrapper>
     </Wrapper>
