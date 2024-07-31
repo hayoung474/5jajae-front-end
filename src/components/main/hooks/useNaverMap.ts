@@ -131,8 +131,12 @@ const useNaverMap = ({ mapElementId }: Props) => {
       const infoWindow = new naver.maps.InfoWindow({
         content: createHtmlStoreInfoWindow(data),
         borderWidth: 0,
-        disableAnchor: true,
+
         backgroundColor: 'transparent',
+        anchorSize: new naver.maps.Size(12, 9),
+
+        anchorColor: '#fff',
+        anchorSkew: true,
       });
 
       marker.addListener('click', () => {
@@ -141,21 +145,27 @@ const useNaverMap = ({ mapElementId }: Props) => {
       });
 
       marker.addListener('mouseover', async () => {
-        await sleep(500);
+        await sleep(700);
         infoWindow.open(map, marker);
       });
 
-      naver.maps.Event.addDOMListener(infoWindow.getContentElement(), 'mouseleave', async (e) => {
-        const elementId = e.relatedTarget?.id;
-        if (elementId !== 'map-store-marker') {
-          await sleep(500);
-          infoWindow.close();
-        }
-      });
-      naver.maps.Event.addDOMListener(marker.getElement(), 'mouseleave', async (e) => {
-        const elementId = e.relatedTarget?.id;
-        if (elementId !== 'map-store-info-window') {
-          await sleep(500);
+      // naver.maps.Event.addDOMListener(infoWindow.getContentElement(), 'mouseleave', async (e) => {
+      //   const elementId = e.relatedTarget?.id;
+      //   if (elementId !== 'map-store-marker') {
+      //     await sleep(700);
+      //     infoWindow.close();
+      //   }
+      // });
+      // naver.maps.Event.addDOMListener(marker.getElement(), 'mouseleave', async (e) => {
+      //   const elementId = e.relatedTarget?.id;
+      //   if (elementId !== 'map-store-info-window') {
+      //     await sleep(700);
+      //     infoWindow.close();
+      //   }
+      // });
+
+      naver.maps.Event.addListener(map, 'click', function (e) {
+        if (infoWindow.getMap()) {
           infoWindow.close();
         }
       });

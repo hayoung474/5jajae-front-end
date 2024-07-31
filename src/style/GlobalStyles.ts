@@ -79,6 +79,8 @@ const GlobalStyles = createGlobalStyle`
     }
   }
   .map-store-info-window{
+    display:absolute;
+    bottom:20px;
     /* margin-bottom:12px; */
     width:260px;
     border-radius:8px;
