@@ -51,6 +51,8 @@ const StoreListTitle = ({ storesCount }: Props) => {
 const Wrapper = styled.div`
   ${flexBetweenCenter}
   padding:8px 20px;
+
+  margin-top: 24px;
 `;
 
 const Title = styled.div`

@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
+import { ItemTag } from '~/api/common/commonService.types';
 import { StoreListItemDTO } from '~/api/common/commonService.types';
 import copyText from '~/lib/copyText';
 import sleep from '~/lib/sleep';
@@ -43,16 +44,11 @@ const useNaverMap = ({ mapElementId }: Props) => {
       zoom: 11,
       scaleControl: true,
       mapDataControl: false,
-      zoomControl: true,
-      zoomControlOptions: {
-        position: naver.maps.Position.RIGHT_BOTTOM, // 줌 컨트롤러의 위치 설정
-      },
+      zoomControl: false,
       disableKineticPan: false,
     };
 
     const map = new naver.maps.Map(mapElementId, mapOptions);
-
-
 
     map.addListener('click', () => {
       setActiveMarker(undefined);
@@ -61,14 +57,39 @@ const useNaverMap = ({ mapElementId }: Props) => {
     setMap(map);
   };
 
+  const handleCenterMove = () => {
+    if (map && mapCenter) {
+      const centerLocation = new naver.maps.LatLng(mapCenter.lat, mapCenter.lng);
+      map.panTo(centerLocation);
+    }
+  };
+
+  const handleZoomIn = () => {
+    if (map) {
+      if (map.getMaxZoom() !== map.getZoom()) {
+        map.setZoom(map.getZoom() + 1, true);
+      }
+    }
+  };
+  const handleZoomOut = () => {
+    if (map) {
+      if (map.getMinZoom() !== map.getZoom()) {
+        map.setZoom(map.getZoom() - 1, true);
+      }
+    }
+  };
+
   const handleCenterChange = (center: Coordinates) => {
     setMapCenter(center);
   };
 
   const handleActiveMarkerByStoreId = (storeId: number) => {
-    const targetMarker = markers.find((marker) => marker.data.id === Number(storeId));
-    if (targetMarker) {
+    const targetMarker = markers.find((marker) => marker.data.id === storeId);
+
+    if (map && targetMarker) {
       handleActiveMarkerSet(targetMarker);
+      const infoWindow = renderInfoWindow(targetMarker.data);
+      infoWindow.open(map, targetMarker.marker);
     }
   };
   const handleActiveMarkerSet = (targetMarker: StoreMarker) => {
@@ -129,62 +150,112 @@ const useNaverMap = ({ mapElementId }: Props) => {
         data,
       };
 
-      const infoWindow = new naver.maps.InfoWindow({
-        content: createHtmlStoreInfoWindow(data),
-        borderWidth: 0,
-        disableAnchor: true,
-        backgroundColor: 'transparent',
-      });
+      // const infoWindow = new naver.maps.InfoWindow({
+      //   content: createHtmlStoreInfoWindow(data),
+      //   borderWidth: 0,
 
+      //   backgroundColor: 'transparent',
+      //   anchorSize: new naver.maps.Size(12, 9),
+
+      //   anchorColor: '#fff',
+      //   anchorSkew: true,
+      // });
+
+      const infoWindow = renderInfoWindow(data);
       marker.addListener('click', () => {
         handleActiveMarkerSet(markerObj);
         router.push({ pathname: router.pathname, query: { ...router.query, storeId: data.id } });
       });
 
       marker.addListener('mouseover', async () => {
-        await sleep(500);
+        await sleep(700);
         infoWindow.open(map, marker);
       });
 
-      naver.maps.Event.addDOMListener(infoWindow.getContentElement(), 'mouseleave', async (e) => {
-        const elementId = e.relatedTarget?.id;
-        if (elementId !== 'map-store-marker') {
-          await sleep(500);
-          infoWindow.close();
-        }
-      });
-      naver.maps.Event.addDOMListener(marker.getElement(), 'mouseleave', async (e) => {
-        const elementId = e.relatedTarget?.id;
-        if (elementId !== 'map-store-info-window') {
-          await sleep(500);
-          infoWindow.close();
-        }
-      });
+      // naver.maps.Event.addDOMListener(infoWindow.getContentElement(), 'mouseleave', async (e) => {
+      //   const elementId = e.relatedTarget?.id;
+      //   if (elementId !== 'map-store-marker') {
+      //     await sleep(700);
+      //     infoWindow.close();
+      //   }
+      // });
+      // naver.maps.Event.addDOMListener(marker.getElement(), 'mouseleave', async (e) => {
+      //   const elementId = e.relatedTarget?.id;
+      //   if (elementId !== 'map-store-info-window') {
+      //     await sleep(700);
+      //     infoWindow.close();
+      //   }
+      // });
 
-      naver.maps.Event.addDOMListener(infoWindow.getContentElement(), 'click', (e) => {
-        const elementId = e.target.id;
-        const storeId = e.target.dataset?.storeId;
+      // naver.maps.Event.addListener(map, 'click', function (e) {
+      //   if (infoWindow.getMap()) {
+      //     infoWindow.close();
+      //   }
+      // });
 
-        if (!storeId || !elementId) {
-          return;
-        }
+      // naver.maps.Event.addDOMListener(infoWindow.getContentElement(), 'click', (e) => {
+      //   const elementId = e.target.id;
+      //   const storeId = e.target.dataset?.storeId;
 
-        if (elementId === 'map-info-window-store-detail-button') {
-          handleActiveMarkerByStoreId(Number(storeId));
-          router.push({ pathname: router.pathname, query: { ...router.query, storeId } });
-        }
-        if (elementId === 'map-info-window-store-share-button') {
-          const text = `https://ojajae.com?storeId=${storeId}`;
-          copyText(text);
-          alert('업체 주소가 복사되었습니다!');
-        }
-      });
+      //   if (!storeId || !elementId) {
+      //     return;
+      //   }
+
+      //   if (elementId === 'map-info-window-store-detail-button') {
+      //     handleActiveMarkerByStoreId(Number(storeId));
+      //     router.push({ pathname: router.pathname, query: { ...router.query, storeId } });
+      //   }
+      //   if (elementId === 'map-info-window-store-share-button') {
+      //     const text = `https://ojajae.com?storeId=${storeId}`;
+      //     copyText(text);
+      //     alert('업체 주소가 복사되었습니다!');
+      //   }
+      // });
       tempMarkers.push(markerObj);
     });
 
     setMarkers(tempMarkers);
   };
 
+  const renderInfoWindow = (data: StoreListItemDTO) => {
+    const infoWindow = new naver.maps.InfoWindow({
+      content: createHtmlStoreInfoWindow(data),
+      borderWidth: 0,
+
+      backgroundColor: 'transparent',
+      anchorSize: new naver.maps.Size(12, 9),
+
+      anchorColor: '#fff',
+      anchorSkew: true,
+    });
+
+    naver.maps.Event.addListener(map, 'click', function (e) {
+      if (infoWindow.getMap()) {
+        infoWindow.close();
+      }
+    });
+
+    naver.maps.Event.addDOMListener(infoWindow.getContentElement(), 'click', (e) => {
+      const elementId = e.target.id;
+      const storeId = e.target.dataset?.storeId;
+
+      if (!storeId || !elementId) {
+        return;
+      }
+
+      if (elementId === 'map-info-window-store-detail-button') {
+        handleActiveMarkerByStoreId(Number(storeId));
+        router.push({ pathname: router.pathname, query: { ...router.query, storeId } });
+      }
+      if (elementId === 'map-info-window-store-share-button') {
+        const text = `https://ojajae.com?storeId=${storeId}`;
+        copyText(text);
+        alert('업체 주소가 복사되었습니다!');
+      }
+    });
+
+    return infoWindow;
+  };
   const clearAllMarkers = () => {
     if (markers.length > 0) {
       markers.forEach((markerObj) => {
@@ -219,7 +290,7 @@ const useNaverMap = ({ mapElementId }: Props) => {
       map.setCenter(centerLocation);
 
       const icon = createHtmlCenterIconMarker();
-      
+
       const marker = new naver.maps.Marker({
         map,
         icon,
@@ -239,6 +310,9 @@ const useNaverMap = ({ mapElementId }: Props) => {
     setActiveMarker,
     clearAllMarkers,
     renderMarkers,
+    handleZoomIn,
+    handleZoomOut,
+    handleCenterMove,
     handleActiveMarkerSet,
     handleActiveMarkerByStoreId,
     handleCenterChange,
@@ -286,8 +360,8 @@ const createHtmlStoreIconMarker = ({ status, name }: storeMarkerProps): naver.ma
 const createHtmlStoreInfoWindow = (store: StoreListItemDTO) => {
   return [
     '<div class="map-store-info-window" id="map-store-info-window">',
+    ...createHtmlBadgeList(store.itemTags),
     `<div class="store-title">${store.name}</div>`,
-
     `<div class="store-description">${store.descriptions || ''}</div>`,
     `<div class="store-address">`,
     `<img class="pin-icon" src="/image/icon_pin_cool_gray_300.png"/>`,
@@ -303,4 +377,11 @@ const createHtmlStoreInfoWindow = (store: StoreListItemDTO) => {
   ].join('');
 };
 
+const createHtmlBadgeList = (itemTags: ItemTag[]) => {
+  const list = itemTags.map((item) => {
+    return `<div class="store-badge-list-item">${item.name}</div>`;
+  });
+
+  return ['<div class="store-badge-list">', ...list, '</div>'];
+};
 export default useNaverMap;
