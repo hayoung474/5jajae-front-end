@@ -82,6 +82,12 @@ const Wrapper = styled.div`
 
   top: 42px;
   transition: 0.2s;
+
+  &::-webkit-scrollbar {
+    display: none; /* 스크롤바를 숨깁니다 */
+  }
+  scrollbar-width: none; /* 스크롤바 너비를 없앱니다 */
+  -ms-overflow-style: none; /* Internet Explorer 및 Edge(구버전)에서 스크롤바를 숨깁니다 */
 `;
 
 const Title = styled.div`
