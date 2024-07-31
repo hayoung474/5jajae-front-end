@@ -1,5 +1,4 @@
-import { css } from "styled-components";
-
+import { css } from 'styled-components';
 
 export const flexCenter = css`
   display: flex;
@@ -24,5 +23,4 @@ export const truncate = (lines = 1) => css`
   white-space: normal;
   word-break: break-all;
   word-wrap: break-word;
-  color: inherit;
 `;
