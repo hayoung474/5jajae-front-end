@@ -6,9 +6,9 @@ interface Props {
   width: string;
   height: string;
   alt?: string;
-  style?:CSSProperties
+  style?: CSSProperties;
 }
-const CustomImage = ({ src, alt, width, height ,style}: Props) => {
+const CustomImage = ({ src, alt, width, height, style }: Props) => {
   return (
     <Wrapper $width={width} $height={height}>
       <StyledImage
@@ -18,6 +18,7 @@ const CustomImage = ({ src, alt, width, height ,style}: Props) => {
         style={style}
         placeholder="blur"
         blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+        unoptimized
       />
     </Wrapper>
   );
