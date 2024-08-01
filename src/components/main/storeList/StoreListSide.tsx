@@ -4,19 +4,20 @@ import SearchSection from '../search/SearchSection';
 import StoreListSection from './StoreListSection';
 import { StoreListItemType } from '~/api/common/commonService.types';
 import StoreListTitle from './StoreListTitle';
+import { useIsScrolled } from '~/hooks/useIsScrolled';
 
 interface Props {
   stores: StoreListItemType[] | undefined;
   onStoreMarkerActive: (storeId: number) => void;
   activeStoreId?: number;
 }
-const Side = ({ stores, activeStoreId, onStoreMarkerActive }: Props) => {
+const StoreListSide = ({ stores, activeStoreId, onStoreMarkerActive }: Props) => {
   return (
     <Wrapper>
-      <FixedSection>
+      <div>
         <SearchSection />
         {stores && <StoreListTitle storesCount={stores.length} />}
-      </FixedSection>
+      </div>
 
       {stores && (
         <StoreListSection stores={stores} onStoreMarkerActive={onStoreMarkerActive} activeStoreId={activeStoreId} />
@@ -29,13 +30,11 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   border-right: solid 1px ${({ theme }) => theme.colors.cool_gray_200};
   background-color: ${({ theme }) => theme.colors.white};
-  padding-bottom: 120px;
+
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
 `;
 
-const FixedSection = styled.div`
-  background-color: ${({ theme }) => theme.colors.white};
-  position: sticky;
-  top: 0;
-  z-index: 2;
-`;
-export default Side;
+export default StoreListSide;
