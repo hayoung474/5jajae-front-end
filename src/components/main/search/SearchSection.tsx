@@ -36,7 +36,7 @@ const SearchSection = () => {
             <Text variant="label_2" weight="medium" color="violet_600" className="address-content" truncateLines={2}>
               '{addressInfo.address}'
             </Text>
-            <Text variant="label_2" weight="regular" color="cool_gray_500">
+            <Text variant="label_2" weight="regular" color="cool_gray_500" className="address-result">
               의 검색결과
             </Text>
           </div>
@@ -79,10 +79,12 @@ const SearchResult = styled.div`
     align-items: center;
     flex: 1;
     gap: 2px;
+
     .address-content {
-      min-width: 0; /* 콘텐츠가 차지하는 최소 너비 */
-      flex: 1; /* 가변 요소 설정 */
-      max-width: 100%; /* 최대 너비를 부모 요소의 너비로 제한 */
+      flex: 1;
+    }
+    .address-result {
+      width: fit-content;
     }
   }
 `;
