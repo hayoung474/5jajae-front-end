@@ -4,12 +4,13 @@ import { ColorsType } from '~/style/theme';
 import Text from '../Text';
 import { flexCenter } from '~/style/mixins';
 
-type Props = ButtonHTMLAttributes<HTMLButtonElement> & { textColor?: keyof ColorsType };
-const TextButton = ({ textColor, children, disabled, ...attr }: Props) => {
+type Props = ButtonHTMLAttributes<HTMLButtonElement> & { textColor?: keyof ColorsType; icon: React.ReactNode };
+const TextButton = ({ icon, textColor, children, disabled, ...attr }: Props) => {
   const color: keyof ColorsType = disabled ? 'cool_gray_300' : textColor ?? 'cool_gray_500';
   return (
     <Wrapper {...attr}>
-      <Text variant="label_2" weight="medium" color={color} className="text">
+      {icon}
+      <Text variant="label_2" weight="medium" color={color}>
         {children}
       </Text>
     </Wrapper>
@@ -17,6 +18,7 @@ const TextButton = ({ textColor, children, disabled, ...attr }: Props) => {
 };
 
 const Wrapper = styled.button`
+  display: flex;
   cursor: pointer;
   border: none;
   background-color: transparent;
@@ -24,10 +26,9 @@ const Wrapper = styled.button`
 
   position: relative;
 
-  .text {
-    ${flexCenter}
-    gap:2px;
-  }
+  ${flexCenter}
+  gap:2px;
+
   &:hover {
     &::before {
       display: block;

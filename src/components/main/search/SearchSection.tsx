@@ -3,7 +3,7 @@ import SearchBar from './SearchBar';
 import Text from '~/components/common/Text';
 import TextDivider from '~/components/common/TextDivider';
 import { Pin } from '~/components/common/icons';
-import { flexCenter } from '~/style/mixins';
+import { flexBetweenCenter, flexCenter } from '~/style/mixins';
 import TextButton from '~/components/common/buttons/TextButton';
 import { commonActions, useCommonStore } from '~/store/common';
 import Refresh from '~/components/common/icons/Refresh';
@@ -40,8 +40,11 @@ const SearchSection = () => {
               의 검색결과
             </Text>
           </div>
-          <TextButton onClick={handleAddressReset}>
-            <Refresh size="16px" color="cool_gray_500" />
+          <TextButton
+            onClick={handleAddressReset}
+            className="address-reset-button"
+            icon={<Refresh size="16px" color="cool_gray_500" />}
+          >
             주소 초기화
           </TextButton>
         </SearchResult>
@@ -69,7 +72,7 @@ const ServiceInfo = styled.div`
 `;
 
 const SearchResult = styled.div`
-  ${flexCenter}
+  ${flexBetweenCenter}
   gap:8px;
   background-color: ${({ theme }) => theme.colors.cool_gray_50};
   border-radius: 8px;
@@ -77,15 +80,17 @@ const SearchResult = styled.div`
   .address {
     display: flex;
     align-items: center;
-    flex: 1;
-    gap: 2px;
-
-    .address-content {
-      flex: 1;
-    }
+    /* display: flex; */
+    /* align-items: center; */
+    /* flex: 1; */
+    /* gap: 2px; */
     .address-result {
-      width: fit-content;
+      flex-shrink: 0;
+      margin-left: 2px;
     }
+  }
+  .address-reset-button {
+    flex-shrink: 0;
   }
 `;
 
