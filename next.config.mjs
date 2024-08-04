@@ -5,6 +5,7 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  trailingSlash:true,
   images: {
     domains: ['ojajae-s3-file-store.s3.ap-northeast-2.amazonaws.com'],
     
