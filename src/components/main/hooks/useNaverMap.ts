@@ -4,6 +4,7 @@ import { ItemTag } from '~/api/common/commonService.types';
 import { StoreListItemDTO } from '~/api/common/commonService.types';
 import copyText from '~/lib/copyText';
 import sleep from '~/lib/sleep';
+import { snackBarActions } from '~/store/snackBar';
 
 export interface MapMarker<T> {
   marker: NaverMapMarker;
@@ -150,7 +151,6 @@ const useNaverMap = ({ mapElementId }: Props) => {
         data,
       };
 
-
       const infoWindow = renderInfoWindow(data);
       marker.addListener('click', () => {
         handleActiveMarkerSet(markerObj);
@@ -161,7 +161,6 @@ const useNaverMap = ({ mapElementId }: Props) => {
         await sleep(700);
         infoWindow.open(map, marker);
       });
-
 
       tempMarkers.push(markerObj);
     });
@@ -202,7 +201,7 @@ const useNaverMap = ({ mapElementId }: Props) => {
       if (elementId === 'map-info-window-store-share-button') {
         const text = `https://ojajae.com?storeId=${storeId}`;
         copyText(text);
-        alert('업체 주소가 복사되었습니다!');
+        snackBarActions.open('링크를 복사하였습니다.\n원하는 곳에 붙여넣기(Ctrl + V) 해주세요.');
       }
     });
 
