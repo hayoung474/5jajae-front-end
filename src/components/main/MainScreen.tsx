@@ -9,6 +9,7 @@ import { useStoreListQuery } from '~/query/common/commonQueries';
 import { AnimatePresence, motion } from 'framer-motion';
 import { commonActions, useCommonStore } from '~/store/common';
 import ButtonGroup from './map/ButtonGroup';
+import GuideLayout from './map/GuideLayout';
 
 type QueryParamsType = {
   storeId?: string;
@@ -23,6 +24,7 @@ const MainScreen = () => {
     activeMarker,
     mapInitialize,
     renderMarkers,
+    renderCircle,
     handleZoomIn,
     handleZoomOut,
     handleCenterMove,
@@ -83,6 +85,10 @@ const MainScreen = () => {
   }, []);
 
   useEffect(() => {
+    renderCircle();
+  }, [map]);
+
+  useEffect(() => {
     if (markers && storeId) {
       handleActiveMarkerByStoreId(Number(storeId));
     }
@@ -134,6 +140,7 @@ const MainScreen = () => {
         <MapWrapper>
           <div id="map" style={{ width: '100%', height: '100%' }}></div>
           <ButtonGroup onCurrentLocationSet={handleLocation} onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
+          {/* <GuideLayout/> */}
         </MapWrapper>
       </ContentWrapper>
     </Wrapper>
@@ -156,6 +163,7 @@ const ContentWrapper = styled.div`
 
 const MapWrapper = styled.div`
   flex: 1;
+  position: relative;
 `;
 
 const StoreDetailSlideContainer = styled(motion.div)`

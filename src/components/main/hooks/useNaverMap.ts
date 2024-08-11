@@ -122,6 +122,25 @@ const useNaverMap = ({ mapElementId }: Props) => {
     targetMarker.marker.setIcon(icon);
   };
 
+  const renderCircle = () => {
+    if (!map) {
+      return;
+    }
+    const defaultCenterLocation = new naver.maps.LatLng(37.5665, 126.978);
+
+    var circle = new naver.maps.Circle({
+      map: map,
+      center: defaultCenterLocation,
+      radius: 15000,
+      fillColor: '#6839ee',
+      fillOpacity: 0.15,
+      strokeWeight: 2,
+      strokeOpacity: 0.4,
+      strokeColor: '#6839ee',
+      strokeStyle: 'solid',
+    });
+  };
+
   const renderMarkers = (dataList: StoreListItemDTO[]) => {
     if (!map) {
       return;
@@ -157,9 +176,16 @@ const useNaverMap = ({ mapElementId }: Props) => {
         router.push({ pathname: router.pathname, query: { ...router.query, storeId: data.id } });
       });
 
-      marker.addListener('mouseover', async () => {
-        await sleep(700);
-        infoWindow.open(map, marker);
+      let timer: NodeJS.Timeout;
+
+      marker.addListener('mouseover', () => {
+        timer = setTimeout(() => {
+          infoWindow.open(map, marker);
+        }, 700);
+      });
+
+      marker.addListener('mouseout', () => {
+        clearTimeout(timer);
       });
 
       tempMarkers.push(markerObj);
@@ -261,6 +287,7 @@ const useNaverMap = ({ mapElementId }: Props) => {
     setActiveMarker,
     clearAllMarkers,
     renderMarkers,
+    renderCircle,
     handleZoomIn,
     handleZoomOut,
     handleCenterMove,
