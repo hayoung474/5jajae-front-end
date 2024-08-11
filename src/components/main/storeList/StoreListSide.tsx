@@ -1,10 +1,8 @@
 import styled from 'styled-components';
-
 import SearchSection from '../search/SearchSection';
 import StoreListSection from './StoreListSection';
 import { StoreListItemType } from '~/api/common/commonService.types';
 import StoreListTitle from './StoreListTitle';
-import { useIsScrolled } from '~/hooks/useIsScrolled';
 
 interface Props {
   stores: StoreListItemType[] | undefined;

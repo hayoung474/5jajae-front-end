@@ -94,10 +94,10 @@ const KeywordList = styled.div`
   max-height: 252px;
   overflow: scroll;
   &::-webkit-scrollbar {
-    display: none; /* 스크롤바를 숨깁니다 */
+    display: none;
   }
-  scrollbar-width: none; /* 스크롤바 너비를 없앱니다 */
-  -ms-overflow-style: none; /* Internet Explorer 및 Edge(구버전)에서 스크롤바를 숨깁니다 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 `;
 const KeywordListItem = styled.div`
   display: flex;

@@ -3,7 +3,7 @@ import SearchBar from './SearchBar';
 import Text from '~/components/common/Text';
 import TextDivider from '~/components/common/TextDivider';
 import { Pin } from '~/components/common/icons';
-import { flexBetweenCenter, flexCenter } from '~/style/mixins';
+import { flexBetweenCenter } from '~/style/mixins';
 import TextButton from '~/components/common/buttons/TextButton';
 import { commonActions, useCommonStore } from '~/store/common';
 import Refresh from '~/components/common/icons/Refresh';
@@ -80,10 +80,6 @@ const SearchResult = styled.div`
   .address {
     display: flex;
     align-items: center;
-    /* display: flex; */
-    /* align-items: center; */
-    /* flex: 1; */
-    /* gap: 2px; */
     .address-result {
       flex-shrink: 0;
       margin-left: 2px;

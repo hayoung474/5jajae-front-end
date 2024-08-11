@@ -4,7 +4,6 @@ import IconButton from '~/components/common/buttons/IconButton';
 import SolidButton from '~/components/common/buttons/SolidButton';
 import { CircleClose, Search } from '~/components/common/icons';
 import RecentSearchKeyword from './RecentSearchKeyword';
-import { useRouter } from 'next/router';
 import { commonActions } from '~/store/common';
 
 const SearchBar = () => {
@@ -63,10 +62,8 @@ const SearchBar = () => {
       }
     }
 
-    // 마운트 시 이벤트 리스너 추가
     document.addEventListener('mousedown', handleClickOutside);
 
-    // 언마운트 시 이벤트 리스너 제거
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };

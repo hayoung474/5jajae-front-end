@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import useNaverMap from './hooks/useNaverMap';
-import { use, useEffect } from 'react';
+import { useEffect } from 'react';
 import StoreListSide from './storeList/StoreListSide';
 import Header from './header/Header';
 import StoreDetailSide from './storeDetail/StoreDetailSide';

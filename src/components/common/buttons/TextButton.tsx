@@ -4,7 +4,7 @@ import { ColorsType } from '~/style/theme';
 import Text from '../Text';
 import { flexCenter } from '~/style/mixins';
 
-type Props = ButtonHTMLAttributes<HTMLButtonElement> & { textColor?: keyof ColorsType; icon: React.ReactNode };
+type Props = ButtonHTMLAttributes<HTMLButtonElement> & { textColor?: keyof ColorsType; icon?: React.ReactNode };
 const TextButton = ({ icon, textColor, children, disabled, ...attr }: Props) => {
   const color: keyof ColorsType = disabled ? 'cool_gray_300' : textColor ?? 'cool_gray_500';
   return (

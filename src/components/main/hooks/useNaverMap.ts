@@ -150,16 +150,6 @@ const useNaverMap = ({ mapElementId }: Props) => {
         data,
       };
 
-      // const infoWindow = new naver.maps.InfoWindow({
-      //   content: createHtmlStoreInfoWindow(data),
-      //   borderWidth: 0,
-
-      //   backgroundColor: 'transparent',
-      //   anchorSize: new naver.maps.Size(12, 9),
-
-      //   anchorColor: '#fff',
-      //   anchorSkew: true,
-      // });
 
       const infoWindow = renderInfoWindow(data);
       marker.addListener('click', () => {
@@ -172,45 +162,7 @@ const useNaverMap = ({ mapElementId }: Props) => {
         infoWindow.open(map, marker);
       });
 
-      // naver.maps.Event.addDOMListener(infoWindow.getContentElement(), 'mouseleave', async (e) => {
-      //   const elementId = e.relatedTarget?.id;
-      //   if (elementId !== 'map-store-marker') {
-      //     await sleep(700);
-      //     infoWindow.close();
-      //   }
-      // });
-      // naver.maps.Event.addDOMListener(marker.getElement(), 'mouseleave', async (e) => {
-      //   const elementId = e.relatedTarget?.id;
-      //   if (elementId !== 'map-store-info-window') {
-      //     await sleep(700);
-      //     infoWindow.close();
-      //   }
-      // });
 
-      // naver.maps.Event.addListener(map, 'click', function (e) {
-      //   if (infoWindow.getMap()) {
-      //     infoWindow.close();
-      //   }
-      // });
-
-      // naver.maps.Event.addDOMListener(infoWindow.getContentElement(), 'click', (e) => {
-      //   const elementId = e.target.id;
-      //   const storeId = e.target.dataset?.storeId;
-
-      //   if (!storeId || !elementId) {
-      //     return;
-      //   }
-
-      //   if (elementId === 'map-info-window-store-detail-button') {
-      //     handleActiveMarkerByStoreId(Number(storeId));
-      //     router.push({ pathname: router.pathname, query: { ...router.query, storeId } });
-      //   }
-      //   if (elementId === 'map-info-window-store-share-button') {
-      //     const text = `https://ojajae.com?storeId=${storeId}`;
-      //     copyText(text);
-      //     alert('업체 주소가 복사되었습니다!');
-      //   }
-      // });
       tempMarkers.push(markerObj);
     });
 
