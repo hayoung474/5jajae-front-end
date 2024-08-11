@@ -35,6 +35,8 @@ const Wrapper = styled.div`
   flex-direction: column;
 
   height: 100%;
+
+  
 `;
 
 export default StoreListSide;
