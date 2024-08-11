@@ -13,3 +13,4 @@ const Close = ({ size, color }: IconProps) => {
 };
 
 export default Close;
+ 

@@ -11,22 +11,6 @@ const Filter = () => {
 
   const [selectedFilter, setSelectedFilter] = useState<number>();
 
-  // const handleFilterToggle = (itemTagId: number) => {
-  // if (selectedFilter.has(itemTagId)) {
-  //   setSelectedFilter((prev) => {
-  //     const newSet = new Set(prev);
-  //     newSet.delete(itemTagId);
-  //     return newSet;
-  //   });
-  // } else {
-  //   setSelectedFilter((prev) => {
-  //     const newSet = new Set(prev);
-  //     newSet.add(itemTagId);
-  //     return newSet;
-  //   });
-  // }
-  // };
-
   const handleFilterActive = (itemTagId: number) => {
     setSelectedFilter(itemTagId);
   };
@@ -34,25 +18,15 @@ const Filter = () => {
     if (selectedFilter) {
       setSelectedFilter(undefined);
     }
-    // if (selectedFilter.size !== 0) {
-    //   setSelectedFilter(new Set());
-    // }
   };
 
   useEffect(() => {
     if (router.isReady && itemTagId) {
-      // const newSet = new Set<number>();
-      // const parsedItemTagIds = itemTagIds.split(',');
-
-      // parsedItemTagIds.forEach((itemTagId) => {
-      // newSet.add(Number(itemTagId));
-      // });
       setSelectedFilter(Number(itemTagId));
     }
   }, [router.isReady]);
 
   useEffect(() => {
-    // const newItemTagIds = Array.from(selectedFilter).join(',');
     router.replace({ pathname: router.pathname, query: { ...router.query, itemTagId: selectedFilter } });
   }, [selectedFilter]);
 
@@ -89,6 +63,12 @@ const Wrapper = styled.div`
   height: 72px;
 
   border-bottom: solid 1px ${({ theme }) => theme.colors.cool_gray_200};
+
+  &::-webkit-scrollbar {
+    display: none; /* 스크롤바를 숨깁니다 */
+  }
+  scrollbar-width: none; /* 스크롤바 너비를 없앱니다 */
+  -ms-overflow-style: none; /* Internet Explorer 및 Edge(구버전)에서 스크롤바를 숨깁니다 */
 `;
 
 export default Filter;

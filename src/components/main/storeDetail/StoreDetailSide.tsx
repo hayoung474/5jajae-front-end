@@ -12,10 +12,10 @@ import { useEffect, useState } from 'react';
 import StoreContactDialog from './StoreContactDialog';
 import SolidButton from '~/components/common/buttons/SolidButton';
 import IconContainedButton from '~/components/common/buttons/IconContainedButton';
-import StoreShareInfo from './StoreShareInfo';
 import copyText from '~/lib/copyText';
 import ImageSlide from '~/components/common/ImageSlide';
 import useDashboard from '../hooks/useDashboard';
+import { snackBarActions } from '~/store/snackBar';
 
 const StoreDetailSide = () => {
   const router = useRouter();
@@ -26,7 +26,6 @@ const StoreDetailSide = () => {
   const { sendDashboardEvent } = useDashboard();
 
   const [contactOpen, setContactOpen] = useState<boolean>(false);
-  const [shareOpen, setShareOpen] = useState<boolean>(false);
 
   const handleContactOpen = () => {
     sendDashboardEvent(Number(storeId), 'STORE_CALL');
@@ -44,7 +43,7 @@ const StoreDetailSide = () => {
   const handleShareClick = async () => {
     const text = `https://ojajae.com?storeId=${storeId}`;
     copyText(text);
-    setShareOpen(true);
+    snackBarActions.open('링크를 복사하였습니다.\n원하는 곳에 붙여넣기(Ctrl + V) 해주세요.');
 
     sendDashboardEvent(Number(storeId), 'STORE_SHARE');
   };
@@ -54,10 +53,7 @@ const StoreDetailSide = () => {
       return;
     }
     copyText(address);
-    alert('업체 주소가 복사되었습니다!');
-  };
-  const handleShareClose = () => {
-    setShareOpen(false);
+    snackBarActions.open('링크를 복사하였습니다.\n원하는 곳에 붙여넣기(Ctrl + V) 해주세요.');
   };
 
   useEffect(() => {
@@ -166,7 +162,6 @@ const StoreDetailSide = () => {
         <ContactButton onClick={handleContactOpen} size="large">
           대표번호 보기
         </ContactButton>
-        {shareOpen && <StoreShareInfo onShareClose={handleShareClose} />}
       </ButtonGroup>
 
       {storeDetail.contactNumber && contactOpen && (

@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-
 import { StoreListItemType } from '~/api/common/commonService.types';
 import StoreListItem from './StoreListItem';
 import { useIsScrolled } from '~/hooks/useIsScrolled';
@@ -36,6 +35,13 @@ const Wrapper = styled.div<{ $isScrolled: boolean }>`
   flex: 1;
   padding-bottom: 120px;
   overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    display: none; /* 스크롤바를 숨깁니다 */
+  }
+  scrollbar-width: none; /* 스크롤바 너비를 없앱니다 */
+  -ms-overflow-style: none; /* Internet Explorer 및 Edge(구버전)에서 스크롤바를 숨깁니다 */
+
 
   ${({ $isScrolled, theme }) =>
     $isScrolled &&

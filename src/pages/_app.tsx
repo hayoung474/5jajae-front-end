@@ -8,6 +8,7 @@ import MetaTags from '~/components/meta/MetaTags';
 import GlobalStyles from '~/style/GlobalStyles';
 import { theme } from '~/style/theme';
 import '~/style/app.css';
+import GlobalSnackBar from '~/components/common/modals/GlobalSnackBar';
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(
@@ -42,6 +43,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           <Component {...pageProps} />
+          <GlobalSnackBar />
         </ThemeProvider>
       </HydrationBoundary>
       <Script

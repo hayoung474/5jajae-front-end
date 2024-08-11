@@ -3,14 +3,14 @@ import LocationCenterButton from './LocationCenterButton';
 import ZoomControlButton from './ZoomControlButton';
 
 interface Props {
-  onCenterMove: () => void;
+  onCurrentLocationSet: () => void;
   onZoomIn: () => void;
   onZoomOut: () => void;
 }
-const ButtonGroup = ({ onCenterMove, onZoomIn, onZoomOut }: Props) => {
+const ButtonGroup = ({ onCurrentLocationSet, onZoomIn, onZoomOut }: Props) => {
   return (
     <Wrapper>
-      <LocationCenterButton onCenterMove={onCenterMove} />
+      <LocationCenterButton onCurrentLocationSet={onCurrentLocationSet} />
       <ZoomControlButton onZoomIn={onZoomIn} onZoomOut={onZoomOut} />
     </Wrapper>
   );

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const TextDivider = () => {
-  return <Wrapper></Wrapper>;
+  return <Wrapper/>;
 };
 
 const Wrapper = styled.div`

@@ -37,6 +37,5 @@ const InquiryLink = styled.a`
   background-color: transparent;
   padding: 0;
   text-decoration-line: none;
-  color:;
 `;
 export default GNB;

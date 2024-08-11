@@ -3,12 +3,12 @@ import Location from '~/components/common/icons/Location';
 import { flexCenter } from '~/style/mixins';
 
 interface Props {
-  onCenterMove: () => void;
+  onCurrentLocationSet: () => void;
 }
-const LocationCenterButton = ({ onCenterMove }: Props) => {
+const LocationCenterButton = ({ onCurrentLocationSet }: Props) => {
   return (
-    <Wrapper onClick={onCenterMove}>
-      <Location color="cool_gray_950"/>
+    <Wrapper onClick={onCurrentLocationSet}>
+      <Location color="cool_gray_950" />
     </Wrapper>
   );
 };

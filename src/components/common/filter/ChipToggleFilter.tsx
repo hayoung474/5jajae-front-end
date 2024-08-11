@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import Text from '../Text';
 import { flexCenter } from '~/style/mixins';
-import { HTMLAttributes, InputHTMLAttributes } from 'react';
+import { HTMLAttributes } from 'react';
 
 type Props = {
   name: string;
