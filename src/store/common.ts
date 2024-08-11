@@ -12,12 +12,14 @@ export type CommonState = {
   recentSearchKeywordList: string[];
   addressInfo: AddressInfoType;
   sort: SortType;
+  showGuide: { bubble: boolean; circle: boolean };
 };
 
 const initialState: CommonState = {
   recentSearchKeywordList: [],
   addressInfo: { address: '서울시 중구 세종대로 110', lat: 37.5665, lng: 126.978 },
   sort: 'newest',
+  showGuide: { bubble: true, circle: true },
 };
 
 const addRecentSearchKeyword = (keyword: string) => {
@@ -61,6 +63,16 @@ const setSort = (sort: SortType) => {
   set({ ...status, sort });
 };
 
+const closeCircleGuide = () => {
+  const status = get();
+  const showGuide = { ...status.showGuide, circle: false };
+  set({ ...status, showGuide });
+};
+const closeBubbleGuide = () => {
+  const status = get();
+  const showGuide = { ...status.showGuide, bubble: false };
+  set({ ...status, showGuide });
+};
 export const commonActions = {
   addRecentSearchKeyword,
   deleteRecentSearchKeyword,
@@ -68,6 +80,8 @@ export const commonActions = {
   setAddress,
   resetAddress,
   setSort,
+  closeCircleGuide,
+  closeBubbleGuide,
 };
 
 export const useCommonStore = create(

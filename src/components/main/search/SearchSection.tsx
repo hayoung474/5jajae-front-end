@@ -8,6 +8,7 @@ import TextButton from '~/components/common/buttons/TextButton';
 import { commonActions, useCommonStore } from '~/store/common';
 import Refresh from '~/components/common/icons/Refresh';
 
+
 const SearchSection = () => {
   const addressInfo = useCommonStore((state) => state.addressInfo);
 

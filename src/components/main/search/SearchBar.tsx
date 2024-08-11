@@ -5,6 +5,7 @@ import SolidButton from '~/components/common/buttons/SolidButton';
 import { CircleClose, Search } from '~/components/common/icons';
 import RecentSearchKeyword from './RecentSearchKeyword';
 import { commonActions } from '~/store/common';
+import GuideBubble from './GuideBubble';
 
 const SearchBar = () => {
   const recentRef = useRef<HTMLDivElement>(null);
@@ -88,6 +89,7 @@ const SearchBar = () => {
           {keyword && <IconButton onClick={handleClear} icon={<CircleClose size="20px" color="cool_gray_400" />} />}
         </CustomInput>
         {showRecentKeyword && <RecentSearchKeyword onSearch={handleRecentSearch} ref={recentRef} />}
+        <GuideBubble />
       </CustomInputWrapper>
 
       <SolidButton size="medium" color="white" backgroundColor="violet_600" onClick={handleSearch} disabled={!keyword}>

@@ -13,6 +13,23 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   };
 
+  .map-guide-info-window{
+    background-color:${({ theme }) => theme.colors.violet_600};
+    border-radius:4px;
+    padding:12px;
+    text-align: center;
+    .title{
+      color:${({ theme }) => theme.colors.white};
+      ${({ theme }) => theme.fontStyle.body_1}; 
+      ${({ theme }) => theme.fontWeight.bold};                                           
+    }
+    .message{
+      margin-top:2px;
+      color:${({ theme }) => theme.colors.white};
+      ${({ theme }) => theme.fontStyle.label_2}; 
+      ${({ theme }) => theme.fontWeight.regular};   
+    }
+  }
   .map-center-marker-pin{
     width:16px;
     height:16px;

@@ -9,7 +9,6 @@ import { useStoreListQuery } from '~/query/common/commonQueries';
 import { AnimatePresence, motion } from 'framer-motion';
 import { commonActions, useCommonStore } from '~/store/common';
 import ButtonGroup from './map/ButtonGroup';
-import GuideLayout from './map/GuideLayout';
 
 type QueryParamsType = {
   storeId?: string;
@@ -24,7 +23,7 @@ const MainScreen = () => {
     activeMarker,
     mapInitialize,
     renderMarkers,
-    renderCircle,
+    renderGuide,
     handleZoomIn,
     handleZoomOut,
     handleCenterMove,
@@ -37,6 +36,7 @@ const MainScreen = () => {
 
   const addressInfo = useCommonStore((state) => state.addressInfo);
   const sort = useCommonStore((state) => state.sort);
+  const guideIsShow = useCommonStore((state) => state.showGuide.circle);
 
   const storeListQuery = useStoreListQuery({ sort, lat: addressInfo.lat, lng: addressInfo.lng, itemTagId });
 
@@ -85,8 +85,10 @@ const MainScreen = () => {
   }, []);
 
   useEffect(() => {
-    renderCircle();
-  }, [map]);
+    if (guideIsShow) {
+      renderGuide();
+    }
+  }, [map, guideIsShow]);
 
   useEffect(() => {
     if (markers && storeId) {
@@ -140,7 +142,6 @@ const MainScreen = () => {
         <MapWrapper>
           <div id="map" style={{ width: '100%', height: '100%' }}></div>
           <ButtonGroup onCurrentLocationSet={handleLocation} onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
-          {/* <GuideLayout/> */}
         </MapWrapper>
       </ContentWrapper>
     </Wrapper>
@@ -182,10 +183,10 @@ const StoreListSlideContainer = styled.div`
   z-index: 2;
 
   &::-webkit-scrollbar {
-    display: none; /* 스크롤바를 숨깁니다 */
+    display: none; 
   }
-  scrollbar-width: none; /* 스크롤바 너비를 없앱니다 */
-  -ms-overflow-style: none; /* Internet Explorer 및 Edge(구버전)에서 스크롤바를 숨깁니다 */
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
 `;
 
 export default MainScreen;

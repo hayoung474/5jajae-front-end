@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { ItemTag } from '~/api/common/commonService.types';
 import { StoreListItemDTO } from '~/api/common/commonService.types';
 import copyText from '~/lib/copyText';
-import sleep from '~/lib/sleep';
+import { commonActions } from '~/store/common';
 import { snackBarActions } from '~/store/snackBar';
 
 export interface MapMarker<T> {
@@ -23,6 +23,7 @@ type StoreMarker = MapMarker<StoreListItemDTO>;
 
 const useNaverMap = ({ mapElementId }: Props) => {
   const router = useRouter();
+
   const { storeId } = router.query as { storeId: string };
 
   /** map instance */
@@ -122,13 +123,13 @@ const useNaverMap = ({ mapElementId }: Props) => {
     targetMarker.marker.setIcon(icon);
   };
 
-  const renderCircle = () => {
+  const renderGuide = () => {
     if (!map) {
       return;
     }
     const defaultCenterLocation = new naver.maps.LatLng(37.5665, 126.978);
-
-    var circle = new naver.maps.Circle({
+    const guideInfoWindowLocation = new naver.maps.LatLng(37.7035486, 126.9801816);
+    const circle = new naver.maps.Circle({
       map: map,
       center: defaultCenterLocation,
       radius: 15000,
@@ -138,6 +139,22 @@ const useNaverMap = ({ mapElementId }: Props) => {
       strokeOpacity: 0.4,
       strokeColor: '#6839ee',
       strokeStyle: 'solid',
+    });
+
+    const infoWindow = new naver.maps.InfoWindow({
+      content: createHtmlGuideInfoWindow(),
+      borderWidth: 0,
+      backgroundColor: 'transparent',
+      anchorSize: new naver.maps.Size(12, 9),
+      anchorColor: '#6839ee',
+      anchorSkew: true,
+    });
+    infoWindow.open(map, guideInfoWindowLocation);
+
+    naver.maps.Event.addListener(map, 'zoom_changed', function () {
+      infoWindow.close();
+      circle.setMap(null);
+      commonActions.closeCircleGuide();
     });
   };
 
@@ -181,7 +198,7 @@ const useNaverMap = ({ mapElementId }: Props) => {
       marker.addListener('mouseover', () => {
         timer = setTimeout(() => {
           infoWindow.open(map, marker);
-        }, 700);
+        }, 1000);
       });
 
       marker.addListener('mouseout', () => {
@@ -287,7 +304,7 @@ const useNaverMap = ({ mapElementId }: Props) => {
     setActiveMarker,
     clearAllMarkers,
     renderMarkers,
-    renderCircle,
+    renderGuide,
     handleZoomIn,
     handleZoomOut,
     handleCenterMove,
@@ -361,5 +378,14 @@ const createHtmlBadgeList = (itemTags: ItemTag[]) => {
   });
 
   return ['<div class="store-badge-list">', ...list, '</div>'];
+};
+
+const createHtmlGuideInfoWindow = () => {
+  return [
+    '<div class="map-guide-info-window">',
+    '<div class="title">서울특별시</div>',
+    '<div class="message">📍현재 서비스 가능 지역이에요!</div>',
+    '</div>',
+  ].join('');
 };
 export default useNaverMap;
