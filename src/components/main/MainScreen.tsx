@@ -39,28 +39,35 @@ const MainScreen = () => {
   const storeListQuery = useStoreListQuery({ sort, lat: addressInfo.lat, lng: addressInfo.lng, itemTagId });
 
   const handleLocation = () => {
+    const handleLocationSuccess = (position: GeolocationPosition) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+
+      const centerLocation = new naver.maps.LatLng(lat, lng);
+      naver.maps.Service.reverseGeocode(
+        {
+          coords: centerLocation,
+        },
+        function (status, response) {
+          if (status !== naver.maps.Service.Status.OK) {
+            return alert('주소를 변환하는데 실패하였습니다.');
+          }
+
+          const result = response.v2;
+          const address = result.address.jibunAddress;
+
+          commonActions.setAddress(address);
+        },
+      );
+    };
+
+    const handleLocationError = (error: GeolocationPositionError) => {
+      commonActions.resetAddress();
+      handleCenterMove();
+    };
+
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-
-        const centerLocation = new naver.maps.LatLng(lat, lng);
-        naver.maps.Service.reverseGeocode(
-          {
-            coords: centerLocation,
-          },
-          function (status, response) {
-            if (status !== naver.maps.Service.Status.OK) {
-              return alert('주소를 변환하는데 실패하였습니다.');
-            }
-
-            const result = response.v2;
-            const address = result.address.jibunAddress;
-
-            commonActions.setAddress(address);
-          },
-        );
-      });
+      navigator.geolocation.getCurrentPosition(handleLocationSuccess, handleLocationError);
     }
   };
 
@@ -126,7 +133,7 @@ const MainScreen = () => {
 
         <MapWrapper>
           <div id="map" style={{ width: '100%', height: '100%' }}></div>
-          <ButtonGroup onCenterMove={handleCenterMove} onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
+          <ButtonGroup onCurrentLocationSet={handleLocation} onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} />
         </MapWrapper>
       </ContentWrapper>
     </Wrapper>
