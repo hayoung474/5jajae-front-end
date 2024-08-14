@@ -13,7 +13,11 @@ const initialState: SnackBarState = {
 };
 const open = (message: string, autoHideDuration?: number) => {
   const status = get();
-  set({ ...status, isOpen: true, message, autoHideDuration });
+  if (autoHideDuration) {
+    set({ ...status, isOpen: true, message, autoHideDuration });
+  } else {
+    set({ ...status, isOpen: true, message });
+  }
 };
 
 const close = () => {
