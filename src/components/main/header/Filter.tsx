@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import ChipToggleFilter from '../../common/filter/ChipToggleFilter';
 import { useItemTagsQuery } from '~/query/common/commonQueries';
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 const Filter = () => {
@@ -9,30 +8,20 @@ const Filter = () => {
   const { itemTagId } = router.query as { itemTagId: string };
   const { data: itemTags, isSuccess } = useItemTagsQuery();
 
-  const [selectedFilter, setSelectedFilter] = useState<number>();
-
   const handleFilterActive = (itemTagId: number) => {
-    setSelectedFilter(itemTagId);
+    router.replace({ pathname: router.pathname, query: { ...router.query, itemTagId } });
   };
   const handleFilterToggleAll = () => {
-    if (selectedFilter) {
-      setSelectedFilter(undefined);
+    if (itemTagId) {
+      const query = { ...router.query };
+      delete query.itemTagId;
+      router.replace({ pathname: router.pathname, query });
     }
   };
-
-  useEffect(() => {
-    if (router.isReady && itemTagId) {
-      setSelectedFilter(Number(itemTagId));
-    }
-  }, [router.isReady]);
-
-  useEffect(() => {
-    router.replace({ pathname: router.pathname, query: { ...router.query, itemTagId: selectedFilter } });
-  }, [selectedFilter]);
 
   return (
     <Wrapper>
-      <ChipToggleFilter name="전체" filterActive={!selectedFilter} onClick={handleFilterToggleAll} />
+      <ChipToggleFilter name="전체" filterActive={!itemTagId} onClick={handleFilterToggleAll} />
       {isSuccess &&
         itemTags.map((itemTag) => {
           const uniqueKey = `item-tag-${itemTag.id}`;
@@ -42,7 +31,7 @@ const Filter = () => {
               name={itemTag.name}
               iconSrc={itemTag.imageUrl}
               onClick={() => handleFilterActive(itemTag.id)}
-              filterActive={selectedFilter === itemTag.id}
+              filterActive={itemTagId === `${itemTag.id}`}
             />
           );
         })}
