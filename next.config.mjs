@@ -5,10 +5,10 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
-  trailingSlash:true,
+  output: 'export',
+  trailingSlash: true,
   images: {
     domains: ['ojajae-s3-file-store.s3.ap-northeast-2.amazonaws.com'],
-    
   },
   webpack(config) {
     config.module.rules.push({
