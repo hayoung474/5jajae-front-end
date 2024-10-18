@@ -5,10 +5,11 @@ import StoreListSide from './storeList/StoreListSide';
 import Header from './header/Header';
 import StoreDetailSide from './storeDetail/StoreDetailSide';
 import { useRouter } from 'next/router';
-import { useStoreListQuery } from '~/query/common/commonQueries';
 import { AnimatePresence, motion } from 'framer-motion';
 import { commonActions, useCommonStore } from '~/store/common';
 import ButtonGroup from './map/ButtonGroup';
+import { storeQueries } from '~/queries/storeQueries';
+import { useQuery } from '@tanstack/react-query';
 
 type QueryParamsType = {
   storeId?: string;
@@ -38,7 +39,9 @@ const MainScreen = () => {
   const sort = useCommonStore((state) => state.sort);
   const guideIsShow = useCommonStore((state) => state.showGuide.circle);
 
-  const storeListQuery = useStoreListQuery({ sort, lat: addressInfo.lat, lng: addressInfo.lng, itemTagId });
+  const { data: storeListData } = useQuery({
+    ...storeQueries.list({ sort, lat: addressInfo.lat, lng: addressInfo.lng, itemTagId }),
+  });
 
   const handleLocation = () => {
     const handleLocationSuccess = (position: GeolocationPosition) => {
@@ -97,10 +100,10 @@ const MainScreen = () => {
   }, [markers, storeId]);
 
   useEffect(() => {
-    if (map && storeListQuery.data) {
-      renderMarkers(storeListQuery.data);
+    if (map && storeListData) {
+      renderMarkers(storeListData.stores);
     }
-  }, [storeListQuery.data]);
+  }, [storeListData]);
 
   useEffect(() => {
     if (addressInfo) {
@@ -133,7 +136,7 @@ const MainScreen = () => {
         </AnimatePresence>
         <StoreListSlideContainer>
           <StoreListSide
-            stores={storeListQuery?.data}
+            stores={storeListData?.stores}
             onStoreMarkerActive={handleActiveMarkerByStoreId}
             activeStoreId={activeMarker?.data.id}
           />

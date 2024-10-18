@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import SearchSection from '../search/SearchSection';
 import StoreListSection from './StoreListSection';
-import { StoreListItemType } from '~/api/common/commonService.types';
 import StoreListTitle from './StoreListTitle';
+import { StoreListItemType } from '~/api/store/storeApi.types';
 
 interface Props {
-  stores: StoreListItemType[] | undefined;
+  stores?: StoreListItemType[];
   onStoreMarkerActive: (storeId: number) => void;
   activeStoreId?: number;
 }
@@ -33,8 +33,6 @@ const Wrapper = styled.div`
   flex-direction: column;
 
   height: 100%;
-
-  
 `;
 
 export default StoreListSide;

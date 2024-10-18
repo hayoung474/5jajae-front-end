@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import geocoder from '~/lib/geocoder';
 
-export type SortType = 'newest' | 'nearest';
 export interface AddressInfoType {
   address: string;
   lat: number;
@@ -18,7 +17,7 @@ export type CommonState = {
 const initialState: CommonState = {
   recentSearchKeywordList: [],
   addressInfo: { address: '서울시 중구 세종대로 110', lat: 37.5665, lng: 126.978 },
-  sort: 'newest',
+  sort: 'LATEST',
   showGuide: { bubble: true, circle: true },
 };
 

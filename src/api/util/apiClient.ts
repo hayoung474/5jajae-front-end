@@ -6,4 +6,6 @@ import HTTPProvider from './httpProvider';
  */
 class ApiClient extends HTTPProvider {}
 
+export const apiClient = new ApiClient();
+
 export default ApiClient;
