@@ -1,4 +1,4 @@
-export function meterToKilometer(meters: number) {
+export default function meterToKilometer(meters: number) {
     const roundedMeters = Math.round(meters);
     if (meters < 1000) {
       return `${roundedMeters}m`;

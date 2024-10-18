@@ -6,7 +6,7 @@ import Badge from '~/components/common/Badge';
 import CustomImage from '~/components/common/CustomImage';
 import Text from '~/components/common/Text';
 import { Pin } from '~/components/common/icons';
-import { meterToKilometer } from '~/lib/meterToKilometer';
+import { meterToKilometer } from '~/lib';
 
 interface Props {
   store: StoreListItemType;

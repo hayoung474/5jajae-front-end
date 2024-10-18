@@ -1,5 +1,5 @@
 import { useEffect, useState, MutableRefObject } from 'react';
-import throttle from '~/lib/throttle';
+import { throttle } from '~/lib';
 
 const checkIsScrolled = (targetElement: MutableRefObject<HTMLElement | null> | null): boolean => {
   if (targetElement?.current) {
