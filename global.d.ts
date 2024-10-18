@@ -17,3 +17,5 @@ type ResponseDTO<T = void> = {
 type NaverMap = naver.maps.Map;
 type NaverMapMarker = naver.maps.Marker;
 type Coordinates = { lat: number; lng: number };
+
+type SortType = 'LATEST' | 'DISTANCE';

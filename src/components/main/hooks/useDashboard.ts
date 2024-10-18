@@ -1,4 +1,4 @@
-import { CreateCommonDashboardPayload, DashboardType } from '~/api/common/commonService.types';
+import { CreateCommonDashboardPayload, DashboardType } from '~/api/common/commonApi.types';
 import { useDashboardMutation } from '~/query/common/commonQueries';
 
 const useDashboard = () => {

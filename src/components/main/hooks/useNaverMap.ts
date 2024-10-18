@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
-import { ItemTag } from '~/api/common/commonService.types';
-import { StoreListItemDTO } from '~/api/common/commonService.types';
+import { ItemTag } from '~/api/common/commonApi.types';
+import { StoreListItemDTO } from '~/api/common/commonApi.types';
 import copyText from '~/lib/copyText';
 import { commonActions } from '~/store/common';
 import { snackBarActions } from '~/store/snackBar';

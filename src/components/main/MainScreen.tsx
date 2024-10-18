@@ -98,7 +98,7 @@ const MainScreen = () => {
 
   useEffect(() => {
     if (map && storeListQuery.data) {
-      renderMarkers(storeListQuery.data);
+      renderMarkers(storeListQuery.data.stores);
     }
   }, [storeListQuery.data]);
 
@@ -133,7 +133,7 @@ const MainScreen = () => {
         </AnimatePresence>
         <StoreListSlideContainer>
           <StoreListSide
-            stores={storeListQuery?.data}
+            stores={storeListQuery?.data?.stores}
             onStoreMarkerActive={handleActiveMarkerByStoreId}
             activeStoreId={activeMarker?.data.id}
           />
