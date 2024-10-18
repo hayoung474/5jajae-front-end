@@ -183,9 +183,9 @@ const StoreListSlideContainer = styled.div`
   z-index: 2;
 
   &::-webkit-scrollbar {
-    display: none; 
+    display: none;
   }
-  scrollbar-width: none; 
+  scrollbar-width: none;
   -ms-overflow-style: none;
 `;
 
