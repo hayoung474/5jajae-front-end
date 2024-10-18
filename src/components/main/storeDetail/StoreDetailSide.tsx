@@ -7,7 +7,6 @@ import CustomImage from '../../common/CustomImage';
 import Badge from '../../common/Badge';
 import ContentDivider from '../../common/ContentDivider';
 import { useRouter } from 'next/router';
-import { useStoreDetailQuery } from '~/query/common/commonQueries';
 import { useEffect, useState } from 'react';
 import StoreContactDialog from './StoreContactDialog';
 import SolidButton from '~/components/common/buttons/SolidButton';
@@ -17,13 +16,15 @@ import ImageSlide from '~/components/common/ImageSlide';
 import useDashboard from '../hooks/useDashboard';
 import { snackBarActions } from '~/store/snackBar';
 import MetaTags from '~/components/meta/MetaTags';
+import { useQuery } from '@tanstack/react-query';
+import { storeQueries } from '~/queries/storeQueries';
 
 const StoreDetailSide = () => {
   const router = useRouter();
 
   const { storeId } = router.query as { storeId: string };
 
-  const { data: storeDetail, isSuccess } = useStoreDetailQuery({ storeId });
+  const { data: storeDetailData, isSuccess } = useQuery({ ...storeQueries.detail({ storeId }) });
   const { sendDashboardEvent } = useDashboard();
 
   const [contactOpen, setContactOpen] = useState<boolean>(false);
@@ -68,9 +69,9 @@ const StoreDetailSide = () => {
   return (
     <>
       <MetaTags
-        title={storeDetail.name}
-        additionalKeywords={storeDetail.name}
-        imageUrl={storeDetail.imageUrls?.[0]}
+        title={storeDetailData.name}
+        additionalKeywords={storeDetailData.name}
+        imageUrl={storeDetailData.imageUrls?.[0]}
         siteUrl={`https://ojajae.com?storeId=${storeId}`}
       />
       <Wrapper>
@@ -81,7 +82,7 @@ const StoreDetailSide = () => {
           <IconButton onClick={handleClose} icon={<Close color="cool_gray_950" />} />
         </Title>
         <StoreImageSlide>
-          {storeDetail.imageUrls.length === 0 && (
+          {storeDetailData.imageUrls.length === 0 && (
             <CustomImage
               width="100%"
               height="208px"
@@ -90,32 +91,34 @@ const StoreDetailSide = () => {
               style={{ borderRadius: '8px' }}
             />
           )}
-          {storeDetail.imageUrls.length > 0 && <ImageSlide images={storeDetail.imageUrls.map((image) => image)} />}
+          {storeDetailData.imageUrls.length > 0 && (
+            <ImageSlide images={storeDetailData.imageUrls.map((image) => image)} />
+          )}
         </StoreImageSlide>
         <StoreInfo>
           <BadgeList>
-            {storeDetail.itemTags?.map((item) => {
+            {storeDetailData.itemTags?.map((item) => {
               return <Badge>{item.name}</Badge>;
             })}
           </BadgeList>
           <Text variant="heading_1" weight="bold" color="cool_gray_900">
-            {storeDetail.name}
+            {storeDetailData.name}
           </Text>
-          {storeDetail.descriptions && (
+          {storeDetailData.descriptions && (
             <Text variant="label_1" weight="regular" color="cool_gray_500">
-              {storeDetail.descriptions}
+              {storeDetailData.descriptions}
             </Text>
           )}
         </StoreInfo>
         <ContentDivider />
         <StoreInfoDetail>
-          {storeDetail.representativeName && (
+          {storeDetailData.representativeName && (
             <StoreInfoDetailItem>
               <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
                 대표자명
               </Text>
               <Text variant="label_2" weight="regular" color="cool_gray_500" className="text-wrapper">
-                {storeDetail.representativeName}
+                {storeDetailData.representativeName}
               </Text>
             </StoreInfoDetailItem>
           )}
@@ -124,41 +127,41 @@ const StoreDetailSide = () => {
               상세품목
             </Text>
             <Text variant="label_2" weight="regular" color="cool_gray_500" className="text-wrapper">
-              {storeDetail.items}
+              {storeDetailData.items}
             </Text>
           </StoreInfoDetailItem>
-          {storeDetail.openingHours && (
+          {storeDetailData.openingHours && (
             <StoreInfoDetailItem>
               <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
                 영업시간
               </Text>
               <Text variant="label_2" weight="regular" color="cool_gray_500" className="text-wrapper">
-                {storeDetail.openingHours}
+                {storeDetailData.openingHours}
               </Text>
             </StoreInfoDetailItem>
           )}
-          {storeDetail.address && (
+          {storeDetailData.address && (
             <StoreInfoDetailItem>
               <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
                 주소
               </Text>
               <AddressTextItem>
                 <Text variant="label_2" weight="regular" color="cool_gray_500" className="text">
-                  {storeDetail.address}
+                  {storeDetailData.address}
                 </Text>
-                <div className="copy-button" onClick={() => handleAddressCopyClick(storeDetail.address)}>
+                <div className="copy-button" onClick={() => handleAddressCopyClick(storeDetailData.address)}>
                   <Copy size="16px" color="cool_gray_500" />
                 </div>
               </AddressTextItem>
             </StoreInfoDetailItem>
           )}
-          {storeDetail.homepage && (
+          {storeDetailData.homepage && (
             <StoreInfoDetailItem>
               <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
                 홈페이지
               </Text>
-              <a target="_blank" href={storeDetail.homepage}>
-                {storeDetail.homepage}
+              <a target="_blank" href={storeDetailData.homepage}>
+                {storeDetailData.homepage}
               </a>
             </StoreInfoDetailItem>
           )}
@@ -172,11 +175,11 @@ const StoreDetailSide = () => {
           </ContactButton>
         </ButtonGroup>
 
-        {storeDetail.contactNumber && contactOpen && (
+        {storeDetailData.contactNumber && contactOpen && (
           <StoreContactDialog
-            name={storeDetail.name}
-            address={storeDetail.address}
-            contactNumber={storeDetail.contactNumber}
+            name={storeDetailData.name}
+            address={storeDetailData.address}
+            contactNumber={storeDetailData.contactNumber}
             onContactClose={handleContactClose}
           />
         )}

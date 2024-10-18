@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 import ChipToggleFilter from '../../common/filter/ChipToggleFilter';
-import { useItemTagsQuery } from '~/query/common/commonQueries';
 import { useRouter } from 'next/router';
+import { useQuery } from '@tanstack/react-query';
+import { commonQueries } from '~/queries/commonQueries';
 
 const Filter = () => {
   const router = useRouter();
   const { itemTagId } = router.query as { itemTagId: string };
-  const { data: itemTags, isSuccess } = useItemTagsQuery();
+
+  const { data: itemTagsData, isSuccess } = useQuery({ ...commonQueries.itemTags });
 
   const handleFilterActive = (itemTagId: number) => {
     router.replace({ pathname: router.pathname, query: { ...router.query, itemTagId } });
@@ -23,7 +25,7 @@ const Filter = () => {
     <Wrapper>
       <ChipToggleFilter name="전체" filterActive={!itemTagId} onClick={handleFilterToggleAll} />
       {isSuccess &&
-        itemTags.map((itemTag) => {
+        itemTagsData.itemTags.map((itemTag) => {
           const uniqueKey = `item-tag-${itemTag.id}`;
           return (
             <ChipToggleFilter

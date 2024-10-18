@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
-import { ItemTag } from '~/api/common/commonApi.types';
-import { StoreListItemDTO } from '~/api/common/commonApi.types';
+import { StoreListItemType } from '~/api/store/storeApi.types';
 import copyText from '~/lib/copyText';
 import { commonActions } from '~/store/common';
 import { snackBarActions } from '~/store/snackBar';
@@ -19,7 +18,7 @@ interface InitProps {
   center: Coordinates;
 }
 
-type StoreMarker = MapMarker<StoreListItemDTO>;
+type StoreMarker = MapMarker<StoreListItemType>;
 
 const useNaverMap = ({ mapElementId }: Props) => {
   const router = useRouter();
@@ -158,7 +157,7 @@ const useNaverMap = ({ mapElementId }: Props) => {
     });
   };
 
-  const renderMarkers = (dataList: StoreListItemDTO[]) => {
+  const renderMarkers = (dataList: StoreListItemType[]) => {
     if (!map) {
       return;
     }
@@ -211,7 +210,7 @@ const useNaverMap = ({ mapElementId }: Props) => {
     setMarkers(tempMarkers);
   };
 
-  const renderInfoWindow = (data: StoreListItemDTO) => {
+  const renderInfoWindow = (data: StoreListItemType) => {
     const infoWindow = new naver.maps.InfoWindow({
       content: createHtmlStoreInfoWindow(data),
       borderWidth: 0,
@@ -352,7 +351,7 @@ const createHtmlStoreIconMarker = ({ status, name }: storeMarkerProps): naver.ma
   };
 };
 
-const createHtmlStoreInfoWindow = (store: StoreListItemDTO) => {
+const createHtmlStoreInfoWindow = (store: StoreListItemType) => {
   return [
     '<div class="map-store-info-window" id="map-store-info-window">',
     ...createHtmlBadgeList(store.itemTags),

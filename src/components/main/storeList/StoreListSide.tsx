@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import SearchSection from '../search/SearchSection';
 import StoreListSection from './StoreListSection';
-import { StoreListItemType } from '~/api/common/commonApi.types';
 import StoreListTitle from './StoreListTitle';
+import { StoreListItemType } from '~/api/store/storeApi.types';
 
 interface Props {
   stores?: StoreListItemType[];

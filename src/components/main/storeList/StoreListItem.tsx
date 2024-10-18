@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { StoreListItemType } from '~/api/common/commonApi.types';
+import { StoreListItemType } from '~/api/store/storeApi.types';
 import Badge from '~/components/common/Badge';
 import CustomImage from '~/components/common/CustomImage';
 import Text from '~/components/common/Text';

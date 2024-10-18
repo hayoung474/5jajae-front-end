@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { StoreListItemType } from '~/api/common/commonApi.types';
+import { StoreListItemType } from '~/api/store/storeApi.types';
 import StoreListItem from './StoreListItem';
 import { useIsScrolled } from '~/hooks/useIsScrolled';
 import { useRef } from 'react';
