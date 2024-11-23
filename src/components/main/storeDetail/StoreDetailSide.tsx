@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { flexBetweenCenter } from '~/style/mixins';
+import { flexBetweenCenter, hideScrollBar } from '~/style/mixins';
 import IconButton from '../../common/buttons/IconButton';
 import { Close, Copy, Share } from '../../common/icons';
 import Text from '../../common/Text';
@@ -18,6 +18,8 @@ import { snackBarActions } from '~/store/snackBar';
 import MetaTags from '~/components/meta/MetaTags';
 import { useQuery } from '@tanstack/react-query';
 import { storeQueries } from '~/queries/storeQueries';
+import ButtonGroup from './ButtonGroup';
+import StoreInfoDetailItem from './StoreInfoDetailItem';
 
 const StoreDetailSide = () => {
   const router = useRouter();
@@ -40,14 +42,6 @@ const StoreDetailSide = () => {
     const query = { ...router.query };
     delete query.storeId;
     router.push({ pathname: router.pathname, query });
-  };
-
-  const handleShareClick = async () => {
-    const text = `https://ojajae.com?storeId=${storeId}`;
-    copyText(text);
-    snackBarActions.open('링크를 복사하였습니다.\n원하는 곳에 붙여넣기(Ctrl + V) 해주세요.');
-
-    sendDashboardEvent(Number(storeId), 'STORE_SHARE');
   };
 
   const handleAddressCopyClick = (address?: string) => {
@@ -75,105 +69,81 @@ const StoreDetailSide = () => {
         siteUrl={`https://ojajae.com?storeId=${storeId}`}
       />
       <Wrapper>
-        <Title>
-          <Text variant="heading_1" weight="bold" color="cool_gray_900">
-            업체 정보
-          </Text>
-          <IconButton onClick={handleClose} icon={<Close color="cool_gray_950" />} />
-        </Title>
-        <StoreImageSlide>
-          {storeDetailData.imageUrls.length === 0 && (
-            <CustomImage
-              width="100%"
-              height="208px"
-              src="/image/default.png"
-              alt="store-image"
-              style={{ borderRadius: '8px' }}
-            />
-          )}
-          {storeDetailData.imageUrls.length > 0 && (
-            <ImageSlide images={storeDetailData.imageUrls.map((image) => image)} />
-          )}
-        </StoreImageSlide>
-        <StoreInfo>
-          <BadgeList>
-            {storeDetailData.itemTags?.map((item) => {
-              return <Badge>{item.name}</Badge>;
-            })}
-          </BadgeList>
-          <Text variant="heading_1" weight="bold" color="cool_gray_900">
-            {storeDetailData.name}
-          </Text>
-          {storeDetailData.descriptions && (
-            <Text variant="label_1" weight="regular" color="cool_gray_500">
-              {storeDetailData.descriptions}
+        <ContentWrapper>
+          <Title>
+            <Text variant="heading_1" weight="bold" color="cool_gray_900">
+              업체 정보
             </Text>
-          )}
-        </StoreInfo>
-        <ContentDivider />
-        <StoreInfoDetail>
-          {storeDetailData.representativeName && (
-            <StoreInfoDetailItem>
-              <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
-                대표자명
-              </Text>
-              <Text variant="label_2" weight="regular" color="cool_gray_500" className="text-wrapper">
-                {storeDetailData.representativeName}
-              </Text>
-            </StoreInfoDetailItem>
-          )}
-          <StoreInfoDetailItem>
-            <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
-              상세품목
+            <IconButton onClick={handleClose} icon={<Close color="cool_gray_950" />} />
+          </Title>
+          <StoreImageSlide>
+            {storeDetailData.imageUrls.length === 0 && (
+              <CustomImage
+                width="100%"
+                height="208px"
+                src="/image/default.png"
+                alt="store-image"
+                style={{ borderRadius: '8px' }}
+              />
+            )}
+            {storeDetailData.imageUrls.length > 0 && (
+              <ImageSlide height="208px" images={storeDetailData.imageUrls.map((image) => image)} />
+            )}
+          </StoreImageSlide>
+          <StoreInfo>
+            <BadgeList>
+              {storeDetailData.itemTags?.map((item) => {
+                return <Badge>{item.name}</Badge>;
+              })}
+            </BadgeList>
+            <Text variant="heading_1" weight="bold" color="cool_gray_900">
+              {storeDetailData.name}
             </Text>
-            <Text variant="label_2" weight="regular" color="cool_gray_500" className="text-wrapper">
-              {storeDetailData.items}
-            </Text>
-          </StoreInfoDetailItem>
-          {storeDetailData.openingHours && (
-            <StoreInfoDetailItem>
-              <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
-                영업시간
+            {storeDetailData.descriptions && (
+              <Text variant="label_1" weight="regular" color="cool_gray_500">
+                {storeDetailData.descriptions}
               </Text>
-              <Text variant="label_2" weight="regular" color="cool_gray_500" className="text-wrapper">
-                {storeDetailData.openingHours}
-              </Text>
-            </StoreInfoDetailItem>
-          )}
-          {storeDetailData.address && (
-            <StoreInfoDetailItem>
-              <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
-                주소
-              </Text>
-              <AddressTextItem>
-                <Text variant="label_2" weight="regular" color="cool_gray_500" className="text">
-                  {storeDetailData.address}
-                </Text>
-                <div className="copy-button" onClick={() => handleAddressCopyClick(storeDetailData.address)}>
-                  <Copy size="16px" color="cool_gray_500" />
-                </div>
-              </AddressTextItem>
-            </StoreInfoDetailItem>
-          )}
-          {storeDetailData.homepage && (
-            <StoreInfoDetailItem>
-              <Text variant="label_2" weight="bold" color="cool_gray_900" className="label">
-                홈페이지
-              </Text>
-              <a target="_blank" href={storeDetailData.homepage}>
-                {storeDetailData.homepage}
-              </a>
-            </StoreInfoDetailItem>
-          )}
-        </StoreInfoDetail>
-        <ButtonGroup>
-          <IconContainedButton size="large" onClick={handleShareClick}>
-            <Share size="20px" />
-          </IconContainedButton>
-          <ContactButton onClick={handleContactOpen} size="large">
-            대표번호 보기
-          </ContactButton>
-        </ButtonGroup>
+            )}
+          </StoreInfo>
+          <ContentDivider />
+          <StoreInfoDetail>
+            {storeDetailData.representativeName && (
+              <StoreInfoDetailItem title="대표자명" label={storeDetailData.representativeName} />
+            )}
+            <StoreInfoDetailItem title="상세품목" label={storeDetailData.items} />
+
+            {storeDetailData.openingHours && (
+              <StoreInfoDetailItem title="영업시간" label={storeDetailData.openingHours} />
+            )}
+            {storeDetailData.address && (
+              <StoreInfoDetailItem
+                title="주소"
+                label={
+                  <AddressTextItem>
+                    <Text variant="label_2" weight="regular" color="cool_gray_500" className="text">
+                      {storeDetailData.address}
+                    </Text>
+                    <div className="copy-button" onClick={() => handleAddressCopyClick(storeDetailData.address)}>
+                      <Copy size="16px" color="cool_gray_500" />
+                    </div>
+                  </AddressTextItem>
+                }
+              />
+            )}
+            {storeDetailData.homepage && (
+              <StoreInfoDetailItem
+                title="홈페이지"
+                label={
+                  <a target="_blank" href={storeDetailData.homepage}>
+                    {storeDetailData.homepage}
+                  </a>
+                }
+              />
+            )}
+          </StoreInfoDetail>
+        </ContentWrapper>
+
+        <ButtonGroup storeId={storeId} onContactOpen={handleContactOpen} />
 
         {storeDetailData.contactNumber && contactOpen && (
           <StoreContactDialog
@@ -199,6 +169,10 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
+const ContentWrapper = styled.div`
+  overflow-y: scroll;
+  ${hideScrollBar}
+`;
 const Title = styled.div`
   ${flexBetweenCenter}
 `;
@@ -222,27 +196,6 @@ const BadgeList = styled.div`
 
 const StoreInfoDetail = styled.div``;
 
-const StoreInfoDetailItem = styled.div`
-  display: flex;
-  padding: 8px 0;
-  .label {
-    width: 88px;
-  }
-  .text-container {
-    display: flex;
-    gap: 4px;
-    flex: 1;
-  }
-
-  a {
-    color: #0068ee;
-    ${({ theme }) => theme.fontStyle.label_2}
-    ${({ theme }) => theme.fontWeight.medium}
-    text-decoration: none;
-    text-decoration-line: none;
-  }
-`;
-
 const AddressTextItem = styled.div`
   display: flex;
   flex: 1;
@@ -254,22 +207,6 @@ const AddressTextItem = styled.div`
   .copy-button {
     cursor: pointer;
   }
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  gap: 4px;
-  position: absolute;
-  box-sizing: border-box;
-
-  width: 100%;
-
-  padding: 24px 20px;
-  bottom: 0;
-  left: 0px;
-`;
-const ContactButton = styled(SolidButton)`
-  width: 100%;
 `;
 
 export default StoreDetailSide;
