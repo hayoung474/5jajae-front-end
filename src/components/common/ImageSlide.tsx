@@ -7,8 +7,10 @@ import Text from './Text';
 
 interface Props {
   images: string[];
+  width?: string;
+  height?: string;
 }
-const ImageSlide = ({ images }: Props) => {
+const ImageSlide = ({ images, width = '100%', height = '100%' }: Props) => {
   const [index, setIndex] = useState<number>(1);
 
   return (
@@ -31,7 +33,7 @@ const ImageSlide = ({ images }: Props) => {
       >
         {images.map((img, index) => (
           <SwiperSlide key={`${img} ${index}`}>
-            <Slide src={img} alt="image" style={{ borderRadius: '8px' }} />
+            <Slide src={img} alt="image" $width={width} $height={height} />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -40,12 +42,9 @@ const ImageSlide = ({ images }: Props) => {
 };
 
 const Wrapper = styled.div`
-  width: 100%;
-  height: 100%;
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  /* border-radius: 8px; */
 `;
 
 const NumberIndicator = styled.div`
@@ -58,9 +57,13 @@ const NumberIndicator = styled.div`
   background-color: #00000050;
 `;
 
-const Slide = styled.img`
+const Slide = styled.img<{ $width: string; $height: string }>`
   width: 100%;
-  overflow: hidden;
+  height: 100%;
+  object-fit: cover;
+  width: ${({ $width }) => $width};
+  height: ${({ $height }) => $height};
+  border-radius: 8px;
 `;
 
 export default ImageSlide;

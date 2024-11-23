@@ -24,3 +24,11 @@ export const truncate = (lines = 1) => css`
   word-break: break-all;
   word-wrap: break-word;
 `;
+
+export const hideScrollBar = css`
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
