@@ -176,7 +176,6 @@ const useNaverMap = ({ mapElementId }: Props) => {
       const position = new naver.maps.LatLng(data.lat, data.lng);
 
       const marker = new naver.maps.Marker({
-        map,
         position,
         icon,
       });

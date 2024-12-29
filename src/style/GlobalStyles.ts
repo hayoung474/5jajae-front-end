@@ -13,6 +13,40 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   };
 
+  .store-cluster-icon-large{
+    ${({ theme }) => theme.fontStyle.heading_1};
+    ${({ theme }) => theme.fontWeight.bold};
+    color:${({ theme }) => theme.colors.white};
+    width:64px;
+    height:64px;
+    line-height:64px;
+    border-radius:50%;
+    text-align:center;
+    border:solid 1px ${({ theme }) => theme.colors.violet_600};
+    background-color:rgba(104, 57, 238, 0.8);
+    &:hover{
+      background-color:${({ theme }) => theme.colors.white};
+      color:${({ theme }) => theme.colors.violet_600};
+    }
+  }
+
+  .store-cluster-icon-small{
+    ${({ theme }) => theme.fontStyle.body_1};
+    ${({ theme }) => theme.fontWeight.bold};
+    color:${({ theme }) => theme.colors.white};
+    width:48px;
+    height:48px;
+    line-height:48px;
+    border-radius:50%;
+    text-align:center;
+    border:solid 1px ${({ theme }) => theme.colors.violet_600};
+    background-color:rgba(104, 57, 238, 0.8);
+    &:hover{
+      background-color:${({ theme }) => theme.colors.white};
+      color:${({ theme }) => theme.colors.violet_600};
+    }
+  }
+
   .map-guide-info-window{
     background-color:${({ theme }) => theme.colors.violet_600};
     border-radius:4px;

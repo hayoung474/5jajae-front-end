@@ -1,5 +1,5 @@
 export interface ReadCommonStoreListParams {
-  itemTagId?: string;
+  itemTagIds?: string;
   sort: SortType;
   lng: number;
   lat: number;

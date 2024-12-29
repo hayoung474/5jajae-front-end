@@ -9,12 +9,12 @@ const checkIsScrolled = (targetElement: MutableRefObject<HTMLElement | null> | n
 };
 
 export const useIsScrolled = (targetElement: MutableRefObject<HTMLElement | null> | null = null): boolean => {
-  const [isScrolled, setIsScrolled] = useState<boolean>(checkIsScrolled(targetElement));
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
   useEffect(() => {
     const listener = throttle(() => {
       setIsScrolled(checkIsScrolled(targetElement));
-    }, 200);
+    }, 150);
 
     const target = targetElement?.current || window;
     target.addEventListener('scroll', listener, { passive: true });

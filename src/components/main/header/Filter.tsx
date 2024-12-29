@@ -6,24 +6,24 @@ import { commonQueries } from '~/queries/commonQueries';
 
 const Filter = () => {
   const router = useRouter();
-  const { itemTagId } = router.query as { itemTagId: string };
+  const { itemTagIds } = router.query as { itemTagIds: string };
 
   const { data: itemTagsData, isSuccess } = useQuery({ ...commonQueries.itemTags });
 
-  const handleFilterActive = (itemTagId: number) => {
-    router.replace({ pathname: router.pathname, query: { ...router.query, itemTagId } });
+  const handleFilterActive = (itemTagIds: number) => {
+    router.replace({ pathname: router.pathname, query: { ...router.query, itemTagIds } });
   };
   const handleFilterToggleAll = () => {
-    if (itemTagId) {
+    if (itemTagIds) {
       const query = { ...router.query };
-      delete query.itemTagId;
+      delete query.itemTagIds;
       router.replace({ pathname: router.pathname, query });
     }
   };
 
   return (
     <Wrapper>
-      <ChipToggleFilter name="전체" filterActive={!itemTagId} onClick={handleFilterToggleAll} />
+      <ChipToggleFilter name="전체" filterActive={!itemTagIds} onClick={handleFilterToggleAll} />
       {isSuccess &&
         itemTagsData.itemTags.map((itemTag) => {
           const uniqueKey = `item-tag-${itemTag.id}`;
@@ -33,7 +33,7 @@ const Filter = () => {
               name={itemTag.name}
               iconSrc={itemTag.imageUrl}
               onClick={() => handleFilterActive(itemTag.id)}
-              filterActive={itemTagId === `${itemTag.id}`}
+              filterActive={itemTagIds === `${itemTag.id}`}
             />
           );
         })}

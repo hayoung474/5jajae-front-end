@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Text from '~/components/common/Text';
 import TextDivider from '~/components/common/TextDivider';
 import { commonActions, useCommonStore } from '~/store/common';
@@ -6,15 +6,16 @@ import { flexBetweenCenter } from '~/style/mixins';
 
 interface Props {
   storesCount?: number;
+  isScrolled: boolean;
 }
-const StoreListTitle = ({ storesCount }: Props) => {
+const StoreListHeader = ({ storesCount, isScrolled }: Props) => {
   const sort = useCommonStore((state) => state.sort);
 
   const handleSortClick = (sort: SortType) => {
     commonActions.setSort(sort);
   };
   return (
-    <Wrapper>
+    <Wrapper $isScrolled={isScrolled}>
       <Title>
         <Text variant="body_1" weight="bold" color="cool_gray_900" className="title">
           자재업체
@@ -48,11 +49,17 @@ const StoreListTitle = ({ storesCount }: Props) => {
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ $isScrolled: boolean }>`
   ${flexBetweenCenter}
   padding:8px 20px;
 
   margin-top: 24px;
+
+  ${({ $isScrolled, theme }) =>
+    $isScrolled &&
+    css`
+      border-bottom: solid 1px ${theme.colors.cool_gray_200};
+    `}
 `;
 
 const Title = styled.div`
@@ -63,4 +70,4 @@ const Sort = styled.div`
   display: flex;
   align-items: center;
 `;
-export default StoreListTitle;
+export default StoreListHeader;

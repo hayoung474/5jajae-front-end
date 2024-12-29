@@ -1,52 +1,43 @@
-import styled, { css } from 'styled-components';
-import { StoreListItemType } from '~/api/store/storeApi.types';
+import styled from 'styled-components';
 import StoreListItem from './StoreListItem';
 import { useIsScrolled } from '~/hooks/useIsScrolled';
 import { useRef } from 'react';
+import StoreListHeader from './StoreListHeader';
+import { StoreListItemType } from '~/api/store/storeApi.types';
 
 interface Props {
   stores: StoreListItemType[];
-  onStoreMarkerActive: (storeId: number) => void;
-  activeStoreId?: number;
 }
-const StoreListSection = ({ stores, activeStoreId, onStoreMarkerActive }: Props) => {
+const StoreListSection = ({ stores }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
-
   const isScrolled = useIsScrolled(ref);
 
   return (
-    <Wrapper ref={ref} $isScrolled={isScrolled}>
-      {stores.map((store) => {
-        const uniqueKey = `store-list-item-${store.id}`;
-        return (
-          <StoreListItem
-            key={uniqueKey}
-            store={store}
-            onStoreMarkerActive={onStoreMarkerActive}
-            activeStoreId={activeStoreId}
-          />
-        );
-      })}
+    <Wrapper>
+      <StoreListHeader storesCount={stores.length} isScrolled={isScrolled} />
+      <StoreListWrapper ref={ref}>
+        {stores.map((store) => {
+          const uniqueKey = `store-list-item-${store.id}`;
+          return <StoreListItem key={uniqueKey} store={store} />;
+        })}
+      </StoreListWrapper>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.div<{ $isScrolled: boolean }>`
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   flex: 1;
+`;
+const StoreListWrapper = styled.div`
   padding-bottom: 120px;
   overflow-y: scroll;
-
   &::-webkit-scrollbar {
-    display: none; /* 스크롤바를 숨깁니다 */
+    display: none;
   }
-  scrollbar-width: none; /* 스크롤바 너비를 없앱니다 */
-  -ms-overflow-style: none; /* Internet Explorer 및 Edge(구버전)에서 스크롤바를 숨깁니다 */
-
-  ${({ $isScrolled, theme }) =>
-    $isScrolled &&
-    css`
-      border-top: solid 1px ${theme.colors.cool_gray_200};
-    `}
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 `;
 
 export default StoreListSection;
