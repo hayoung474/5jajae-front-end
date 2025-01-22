@@ -40,6 +40,7 @@ const MetaTags = ({ title, description, imageUrl, siteUrl, additionalKeywords }:
       <meta property="og:image" content={metaImageUrl} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
+      <meta name="naver-site-verification" content="82541e499d2026fcaaa5c4c0086aa701d417fa29" />
     </Head>
   );
 };
